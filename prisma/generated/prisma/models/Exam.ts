@@ -241,6 +241,7 @@ export type ExamOrderByWithRelationInput = {
 
 export type ExamWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  batchId_title?: Prisma.ExamBatchIdTitleCompoundUniqueInput
   AND?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
   OR?: Prisma.ExamWhereInput[]
   NOT?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
@@ -251,7 +252,7 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
   results?: Prisma.ExamResultListRelationFilter
-}, "id">
+}, "id" | "batchId_title">
 
 export type ExamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -353,6 +354,11 @@ export type ExamListRelationFilter = {
 
 export type ExamOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ExamBatchIdTitleCompoundUniqueInput = {
+  batchId: string
+  title: string
 }
 
 export type ExamCountOrderByAggregateInput = {

@@ -17,20 +17,3 @@ export const AttendanceStatus = {
 } as const
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
-
-
-export const InvitationStatus = {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  EXPIRED: 'EXPIRED'
-} as const
-
-export type InvitationStatus = (typeof InvitationStatus)[keyof typeof InvitationStatus]
-
-
-export const AnnouncementAudience = {
-  ORGANIZATION: 'ORGANIZATION',
-  BATCH: 'BATCH'
-} as const
-
-export type AnnouncementAudience = (typeof AnnouncementAudience)[keyof typeof AnnouncementAudience]

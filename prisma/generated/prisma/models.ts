@@ -9,7 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Student'
-export type * from './models/Organization'
 export type * from './models/Batch'
 export type * from './models/BatchSchedule'
 export type * from './models/BatchStudent'

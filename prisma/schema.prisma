@@ -17,100 +17,54 @@ enum AttendanceStatus {
   EXCUSED
 }
 
-enum InvitationStatus {
-  PENDING
-  ACCEPTED
-  EXPIRED
-}
-
-enum AnnouncementAudience {
-  ORGANIZATION
-  BATCH
-}
-
 model Student {
-  id          String @id @default(cuid())
-  clerkUserId String @unique
+  id                  String             @id @default(cuid())
+  clerkUserId         String             @unique
+  clerkOrganizationId String
+  fullName            String
+  email               String
+  phone               String?
+  guardianName        String?
+  guardianPhone       String?
+  archivedAt          DateTime?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  batches             BatchStudent[]
+  attendance          AttendanceRecord[]
+  examResults         ExamResult[]
 
-  organizationId String
-
-  fullName String
-  email    String
-  phone    String?
-
-  guardianName  String?
-  guardianPhone String?
-
-  archivedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  batches     BatchStudent[]
-  attendance  AttendanceRecord[]
-  examResults ExamResult[]
-
-  @@unique([organizationId, email])
-  @@index([organizationId])
-  @@index([organizationId, archivedAt])
-}
-
-model Organization {
-  id String @id //Clerk Organization ID
-
-  name     String
-  imageUrl String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  students Student[]
-  batches  Batch[]
-  // announcements Announcement[]
+  @@unique([clerkOrganizationId, email])
+  @@index([clerkOrganizationId])
+  @@index([clerkOrganizationId, archivedAt])
+  @@index([clerkOrganizationId, fullName])
 }
 
 model Batch {
-  id String @id @default(cuid())
+  id                  String          @id @default(cuid())
+  clerkOrganizationId String
+  name                String
+  subject             String?
+  color               String?
+  archivedAt          DateTime?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  students            BatchStudent[]
+  schedules           BatchSchedule[]
+  sessions            BatchSession[]
+  exams               Exam[]
 
-  organizationId String
-
-  name    String
-  subject String?
-
-  color String?
-
-  startTime String?
-  endTime   String?
-
-  archivedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  students       BatchStudent[]
-  sessions       BatchSession[]
-  exams          Exam[]
-  // notes          Note[]
-  // announcements  Announcement[]
-  batchSchedules BatchSchedule[]
-
-  @@index([organizationId])
-  @@index([organizationId, archivedAt])
+  @@index([clerkOrganizationId])
+  @@index([clerkOrganizationId, archivedAt])
+  @@index([clerkOrganizationId, name])
 }
 
 model BatchSchedule {
-  id      String @id @default(cuid())
-  batchId String
-
-  dayOfWeek Int // 0-6
-  startTime String // "17:30"
-  endTime   String
-
-  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  id           String @id @default(cuid())
+  batchId      String
+  dayOfWeek    Int // 0-6
+  startMinutes Int
+  endMinutes   Int
+  batch        Batch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
 
   @@index([batchId])
 }
@@ -129,21 +83,16 @@ model BatchStudent {
 }
 
 model BatchSession {
-  id String @id @default(cuid())
-
-  batchId String
-
-  classDate DateTime
-
-  topic   String?
-  summary String?
-
-  createdAt DateTime @default(now())
-
-  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
-
+  id         String             @id @default(cuid())
+  batchId    String
+  classDate  DateTime
+  topic      String?
+  summary    String?
+  createdAt  DateTime           @default(now())
+  batch      Batch              @relation(fields: [batchId], references: [id], onDelete: Cascade)
   attendance AttendanceRecord[]
 
+  @@unique([batchId, classDate])
   @@index([batchId])
   @@index([batchId, classDate])
 }
@@ -164,22 +113,16 @@ model AttendanceRecord {
 }
 
 model Exam {
-  id String @id @default(cuid())
-
-  batchId String
-
-  title String
-
+  id         String       @id @default(cuid())
+  batchId    String
+  title      String
   totalMarks Int
+  examDate   DateTime
+  createdAt  DateTime     @default(now())
+  batch      Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  results    ExamResult[]
 
-  examDate DateTime
-
-  createdAt DateTime @default(now())
-
-  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
-
-  results ExamResult[]
-
+  @@unique([batchId, title])
   @@index([batchId])
   @@index([batchId, examDate])
 }
@@ -198,45 +141,3 @@ model ExamResult {
   @@id([examId, studentId])
   @@index([studentId])
 }
-
-// model Note {
-//   id String @id @default(cuid())
-
-//   batchId String
-
-//   title String
-
-//   content String @db.Text
-
-//   published Boolean @default(true)
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
-
-//   @@index([batchId])
-// }
-
-// model Announcement {
-//   id String @id @default(cuid())
-
-//   organizationId String
-
-//   batchId String?
-
-//   title String
-
-//   content String @db.Text
-
-//   audience AnnouncementAudience
-
-//   createdAt DateTime @default(now())
-
-//   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-//   batch Batch? @relation(fields: [batchId], references: [id])
-
-//   @@index([organizationId])
-//   @@index([batchId])
-// }

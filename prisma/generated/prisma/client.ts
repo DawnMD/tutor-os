@@ -47,11 +47,6 @@ export { Prisma }
  */
 export type Student = Prisma.StudentModel
 /**
- * Model Organization
- * 
- */
-export type Organization = Prisma.OrganizationModel
-/**
  * Model Batch
  * 
  */

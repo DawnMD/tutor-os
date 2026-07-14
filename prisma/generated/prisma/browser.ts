@@ -23,11 +23,6 @@ export * from './enums';
  */
 export type Student = Prisma.StudentModel
 /**
- * Model Organization
- * 
- */
-export type Organization = Prisma.OrganizationModel
-/**
  * Model Batch
  * 
  */

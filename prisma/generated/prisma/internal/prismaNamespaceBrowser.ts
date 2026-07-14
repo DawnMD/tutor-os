@@ -52,7 +52,6 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Student: 'Student',
-  Organization: 'Organization',
   Batch: 'Batch',
   BatchSchedule: 'BatchSchedule',
   BatchStudent: 'BatchStudent',
@@ -81,7 +80,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const StudentScalarFieldEnum = {
   id: 'id',
   clerkUserId: 'clerkUserId',
-  organizationId: 'organizationId',
+  clerkOrganizationId: 'clerkOrganizationId',
   fullName: 'fullName',
   email: 'email',
   phone: 'phone',
@@ -95,25 +94,12 @@ export const StudentScalarFieldEnum = {
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
 
 
-export const OrganizationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  imageUrl: 'imageUrl',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
 export const BatchScalarFieldEnum = {
   id: 'id',
-  organizationId: 'organizationId',
+  clerkOrganizationId: 'clerkOrganizationId',
   name: 'name',
   subject: 'subject',
   color: 'color',
-  startTime: 'startTime',
-  endTime: 'endTime',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -126,8 +112,8 @@ export const BatchScheduleScalarFieldEnum = {
   id: 'id',
   batchId: 'batchId',
   dayOfWeek: 'dayOfWeek',
-  startTime: 'startTime',
-  endTime: 'endTime'
+  startMinutes: 'startMinutes',
+  endMinutes: 'endMinutes'
 } as const
 
 export type BatchScheduleScalarFieldEnum = (typeof BatchScheduleScalarFieldEnum)[keyof typeof BatchScheduleScalarFieldEnum]

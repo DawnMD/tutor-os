@@ -28,68 +28,76 @@ export type AggregateBatchSchedule = {
 
 export type BatchScheduleAvgAggregateOutputType = {
   dayOfWeek: number | null
+  startMinutes: number | null
+  endMinutes: number | null
 }
 
 export type BatchScheduleSumAggregateOutputType = {
   dayOfWeek: number | null
+  startMinutes: number | null
+  endMinutes: number | null
 }
 
 export type BatchScheduleMinAggregateOutputType = {
   id: string | null
   batchId: string | null
   dayOfWeek: number | null
-  startTime: string | null
-  endTime: string | null
+  startMinutes: number | null
+  endMinutes: number | null
 }
 
 export type BatchScheduleMaxAggregateOutputType = {
   id: string | null
   batchId: string | null
   dayOfWeek: number | null
-  startTime: string | null
-  endTime: string | null
+  startMinutes: number | null
+  endMinutes: number | null
 }
 
 export type BatchScheduleCountAggregateOutputType = {
   id: number
   batchId: number
   dayOfWeek: number
-  startTime: number
-  endTime: number
+  startMinutes: number
+  endMinutes: number
   _all: number
 }
 
 
 export type BatchScheduleAvgAggregateInputType = {
   dayOfWeek?: true
+  startMinutes?: true
+  endMinutes?: true
 }
 
 export type BatchScheduleSumAggregateInputType = {
   dayOfWeek?: true
+  startMinutes?: true
+  endMinutes?: true
 }
 
 export type BatchScheduleMinAggregateInputType = {
   id?: true
   batchId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
+  startMinutes?: true
+  endMinutes?: true
 }
 
 export type BatchScheduleMaxAggregateInputType = {
   id?: true
   batchId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
+  startMinutes?: true
+  endMinutes?: true
 }
 
 export type BatchScheduleCountAggregateInputType = {
   id?: true
   batchId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
+  startMinutes?: true
+  endMinutes?: true
   _all?: true
 }
 
@@ -183,8 +191,8 @@ export type BatchScheduleGroupByOutputType = {
   id: string
   batchId: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
   _count: BatchScheduleCountAggregateOutputType | null
   _avg: BatchScheduleAvgAggregateOutputType | null
   _sum: BatchScheduleSumAggregateOutputType | null
@@ -214,8 +222,8 @@ export type BatchScheduleWhereInput = {
   id?: Prisma.StringFilter<"BatchSchedule"> | string
   batchId?: Prisma.StringFilter<"BatchSchedule"> | string
   dayOfWeek?: Prisma.IntFilter<"BatchSchedule"> | number
-  startTime?: Prisma.StringFilter<"BatchSchedule"> | string
-  endTime?: Prisma.StringFilter<"BatchSchedule"> | string
+  startMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
+  endMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
 }
 
@@ -223,8 +231,8 @@ export type BatchScheduleOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
   batch?: Prisma.BatchOrderByWithRelationInput
 }
 
@@ -235,8 +243,8 @@ export type BatchScheduleWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.BatchScheduleWhereInput | Prisma.BatchScheduleWhereInput[]
   batchId?: Prisma.StringFilter<"BatchSchedule"> | string
   dayOfWeek?: Prisma.IntFilter<"BatchSchedule"> | number
-  startTime?: Prisma.StringFilter<"BatchSchedule"> | string
-  endTime?: Prisma.StringFilter<"BatchSchedule"> | string
+  startMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
+  endMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
 }, "id">
 
@@ -244,8 +252,8 @@ export type BatchScheduleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
   _count?: Prisma.BatchScheduleCountOrderByAggregateInput
   _avg?: Prisma.BatchScheduleAvgOrderByAggregateInput
   _max?: Prisma.BatchScheduleMaxOrderByAggregateInput
@@ -260,63 +268,63 @@ export type BatchScheduleScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"BatchSchedule"> | string
   batchId?: Prisma.StringWithAggregatesFilter<"BatchSchedule"> | string
   dayOfWeek?: Prisma.IntWithAggregatesFilter<"BatchSchedule"> | number
-  startTime?: Prisma.StringWithAggregatesFilter<"BatchSchedule"> | string
-  endTime?: Prisma.StringWithAggregatesFilter<"BatchSchedule"> | string
+  startMinutes?: Prisma.IntWithAggregatesFilter<"BatchSchedule"> | number
+  endMinutes?: Prisma.IntWithAggregatesFilter<"BatchSchedule"> | number
 }
 
 export type BatchScheduleCreateInput = {
   id?: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
-  batch: Prisma.BatchCreateNestedOneWithoutBatchSchedulesInput
+  startMinutes: number
+  endMinutes: number
+  batch: Prisma.BatchCreateNestedOneWithoutSchedulesInput
 }
 
 export type BatchScheduleUncheckedCreateInput = {
   id?: string
   batchId: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
 }
 
 export type BatchScheduleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  batch?: Prisma.BatchUpdateOneRequiredWithoutBatchSchedulesNestedInput
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  batch?: Prisma.BatchUpdateOneRequiredWithoutSchedulesNestedInput
 }
 
 export type BatchScheduleUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BatchScheduleCreateManyInput = {
   id?: string
   batchId: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
 }
 
 export type BatchScheduleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BatchScheduleUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BatchScheduleListRelationFilter = {
@@ -333,32 +341,36 @@ export type BatchScheduleCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
 }
 
 export type BatchScheduleAvgOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
 }
 
 export type BatchScheduleMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
 }
 
 export type BatchScheduleMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
 }
 
 export type BatchScheduleSumOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
 }
 
 export type BatchScheduleCreateNestedManyWithoutBatchInput = {
@@ -414,15 +426,15 @@ export type IntFieldUpdateOperationsInput = {
 export type BatchScheduleCreateWithoutBatchInput = {
   id?: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
 }
 
 export type BatchScheduleUncheckedCreateWithoutBatchInput = {
   id?: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
 }
 
 export type BatchScheduleCreateOrConnectWithoutBatchInput = {
@@ -458,36 +470,36 @@ export type BatchScheduleScalarWhereInput = {
   id?: Prisma.StringFilter<"BatchSchedule"> | string
   batchId?: Prisma.StringFilter<"BatchSchedule"> | string
   dayOfWeek?: Prisma.IntFilter<"BatchSchedule"> | number
-  startTime?: Prisma.StringFilter<"BatchSchedule"> | string
-  endTime?: Prisma.StringFilter<"BatchSchedule"> | string
+  startMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
+  endMinutes?: Prisma.IntFilter<"BatchSchedule"> | number
 }
 
 export type BatchScheduleCreateManyBatchInput = {
   id?: string
   dayOfWeek: number
-  startTime: string
-  endTime: string
+  startMinutes: number
+  endMinutes: number
 }
 
 export type BatchScheduleUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BatchScheduleUncheckedUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BatchScheduleUncheckedUpdateManyWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.StringFieldUpdateOperationsInput | string
-  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -496,8 +508,8 @@ export type BatchScheduleSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   batchId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startMinutes?: boolean
+  endMinutes?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batchSchedule"]>
 
@@ -505,8 +517,8 @@ export type BatchScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   batchId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startMinutes?: boolean
+  endMinutes?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batchSchedule"]>
 
@@ -514,8 +526,8 @@ export type BatchScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   batchId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startMinutes?: boolean
+  endMinutes?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batchSchedule"]>
 
@@ -523,11 +535,11 @@ export type BatchScheduleSelectScalar = {
   id?: boolean
   batchId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startMinutes?: boolean
+  endMinutes?: boolean
 }
 
-export type BatchScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "batchId" | "dayOfWeek" | "startTime" | "endTime", ExtArgs["result"]["batchSchedule"]>
+export type BatchScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "batchId" | "dayOfWeek" | "startMinutes" | "endMinutes", ExtArgs["result"]["batchSchedule"]>
 export type BatchScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }
@@ -547,8 +559,8 @@ export type $BatchSchedulePayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     batchId: string
     dayOfWeek: number
-    startTime: string
-    endTime: string
+    startMinutes: number
+    endMinutes: number
   }, ExtArgs["result"]["batchSchedule"]>
   composites: {}
 }
@@ -976,8 +988,8 @@ export interface BatchScheduleFieldRefs {
   readonly id: Prisma.FieldRef<"BatchSchedule", 'String'>
   readonly batchId: Prisma.FieldRef<"BatchSchedule", 'String'>
   readonly dayOfWeek: Prisma.FieldRef<"BatchSchedule", 'Int'>
-  readonly startTime: Prisma.FieldRef<"BatchSchedule", 'String'>
-  readonly endTime: Prisma.FieldRef<"BatchSchedule", 'String'>
+  readonly startMinutes: Prisma.FieldRef<"BatchSchedule", 'Int'>
+  readonly endMinutes: Prisma.FieldRef<"BatchSchedule", 'Int'>
 }
     
 

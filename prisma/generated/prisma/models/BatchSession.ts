@@ -207,6 +207,7 @@ export type BatchSessionOrderByWithRelationInput = {
 
 export type BatchSessionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  batchId_classDate?: Prisma.BatchSessionBatchIdClassDateCompoundUniqueInput
   AND?: Prisma.BatchSessionWhereInput | Prisma.BatchSessionWhereInput[]
   OR?: Prisma.BatchSessionWhereInput[]
   NOT?: Prisma.BatchSessionWhereInput | Prisma.BatchSessionWhereInput[]
@@ -217,7 +218,7 @@ export type BatchSessionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
   attendance?: Prisma.AttendanceRecordListRelationFilter
-}, "id">
+}, "id" | "batchId_classDate">
 
 export type BatchSessionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -317,6 +318,11 @@ export type BatchSessionListRelationFilter = {
 
 export type BatchSessionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type BatchSessionBatchIdClassDateCompoundUniqueInput = {
+  batchId: string
+  classDate: Date | string
 }
 
 export type BatchSessionCountOrderByAggregateInput = {
