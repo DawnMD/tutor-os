@@ -3,7 +3,7 @@ import type { Context } from "@/orpc/context";
 import { ORPCError, os } from "@orpc/server";
 
 const OrganizationRole = {
-  OWNER: "org:owner",
+  OWNER: "org:admin",
   STUDENT: "org:student",
 } as const;
 
