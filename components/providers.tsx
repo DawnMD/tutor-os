@@ -1,6 +1,7 @@
 "use client";
 
 import { ClerkProvider } from "@/components/clerk-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { createQueryClient } from "@/orpc/create-query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -11,7 +12,7 @@ export function Providers(props: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <QueryClientProvider client={queryClient}>
-        {props.children}
+        <TooltipProvider>{props.children}</TooltipProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );
