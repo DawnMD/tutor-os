@@ -8,6 +8,13 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User'
-export type * from './models/Post'
+export type * from './models/Student'
+export type * from './models/Organization'
+export type * from './models/Batch'
+export type * from './models/BatchSchedule'
+export type * from './models/BatchStudent'
+export type * from './models/BatchSession'
+export type * from './models/AttendanceRecord'
+export type * from './models/Exam'
+export type * from './models/ExamResult'
 export type * from './commonInputTypes'

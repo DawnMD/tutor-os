@@ -51,8 +51,15 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
-  Post: 'Post'
+  Student: 'Student',
+  Organization: 'Organization',
+  Batch: 'Batch',
+  BatchSchedule: 'BatchSchedule',
+  BatchStudent: 'BatchStudent',
+  BatchSession: 'BatchSession',
+  AttendanceRecord: 'AttendanceRecord',
+  Exam: 'Exam',
+  ExamResult: 'ExamResult'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,24 +78,112 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
+export const StudentScalarFieldEnum = {
   id: 'id',
+  clerkUserId: 'clerkUserId',
+  organizationId: 'organizationId',
+  fullName: 'fullName',
   email: 'email',
-  name: 'name'
+  phone: 'phone',
+  guardianName: 'guardianName',
+  guardianPhone: 'guardianPhone',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
 
 
-export const PostScalarFieldEnum = {
+export const OrganizationScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  content: 'content',
-  published: 'published',
-  authorId: 'authorId'
+  name: 'name',
+  imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const BatchScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  subject: 'subject',
+  color: 'color',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BatchScalarFieldEnum = (typeof BatchScalarFieldEnum)[keyof typeof BatchScalarFieldEnum]
+
+
+export const BatchScheduleScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  dayOfWeek: 'dayOfWeek',
+  startTime: 'startTime',
+  endTime: 'endTime'
+} as const
+
+export type BatchScheduleScalarFieldEnum = (typeof BatchScheduleScalarFieldEnum)[keyof typeof BatchScheduleScalarFieldEnum]
+
+
+export const BatchStudentScalarFieldEnum = {
+  batchId: 'batchId',
+  studentId: 'studentId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type BatchStudentScalarFieldEnum = (typeof BatchStudentScalarFieldEnum)[keyof typeof BatchStudentScalarFieldEnum]
+
+
+export const BatchSessionScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  classDate: 'classDate',
+  topic: 'topic',
+  summary: 'summary',
+  createdAt: 'createdAt'
+} as const
+
+export type BatchSessionScalarFieldEnum = (typeof BatchSessionScalarFieldEnum)[keyof typeof BatchSessionScalarFieldEnum]
+
+
+export const AttendanceRecordScalarFieldEnum = {
+  sessionId: 'sessionId',
+  studentId: 'studentId',
+  status: 'status',
+  remarks: 'remarks'
+} as const
+
+export type AttendanceRecordScalarFieldEnum = (typeof AttendanceRecordScalarFieldEnum)[keyof typeof AttendanceRecordScalarFieldEnum]
+
+
+export const ExamScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  title: 'title',
+  totalMarks: 'totalMarks',
+  examDate: 'examDate',
+  createdAt: 'createdAt'
+} as const
+
+export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
+
+
+export const ExamResultScalarFieldEnum = {
+  examId: 'examId',
+  studentId: 'studentId',
+  marks: 'marks',
+  remarks: 'remarks'
+} as const
+
+export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof typeof ExamResultScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "./generated/prisma"
@@ -12,18 +10,233 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
 }
+
+enum AnnouncementAudience {
+  ORGANIZATION
+  BATCH
+}
+
+model Student {
+  id          String @id @default(cuid())
+  clerkUserId String @unique
+
+  organizationId String
+
+  fullName String
+  email    String
+  phone    String?
+
+  guardianName  String?
+  guardianPhone String?
+
+  archivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  batches     BatchStudent[]
+  attendance  AttendanceRecord[]
+  examResults ExamResult[]
+
+  @@unique([organizationId, email])
+  @@index([organizationId])
+  @@index([organizationId, archivedAt])
+}
+
+model Organization {
+  id String @id //Clerk Organization ID
+
+  name     String
+  imageUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students Student[]
+  batches  Batch[]
+  // announcements Announcement[]
+}
+
+model Batch {
+  id String @id @default(cuid())
+
+  organizationId String
+
+  name    String
+  subject String?
+
+  color String?
+
+  startTime String?
+  endTime   String?
+
+  archivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  students       BatchStudent[]
+  sessions       BatchSession[]
+  exams          Exam[]
+  // notes          Note[]
+  // announcements  Announcement[]
+  batchSchedules BatchSchedule[]
+
+  @@index([organizationId])
+  @@index([organizationId, archivedAt])
+}
+
+model BatchSchedule {
+  id      String @id @default(cuid())
+  batchId String
+
+  dayOfWeek Int // 0-6
+  startTime String // "17:30"
+  endTime   String
+
+  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@index([batchId])
+}
+
+model BatchStudent {
+  batchId   String
+  studentId String
+
+  joinedAt DateTime @default(now())
+
+  batch   Batch   @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@id([batchId, studentId])
+  @@index([studentId])
+}
+
+model BatchSession {
+  id String @id @default(cuid())
+
+  batchId String
+
+  classDate DateTime
+
+  topic   String?
+  summary String?
+
+  createdAt DateTime @default(now())
+
+  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  attendance AttendanceRecord[]
+
+  @@index([batchId])
+  @@index([batchId, classDate])
+}
+
+model AttendanceRecord {
+  sessionId String
+  studentId String
+
+  status AttendanceStatus
+
+  remarks String?
+
+  session BatchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@id([sessionId, studentId])
+  @@index([studentId])
+}
+
+model Exam {
+  id String @id @default(cuid())
+
+  batchId String
+
+  title String
+
+  totalMarks Int
+
+  examDate DateTime
+
+  createdAt DateTime @default(now())
+
+  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  results ExamResult[]
+
+  @@index([batchId])
+  @@index([batchId, examDate])
+}
+
+model ExamResult {
+  examId    String
+  studentId String
+
+  marks Float
+
+  remarks String?
+
+  exam    Exam    @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@id([examId, studentId])
+  @@index([studentId])
+}
+
+// model Note {
+//   id String @id @default(cuid())
+
+//   batchId String
+
+//   title String
+
+//   content String @db.Text
+
+//   published Boolean @default(true)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+//   @@index([batchId])
+// }
+
+// model Announcement {
+//   id String @id @default(cuid())
+
+//   organizationId String
+
+//   batchId String?
+
+//   title String
+
+//   content String @db.Text
+
+//   audience AnnouncementAudience
+
+//   createdAt DateTime @default(now())
+
+//   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+//   batch Batch? @relation(fields: [batchId], references: [id])
+
+//   @@index([organizationId])
+//   @@index([batchId])
+// }
