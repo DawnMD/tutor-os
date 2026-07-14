@@ -1,39 +1,41 @@
-import { os } from "@orpc/server";
-import type { Context } from "./context";
+import { env } from "@/env";
+import type { Context } from "@/orpc/context";
+import { ORPCError, os } from "@orpc/server";
 
-export const base = os.$context<Context>();
+const base = os.$context<Context>();
 
-export const publicProcedure = base
-  .use(async ({ next }) => {
-    if (process.env.NODE_ENV === "development") {
-      const delay = Math.floor(Math.random() * 1500) + 200;
+const timingMiddleware = os.middleware(async ({ path, next }) => {
+  const start = Date.now();
 
-      await new Promise((r) => setTimeout(r, delay));
+  if (env.NODE_ENV === "development") {
+    // artificial delay in dev
+    const waitMs = Math.floor(Math.random() * 400) + 100;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+
+  const result = await next();
+
+  const end = Date.now();
+  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+
+  return result;
+});
+
+export const publicProcedure = base.use(timingMiddleware);
+
+export const protectedProcedure = base
+  .use(timingMiddleware)
+  .use(async ({ context, next }) => {
+    const user = context.userId;
+
+    if (!user) {
+      throw new ORPCError("UNAUTHORIZED");
     }
 
-    return next();
-  })
-  .use(async ({ path, next }) => {
-    const start = performance.now();
-
-    const result = await next();
-
-    console.log(`[oRPC] ${path.join(".")} took ${performance.now() - start}ms`);
-
-    return result;
+    return next({
+      context: {
+        ...context,
+        userId: user,
+      },
+    });
   });
-
-// export const protectedProcedure = base.use(async ({ context, next }) => {
-//   const user = context.userId;
-
-//   if (!user) {
-//     throw new ORPCError("UNAUTHORIZED");
-//   }
-
-//   return next({
-//     context: {
-//       ...context,
-//       userId: user,
-//     },
-//   });
-// });

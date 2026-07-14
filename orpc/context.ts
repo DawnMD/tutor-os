@@ -1,12 +1,12 @@
-// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/prisma/db";
 
 export async function createContext() {
-  //   const { userId } = await auth();
+  const { userId } = await auth();
 
   return {
     db,
-    // userId,
+    userId,
   };
 }
 
