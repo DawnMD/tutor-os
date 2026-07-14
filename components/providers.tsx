@@ -1,7 +1,7 @@
 "use client";
 
+import { ClerkProvider } from "@/components/clerk-provider";
 import { createQueryClient } from "@/orpc/create-query-client";
-import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
