@@ -2,6 +2,14 @@ import { env } from "@/env";
 import type { Context } from "@/orpc/context";
 import { ORPCError, os } from "@orpc/server";
 
+const OrganizationRole = {
+  OWNER: "org:owner",
+  STUDENT: "org:student",
+} as const;
+
+type OrganizationRole =
+  (typeof OrganizationRole)[keyof typeof OrganizationRole];
+
 const base = os.$context<Context>();
 
 const timingMiddleware = os.middleware(async ({ path, next }) => {
@@ -23,9 +31,8 @@ const timingMiddleware = os.middleware(async ({ path, next }) => {
 
 export const publicProcedure = base.use(timingMiddleware);
 
-export const protectedProcedure = base
-  .use(timingMiddleware)
-  .use(async ({ context, next }) => {
+export const protectedProcedure = publicProcedure.use(
+  async ({ context, next }) => {
     const user = context.userId;
 
     if (!user) {
@@ -38,4 +45,35 @@ export const protectedProcedure = base
         userId: user,
       },
     });
+  },
+);
+
+const organizationProcedure = protectedProcedure.use(
+  async ({ context, next }) => {
+    if (!context.organizationId) {
+      throw new ORPCError("FORBIDDEN", {
+        message: "No active organization selected.",
+      });
+    }
+
+    return next({
+      context: {
+        ...context,
+        organizationId: context.organizationId,
+        organizationRole: context.organizationRole,
+      },
+    });
+  },
+);
+
+const roleProcedure = (role: OrganizationRole) =>
+  organizationProcedure.use(async ({ context, next }) => {
+    if (context.organizationRole !== role) {
+      throw new ORPCError("FORBIDDEN");
+    }
+
+    return next();
   });
+
+export const ownerProcedure = roleProcedure(OrganizationRole.OWNER);
+export const studentProcedure = roleProcedure(OrganizationRole.STUDENT);
