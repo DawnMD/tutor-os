@@ -34,10 +34,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { orpc } from "@/orpc/client";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -48,43 +46,22 @@ const formSchema = z.object({
 });
 
 export function TeamSwitcher() {
-  const queryClient = useQueryClient();
   const { isMobile } = useSidebar();
 
-  const { data: orgs, isLoading: isOrgsLoading } = useQuery(
-    orpc.org.getOrgsList.queryOptions(),
-  );
-
-  const { data: currentOrg, isLoading: isCurrentOrgLoading } = useQuery(
-    orpc.org.getCurrentOrg.queryOptions(),
-  );
-
-  const { setActive } = useOrganizationList();
-
-  const { mutate, isPending } = useMutation(
-    orpc.org.createOrg.mutationOptions({
-      onSuccess: async (data) => {
-        if (!setActive) return;
-
-        setActive({
-          organization: data.id,
-        });
-
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: orpc.org.getCurrentOrg.queryKey(),
-          }),
-          queryClient.invalidateQueries({
-            queryKey: orpc.org.getOrgsList.queryKey(),
-          }),
-        ]);
-
-        setOpenDialog(false);
-      },
-    }),
-  );
-
   const [openDialog, setOpenDialog] = useState(false);
+
+  const { userMemberships, isLoaded, setActive, createOrganization } =
+    useOrganizationList({
+      userMemberships: {
+        infinite: true,
+      },
+    });
+
+  const { organization, isLoaded: isOrganizationLoaded } = useOrganization();
+
+  const memberships = userMemberships.data ?? [];
+
+  const ownedOrganizations = memberships.map((item) => item);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,12 +71,19 @@ export function TeamSwitcher() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    mutate({
+    if (!createOrganization) return;
+    await createOrganization({
       name: data.workspace,
-    });
+    })
+      .then((data) =>
+        setActive({
+          organization: data.id,
+        }),
+      )
+      .then(() => setOpenDialog(false));
   }
 
-  if (!orgs || isOrgsLoading || !currentOrg || isCurrentOrgLoading) {
+  if (!isLoaded || !isOrganizationLoaded || !organization) {
     return <Skeleton className="h-14" />;
   }
 
@@ -117,7 +101,9 @@ export function TeamSwitcher() {
               }
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{currentOrg.name}</span>
+                <span className="truncate font-medium">
+                  {organization.name}
+                </span>
               </div>
               <ChevronsUpDownIcon className="ml-auto" />
             </DropdownMenuTrigger>
@@ -131,18 +117,18 @@ export function TeamSwitcher() {
                 <DropdownMenuLabel className="text-xs text-muted-foreground">
                   Workspaces
                 </DropdownMenuLabel>
-                {orgs.map((team, index) => (
+                {ownedOrganizations.map((team, index) => (
                   <DropdownMenuItem
-                    key={team.id}
-                    // onClick={() =>
-                    //   setActive({
-                    //     organization: team.organization.id,
-                    //   })
-                    // }
-                    // disabled={team.organization.id === organization.id}
+                    key={team.organization.id}
+                    onClick={() =>
+                      setActive({
+                        organization: team.organization.id,
+                      })
+                    }
+                    disabled={team.organization.id === organization.id}
                     className="gap-2 p-2"
                   >
-                    {team.name}
+                    {team.organization.name}
                     <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 ))}
@@ -203,8 +189,8 @@ export function TeamSwitcher() {
               <DialogClose render={<Button variant="outline">Cancel</Button>} />
               <Button
                 type="submit"
+                disabled={form.formState.isSubmitting}
                 form="create-workspace"
-                disabled={isPending}
               >
                 Create
               </Button>
