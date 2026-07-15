@@ -99,7 +99,6 @@ export const BatchScalarFieldEnum = {
   clerkOrganizationId: 'clerkOrganizationId',
   name: 'name',
   subject: 'subject',
-  color: 'color',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
