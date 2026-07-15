@@ -34,8 +34,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { orpc } from "@/orpc/client";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -47,6 +49,8 @@ const formSchema = z.object({
 });
 
 export function TeamSwitcher() {
+  const queryClient = useQueryClient();
+
   const { isMobile, setOpenMobile } = useSidebar();
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -84,6 +88,9 @@ export function TeamSwitcher() {
           }),
         )
         .then(() => {
+          queryClient.invalidateQueries({
+            queryKey: orpc.owner.batch.getBatchByOrg.queryKey(),
+          });
           setOpenDialog(false);
           setOpenMobile(false);
         }),
@@ -133,9 +140,20 @@ export function TeamSwitcher() {
                   <DropdownMenuItem
                     key={team.organization.id}
                     onClick={() =>
-                      setActive({
-                        organization: team.organization.id,
-                      })
+                      toast.promise(
+                        setActive({
+                          organization: team.organization.id,
+                        }).then(() => {
+                          queryClient.invalidateQueries({
+                            queryKey: orpc.owner.batch.getBatchByOrg.queryKey(),
+                          });
+                        }),
+                        {
+                          loading: "Switching workspace",
+                          success: "Workspace switched",
+                          error: "Failed to switch workspace",
+                        },
+                      )
                     }
                     disabled={team.organization.id === organization.id}
                     className="gap-2 p-2"
