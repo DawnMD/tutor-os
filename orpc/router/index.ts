@@ -1,10 +1,10 @@
-import { protectedProcedure } from "@/orpc/orpc";
 import { InferRouterInputs, InferRouterOutputs } from "@orpc/server";
-import { orgRouter } from "./org";
+import { ownerBatchRouter } from "./owner/batch";
 
 export const router = {
-  ping: protectedProcedure.handler(() => "Ping"),
-  org: orgRouter,
+  owner: {
+    batch: ownerBatchRouter,
+  },
 };
 
 export type Inputs = InferRouterInputs<typeof router>;
