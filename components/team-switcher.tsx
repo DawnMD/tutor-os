@@ -39,6 +39,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -46,7 +47,7 @@ const formSchema = z.object({
 });
 
 export function TeamSwitcher() {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -64,6 +65,7 @@ export function TeamSwitcher() {
   const ownedOrganizations = memberships.map((item) => item);
 
   const form = useForm<z.infer<typeof formSchema>>({
+    //@ts-expect-error //resolver issue
     resolver: zodResolver(formSchema),
     defaultValues: {
       workspace: "",
@@ -72,15 +74,25 @@ export function TeamSwitcher() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!createOrganization) return;
-    await createOrganization({
-      name: data.workspace,
-    })
-      .then((data) =>
-        setActive({
-          organization: data.id,
+    toast.promise(
+      createOrganization({
+        name: data.workspace,
+      })
+        .then((data) =>
+          setActive({
+            organization: data.id,
+          }),
+        )
+        .then(() => {
+          setOpenDialog(false);
+          setOpenMobile(false);
         }),
-      )
-      .then(() => setOpenDialog(false));
+      {
+        loading: "Creating workspace",
+        success: "Workspace created and switched",
+        error: "Failed to create workspace",
+      },
+    );
   }
 
   if (!isLoaded || !isOrganizationLoaded || !organization) {
