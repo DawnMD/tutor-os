@@ -45,4 +45,17 @@ export const ownerBatchRouter = {
       },
     });
   }),
+  getBatchSchedulesById: ownerProcedure
+    .input(
+      z.object({
+        batchId: z.string(),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      return await context.db.batchSchedule.findMany({
+        where: {
+          batchId: input.batchId,
+        },
+      });
+    }),
 };
