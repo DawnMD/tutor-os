@@ -29,23 +29,23 @@ const BATCH_LINKS = (id: string) => {
   return [
     {
       name: "Overview",
-      href: `/batch/${id}/overview`,
+      href: `/owner/batch/${id}/overview`,
     },
     {
       name: "Sessions",
-      href: `/batch/${id}/sessions`,
+      href: `/owner/batch/${id}/sessions`,
     },
     {
       name: "Students",
-      href: `/batch/${id}/students`,
+      href: `/owner/batch/${id}/students`,
     },
     {
       name: "Attendance",
-      href: `/batch/${id}/attendance`,
+      href: `/owner/batch/${id}/attendance`,
     },
     {
       name: "Exams",
-      href: `/batch/${id}/exams`,
+      href: `/owner/batch/${id}/exams`,
     },
     // {
     //   name: "Notes",
