@@ -8,59 +8,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { JoinedStudentsTable } from "./joined-student-table/table";
 
 export const OwnerStudentsData = () => {
   return (
-    <Tabs defaultValue="overview" className="w-[400px]">
+    <Tabs defaultValue="joined">
       <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        <TabsTrigger value="reports">Reports</TabsTrigger>
-        <TabsTrigger value="settings">Settings</TabsTrigger>
+        <TabsTrigger value="joined">Joined</TabsTrigger>
+        <TabsTrigger value="pending">Pending</TabsTrigger>
       </TabsList>
-      <TabsContent value="overview">
+      <TabsContent value="joined">
         <Card>
           <CardHeader>
-            <CardTitle>Overview</CardTitle>
-            <CardDescription>
-              View your key metrics and recent project activity. Track progress
-              across all your active projects.
-            </CardDescription>
+            <CardTitle>Joined Students</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            You have 12 active projects and 3 pending tasks.
+          <CardContent>
+            <JoinedStudentsTable />
           </CardContent>
         </Card>
       </TabsContent>
-      <TabsContent value="analytics">
-        <Card>
-          <CardHeader>
-            <CardTitle>Analytics</CardTitle>
-            <CardDescription>
-              Track performance and user engagement metrics. Monitor trends and
-              identify growth opportunities.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Page views are up 25% compared to last month.
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="reports">
-        <Card>
-          <CardHeader>
-            <CardTitle>Reports</CardTitle>
-            <CardDescription>
-              Generate and download your detailed reports. Export data in
-              multiple formats for analysis.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            You have 5 reports ready and available to export.
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="settings">
+      <TabsContent value="pending">
         <Card>
           <CardHeader>
             <CardTitle>Settings</CardTitle>
