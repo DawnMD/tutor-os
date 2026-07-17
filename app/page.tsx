@@ -11,6 +11,6 @@ export default async function Home() {
   ) {
     redirect("/owner/dashboard");
   } else {
-    redirect("/student/dashboard");
+    redirect("/student/home");
   }
 }
