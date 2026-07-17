@@ -1,4 +1,6 @@
+import { getBaseUrl } from "@/lib/get-base-url";
 import { ownerProcedure } from "@/orpc/orpc";
+import z from "zod";
 
 export const ownerStudentRouter = {
   getActiveStudentsByOrg: ownerProcedure.handler(async ({ context }) => {
@@ -54,4 +56,18 @@ export const ownerStudentRouter = {
       expiresAt: invitation.expiresAt,
     }));
   }),
+  addStundent: ownerProcedure
+    .input(
+      z.object({
+        email: z.email(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      return await context.clerk.organizations.createOrganizationInvitation({
+        redirectUrl: `${getBaseUrl()}/accept-invitation`,
+        emailAddress: input.email,
+        organizationId: context.organizationId,
+        role: "org:member",
+      });
+    }),
 };
