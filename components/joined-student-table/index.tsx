@@ -1,7 +1,7 @@
 "use client";
 
 import { columns } from "@/components/joined-student-table/columns";
-import { DataTable } from "@/components/joined-student-table/data-table";
+import { DataTable } from "@/components/data-table";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 
