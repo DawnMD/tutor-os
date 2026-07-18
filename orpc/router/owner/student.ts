@@ -43,8 +43,8 @@ export const ownerStudentRouter = {
     const { data } =
       await context.clerk.organizations.getOrganizationInvitationList({
         organizationId: context.organizationId,
-        status: ["pending"],
-        limit: 50,
+        status: ["pending", "revoked", "expired", "accepted"],
+        limit: 100,
       });
 
     return data.map((invitation) => ({
@@ -53,6 +53,7 @@ export const ownerStudentRouter = {
       role: invitation.role,
       createdAt: invitation.createdAt,
       expiresAt: invitation.expiresAt,
+      status: invitation.status,
     }));
   }),
   addStundent: ownerProcedure
@@ -98,6 +99,18 @@ export const ownerStudentRouter = {
         data: {
           archivedAt: new Date(),
         },
+      });
+    }),
+  revokeInvitation: ownerProcedure
+    .input(
+      z.object({
+        invitationId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      return await context.clerk.organizations.revokeOrganizationInvitation({
+        organizationId: context.organizationId,
+        invitationId: input.invitationId,
       });
     }),
 };
