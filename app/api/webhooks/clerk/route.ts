@@ -80,7 +80,8 @@ export async function POST(req: NextRequest) {
     await handleClerkWebhook(evt);
 
     return new Response("User synced", { status: 200 });
-  } catch {
+  } catch (err) {
+    console.error(err);
     return new Response("Error verifying webhook", { status: 400 });
   }
 }
