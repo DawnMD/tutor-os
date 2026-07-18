@@ -27,11 +27,10 @@ export const ownerStudentRouter = {
     });
 
     const data = users.map((student) => ({
-      id: student.id,
+      id: student.clerkUserId,
       name: student.fullName,
       email: student.email,
       joinedAt: student.createdAt,
-      status: "ACTIVE" as const,
       batches: student.batches.map((b) => ({
         id: b.batch.id,
         name: b.batch.name,
@@ -68,6 +67,37 @@ export const ownerStudentRouter = {
         emailAddress: input.email,
         organizationId: context.organizationId,
         role: "org:member",
+      });
+    }),
+  deleteStudent: ownerProcedure
+    .input(
+      z.object({
+        studentId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      return await context.clerk.organizations.deleteOrganizationMembership({
+        organizationId: context.organizationId,
+        userId: input.studentId,
+      });
+    }),
+  archieveStudent: ownerProcedure
+    .input(
+      z.object({
+        studentId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      return await context.db.student.update({
+        where: {
+          clerkOrganizationId_clerkUserId: {
+            clerkOrganizationId: context.organizationId,
+            clerkUserId: input.studentId,
+          },
+        },
+        data: {
+          archivedAt: new Date(),
+        },
       });
     }),
 };
