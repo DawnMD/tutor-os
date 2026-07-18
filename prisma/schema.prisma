@@ -19,9 +19,9 @@ enum AttendanceStatus {
 
 model Student {
   id                  String             @id @default(cuid())
-  clerkUserId         String             @unique
+  clerkUserId         String
   clerkOrganizationId String
-  fullName            String
+  fullName            String?
   email               String
   phone               String?
   guardianName        String?
@@ -33,7 +33,8 @@ model Student {
   attendance          AttendanceRecord[]
   examResults         ExamResult[]
 
-  @@unique([clerkOrganizationId, email])
+  @@unique([clerkOrganizationId, clerkUserId])
+  @@index([clerkOrganizationId, email])
   @@index([clerkOrganizationId])
   @@index([clerkOrganizationId, archivedAt])
   @@index([clerkOrganizationId, fullName])

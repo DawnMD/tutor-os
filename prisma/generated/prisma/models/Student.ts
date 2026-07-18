@@ -187,7 +187,7 @@ export type StudentGroupByOutputType = {
   id: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName: string | null
   email: string
   phone: string | null
   guardianName: string | null
@@ -222,7 +222,7 @@ export type StudentWhereInput = {
   id?: Prisma.StringFilter<"Student"> | string
   clerkUserId?: Prisma.StringFilter<"Student"> | string
   clerkOrganizationId?: Prisma.StringFilter<"Student"> | string
-  fullName?: Prisma.StringFilter<"Student"> | string
+  fullName?: Prisma.StringNullableFilter<"Student"> | string | null
   email?: Prisma.StringFilter<"Student"> | string
   phone?: Prisma.StringNullableFilter<"Student"> | string | null
   guardianName?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -239,7 +239,7 @@ export type StudentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   clerkUserId?: Prisma.SortOrder
   clerkOrganizationId?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
+  fullName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   guardianName?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -254,13 +254,13 @@ export type StudentOrderByWithRelationInput = {
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  clerkUserId?: string
-  clerkOrganizationId_email?: Prisma.StudentClerkOrganizationIdEmailCompoundUniqueInput
+  clerkOrganizationId_clerkUserId?: Prisma.StudentClerkOrganizationIdClerkUserIdCompoundUniqueInput
   AND?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   OR?: Prisma.StudentWhereInput[]
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
+  clerkUserId?: Prisma.StringFilter<"Student"> | string
   clerkOrganizationId?: Prisma.StringFilter<"Student"> | string
-  fullName?: Prisma.StringFilter<"Student"> | string
+  fullName?: Prisma.StringNullableFilter<"Student"> | string | null
   email?: Prisma.StringFilter<"Student"> | string
   phone?: Prisma.StringNullableFilter<"Student"> | string | null
   guardianName?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -271,13 +271,13 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   batches?: Prisma.BatchStudentListRelationFilter
   attendance?: Prisma.AttendanceRecordListRelationFilter
   examResults?: Prisma.ExamResultListRelationFilter
-}, "id" | "clerkUserId" | "clerkOrganizationId_email">
+}, "id" | "clerkOrganizationId_clerkUserId">
 
 export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   clerkUserId?: Prisma.SortOrder
   clerkOrganizationId?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
+  fullName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   guardianName?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,7 +297,7 @@ export type StudentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Student"> | string
   clerkUserId?: Prisma.StringWithAggregatesFilter<"Student"> | string
   clerkOrganizationId?: Prisma.StringWithAggregatesFilter<"Student"> | string
-  fullName?: Prisma.StringWithAggregatesFilter<"Student"> | string
+  fullName?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   email?: Prisma.StringWithAggregatesFilter<"Student"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   guardianName?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
@@ -311,7 +311,7 @@ export type StudentCreateInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -328,7 +328,7 @@ export type StudentUncheckedCreateInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -345,7 +345,7 @@ export type StudentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -362,7 +362,7 @@ export type StudentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -379,7 +379,7 @@ export type StudentCreateManyInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -393,7 +393,7 @@ export type StudentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -407,7 +407,7 @@ export type StudentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -417,9 +417,9 @@ export type StudentUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type StudentClerkOrganizationIdEmailCompoundUniqueInput = {
+export type StudentClerkOrganizationIdClerkUserIdCompoundUniqueInput = {
   clerkOrganizationId: string
-  email: string
+  clerkUserId: string
 }
 
 export type StudentCountOrderByAggregateInput = {
@@ -531,7 +531,7 @@ export type StudentCreateWithoutBatchesInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -547,7 +547,7 @@ export type StudentUncheckedCreateWithoutBatchesInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -579,7 +579,7 @@ export type StudentUpdateWithoutBatchesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -595,7 +595,7 @@ export type StudentUncheckedUpdateWithoutBatchesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -611,7 +611,7 @@ export type StudentCreateWithoutAttendanceInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -627,7 +627,7 @@ export type StudentUncheckedCreateWithoutAttendanceInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -659,7 +659,7 @@ export type StudentUpdateWithoutAttendanceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -675,7 +675,7 @@ export type StudentUncheckedUpdateWithoutAttendanceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -691,7 +691,7 @@ export type StudentCreateWithoutExamResultsInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -707,7 +707,7 @@ export type StudentUncheckedCreateWithoutExamResultsInput = {
   id?: string
   clerkUserId: string
   clerkOrganizationId: string
-  fullName: string
+  fullName?: string | null
   email: string
   phone?: string | null
   guardianName?: string | null
@@ -739,7 +739,7 @@ export type StudentUpdateWithoutExamResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -755,7 +755,7 @@ export type StudentUncheckedUpdateWithoutExamResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guardianName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -897,7 +897,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     clerkUserId: string
     clerkOrganizationId: string
-    fullName: string
+    fullName: string | null
     email: string
     phone: string | null
     guardianName: string | null
