@@ -1,4 +1,3 @@
-import { OwnerSessionCalendar } from "@/components/owner-session-calendar";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function BatchSessionspage({
@@ -7,5 +6,5 @@ export default async function BatchSessionspage({
   await auth.protect();
   const { batchId } = await params;
 
-  return <OwnerSessionCalendar batchId={batchId} />;
+  return <div>{batchId}</div>;
 }
