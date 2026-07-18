@@ -26,6 +26,7 @@ const eslintConfig = defineConfig([
               "app/sign-in/**",
               "app/sign-up/**",
               "app/accept-invitation/**",
+              "app/api/webhooks/clerk/**"
             ],
           },
         ],
