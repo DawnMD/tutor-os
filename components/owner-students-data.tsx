@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { JoinedStudentsTable } from "./joined-student-table";
 import { AddNewStudentPopup } from "./add-new-student-popup";
+import { JoinedStudentsTable } from "./joined-student-table";
+import { PendingStudentsTable } from "./pending-student-table";
 
 export const OwnerStudentsData = () => {
   return (
@@ -33,14 +28,10 @@ export const OwnerStudentsData = () => {
         <TabsContent value="pending">
           <Card>
             <CardHeader>
-              <CardTitle>Settings</CardTitle>
-              <CardDescription>
-                Manage your account preferences and options. Customize your
-                experience to fit your needs.
-              </CardDescription>
+              <CardTitle>Pending Students</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Configure notifications, security, and themes.
+            <CardContent>
+              <PendingStudentsTable />
             </CardContent>
           </Card>
         </TabsContent>
