@@ -58,6 +58,47 @@ export const ownerStudentRouter = {
       status: invitation.status,
     }));
   }),
+  getArchieveStudentsByOrg: ownerProcedure.handler(async ({ context }) => {
+    const users = await context.db.student.findMany({
+      where: {
+        clerkOrganizationId: context.organizationId,
+        NOT: {
+          archivedAt: null,
+        },
+      },
+      include: {
+        batches: {
+          select: {
+            batch: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        fullName: "asc",
+      },
+    });
+
+    const data = users.map((student) => ({
+      id: student.id,
+      user_id: student.clerkUserId,
+      name: student.fullName,
+      email: student.email,
+      joinedAt: student.createdAt,
+      archievedAt: student.archivedAt,
+      createdAt: student.createdAt,
+      batches: student.batches.map((b) => ({
+        id: b.batch.id,
+        name: b.batch.name,
+      })),
+    }));
+
+    return data;
+  }),
   addStundent: ownerProcedure
     .input(
       z.object({
@@ -88,6 +129,25 @@ export const ownerStudentRouter = {
         },
         data: {
           archivedAt: new Date(),
+        },
+      });
+    }),
+  unArchieveStudent: ownerProcedure
+    .input(
+      z.object({
+        studentId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      return await context.db.student.update({
+        where: {
+          clerkOrganizationId_clerkUserId: {
+            clerkOrganizationId: context.organizationId,
+            clerkUserId: input.studentId,
+          },
+        },
+        data: {
+          archivedAt: null,
         },
       });
     }),
