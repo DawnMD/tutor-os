@@ -1,5 +1,6 @@
 import { getBaseUrl } from "@/lib/get-base-url";
 import { ownerProcedure } from "@/orpc/orpc";
+import { ORPCError } from "@orpc/client";
 import z from "zod";
 
 export const ownerStudentRouter = {
@@ -27,7 +28,8 @@ export const ownerStudentRouter = {
     });
 
     const data = users.map((student) => ({
-      id: student.clerkUserId,
+      id: student.id,
+      user_id: student.clerkUserId,
       name: student.fullName,
       email: student.email,
       joinedAt: student.createdAt,
@@ -70,18 +72,6 @@ export const ownerStudentRouter = {
         role: "org:member",
       });
     }),
-  deleteStudent: ownerProcedure
-    .input(
-      z.object({
-        studentId: z.string(),
-      }),
-    )
-    .handler(async ({ context, input }) => {
-      return await context.clerk.organizations.deleteOrganizationMembership({
-        organizationId: context.organizationId,
-        userId: input.studentId,
-      });
-    }),
   archieveStudent: ownerProcedure
     .input(
       z.object({
@@ -112,5 +102,72 @@ export const ownerStudentRouter = {
         organizationId: context.organizationId,
         invitationId: input.invitationId,
       });
+    }),
+
+  addStudentToBatches: ownerProcedure
+    .input(
+      z.object({
+        studentId: z.string(),
+        batchIds: z.array(z.string()),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const { studentId, batchIds } = input;
+
+      // Ensure the student belongs to the active organization
+      const student = await context.db.student.findFirst({
+        where: {
+          id: studentId,
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!student) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      // Ensure every batch belongs to the active organization
+      const batches = await context.db.batch.findMany({
+        where: {
+          id: {
+            in: batchIds,
+          },
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (batches.length !== batchIds.length) {
+        throw new ORPCError("BAD_REQUEST");
+      }
+
+      await context.db.$transaction(async (tx) => {
+        // Remove existing assignments
+        await tx.batchStudent.deleteMany({
+          where: {
+            studentId,
+          },
+        });
+
+        // Insert new assignments
+        if (batchIds.length > 0) {
+          await tx.batchStudent.createMany({
+            data: batchIds.map((batchId) => ({
+              batchId,
+              studentId,
+            })),
+            skipDuplicates: true,
+          });
+        }
+      });
+
+      return true;
     }),
 };
