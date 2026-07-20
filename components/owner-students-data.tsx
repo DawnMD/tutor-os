@@ -1,10 +1,10 @@
 "use client";
 
+import { AddNewStudentPopup } from "@/components/add-new-student-popup";
+import { JoinedStudentsTable } from "@/components/joined-student-data-table";
+import { PendingStudentsTable } from "@/components/pending-student-data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AddNewStudentPopup } from "./add-new-student-popup";
-import { JoinedStudentsTable } from "./joined-student-table";
-import { PendingStudentsTable } from "./pending-student-table";
 
 export const OwnerStudentsData = () => {
   return (
