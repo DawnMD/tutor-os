@@ -127,6 +127,9 @@ const JoinedStudentTableActionButton = ({
         queryClient.invalidateQueries({
           queryKey: orpc.owner.student.getActiveStudentsByOrg.queryKey(),
         });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.student.getArchieveStudentsByOrg.queryKey(),
+        });
       },
     }),
   );
