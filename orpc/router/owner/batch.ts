@@ -6,7 +6,7 @@ export const ownerBatchRouter = {
     .input(
       z.object({
         name: z.string(),
-        subject: z.string(),
+        classId: z.string(),
         schdeules: z.array(
           z.object({
             day: z.number(),
@@ -22,7 +22,7 @@ export const ownerBatchRouter = {
           data: {
             clerkOrganizationId: context.organizationId,
             name: input.name,
-            subject: input.subject,
+            classId: input.classId,
           },
         });
 
@@ -55,6 +55,28 @@ export const ownerBatchRouter = {
       return await context.db.batchSchedule.findMany({
         where: {
           batchId: input.batchId,
+        },
+      });
+    }),
+  addStudentToBatch: ownerProcedure
+    .input(
+      z.object({
+        studentId: z.string(),
+        batchId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      await context.db.batchStudent.upsert({
+        where: {
+          batchId_studentId: {
+            batchId: input.batchId,
+            studentId: input.studentId,
+          },
+        },
+        update: {},
+        create: {
+          batchId: input.batchId,
+          studentId: input.studentId,
         },
       });
     }),

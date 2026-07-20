@@ -73,7 +73,6 @@ const formSchema = z.object({
     )
     .min(1, "Add at least one email address."),
   name: z.string(),
-  subject: z.string(),
 });
 
 const DAY_LABELS = Object.fromEntries(
@@ -102,7 +101,6 @@ export const AddBatch = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      subject: "",
       schedules: [
         {
           dayOfWeek: 1,
@@ -122,12 +120,12 @@ export const AddBatch = () => {
     toast.promise(
       mutateAsync({
         name: data.name,
-        subject: data.subject,
         schdeules: data.schedules.map((item) => ({
           day: item.dayOfWeek,
           start: item.startMinutes,
           end: item.endMinutes,
         })),
+        classId: "",
       }),
       {
         loading: "Creating batch",
@@ -170,25 +168,6 @@ export const AddBatch = () => {
                       id="batch-name"
                       aria-invalid={fieldState.invalid}
                       placeholder="Class 12 Batch"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="subject"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="subject">Subject Name</FieldLabel>
-                    <Input
-                      {...field}
-                      id="subject"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Physics"
                       autoComplete="off"
                     />
                     {fieldState.invalid && (
