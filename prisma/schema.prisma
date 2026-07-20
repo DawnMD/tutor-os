@@ -10,6 +10,21 @@ datasource db {
   provider = "postgresql"
 }
 
+model Class {
+  id                  String    @id @default(cuid())
+  clerkOrganizationId String
+  name                String
+  description         String?
+  archivedAt          DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  batches             Batch[]
+
+  @@unique([clerkOrganizationId, name])
+  @@index([clerkOrganizationId])
+  @@index([clerkOrganizationId, archivedAt])
+}
+
 enum AttendanceStatus {
   PRESENT
   ABSENT
@@ -43,19 +58,20 @@ model Student {
 model Batch {
   id                  String          @id @default(cuid())
   clerkOrganizationId String
+  classId             String
   name                String
-  subject             String?
   archivedAt          DateTime?
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
+  class               Class           @relation(fields: [classId], references: [id], onDelete: Restrict)
   students            BatchStudent[]
   schedules           BatchSchedule[]
   sessions            BatchSession[]
   exams               Exam[]
 
+  @@unique([classId, name])
+  @@index([classId])
   @@index([clerkOrganizationId])
-  @@index([clerkOrganizationId, archivedAt])
-  @@index([clerkOrganizationId, name])
 }
 
 model BatchSchedule {

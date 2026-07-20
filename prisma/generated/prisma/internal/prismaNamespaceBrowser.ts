@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Class: 'Class',
   Student: 'Student',
   Batch: 'Batch',
   BatchSchedule: 'BatchSchedule',
@@ -77,6 +78,19 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ClassScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  name: 'name',
+  description: 'description',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
+
+
 export const StudentScalarFieldEnum = {
   id: 'id',
   clerkUserId: 'clerkUserId',
@@ -97,8 +111,8 @@ export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeo
 export const BatchScalarFieldEnum = {
   id: 'id',
   clerkOrganizationId: 'clerkOrganizationId',
+  classId: 'classId',
   name: 'name',
-  subject: 'subject',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

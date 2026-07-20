@@ -469,22 +469,6 @@ export type StudentScalarRelationFilter = {
   isNot?: Prisma.StudentWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type StudentCreateNestedOneWithoutBatchesInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutBatchesInput, Prisma.StudentUncheckedCreateWithoutBatchesInput>
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutBatchesInput
