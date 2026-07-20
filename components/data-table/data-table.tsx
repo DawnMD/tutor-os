@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -18,8 +19,7 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
-import { DataTablePagination } from "./data-table-pagination";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="overflow-hidden rounded-md border">
+    <div className="border overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
