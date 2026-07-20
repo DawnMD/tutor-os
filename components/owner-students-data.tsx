@@ -4,7 +4,6 @@ import { AddNewStudentPopup } from "@/components/add-new-student-popup";
 import { ArchievedStudentsTable } from "@/components/archieved-students-table";
 import { JoinedStudentsTable } from "@/components/joined-student-data-table";
 import { PendingStudentsTable } from "@/components/pending-student-data-table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const OwnerStudentsData = () => {
@@ -18,34 +17,13 @@ export const OwnerStudentsData = () => {
           <TabsTrigger value="archieved">Archieved</TabsTrigger>
         </TabsList>
         <TabsContent value="joined">
-          <Card>
-            <CardHeader>
-              <CardTitle>Joined Students</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <JoinedStudentsTable />
-            </CardContent>
-          </Card>
+          <JoinedStudentsTable />
         </TabsContent>
         <TabsContent value="pending">
-          <Card>
-            <CardHeader>
-              <CardTitle>Pending Students</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <PendingStudentsTable />
-            </CardContent>
-          </Card>
+          <PendingStudentsTable />
         </TabsContent>
         <TabsContent value="archieved">
-          <Card>
-            <CardHeader>
-              <CardTitle>Archieved Students</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ArchievedStudentsTable />
-            </CardContent>
-          </Card>
+          <ArchievedStudentsTable />
         </TabsContent>
       </Tabs>
     </>
