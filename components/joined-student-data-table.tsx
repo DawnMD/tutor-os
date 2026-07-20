@@ -127,13 +127,11 @@ const JoinedStudentTableActionButton = ({ id }: { id: string }) => {
 };
 
 export const JoinedStudentsTable = () => {
-  const { data: joinedStudents } = useQuery(
+  const { data: joinedStudents, isLoading } = useQuery(
     orpc.owner.student.getActiveStudentsByOrg.queryOptions(),
   );
 
-  if (!joinedStudents) {
-    return null;
-  }
-
-  return <DataTable data={joinedStudents} columns={columns} />;
+  return (
+    <DataTable data={joinedStudents} columns={columns} loading={isLoading} />
+  );
 };

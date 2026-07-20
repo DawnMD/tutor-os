@@ -164,13 +164,11 @@ const columns: ColumnDef<PendingStudent>[] = [
 ];
 
 export const PendingStudentsTable = () => {
-  const { data: pendingStudents } = useQuery(
+  const { data: pendingStudents, isLoading } = useQuery(
     orpc.owner.student.getPendingStudentsByOrg.queryOptions(),
   );
 
-  if (!pendingStudents) {
-    return null;
-  }
-
-  return <DataTable data={pendingStudents} columns={columns} />;
+  return (
+    <DataTable data={pendingStudents} columns={columns} loading={isLoading} />
+  );
 };
