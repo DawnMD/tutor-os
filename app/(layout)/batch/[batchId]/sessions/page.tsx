@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 
-export default async function BatchExamspage({
+export default async function BatchSessionspage({
   params,
-}: PageProps<"/owner/batch/[batchId]/exams">) {
+}: PageProps<"/batch/[batchId]/sessions">) {
   await auth.protect();
   const { batchId } = await params;
 

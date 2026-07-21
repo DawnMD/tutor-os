@@ -4,8 +4,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { auth } from "@clerk/nextjs/server";
 
-export default async function OwnerLayout({ children }: LayoutProps<"/owner">) {
+export default async function MainLayout({ children }: LayoutProps<"/">) {
+  await auth.protect();
+
   return (
     <SidebarProvider>
       <AppSidebar />
