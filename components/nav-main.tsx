@@ -9,7 +9,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { BookSearch, ChevronRightIcon, Users } from "lucide-react";
+import {
+  BookSearch,
+  Building,
+  ChevronRightIcon,
+  LayoutDashboardIcon,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 
 export function NavMain() {
@@ -18,12 +24,33 @@ export function NavMain() {
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton render={<Link href={"/owner/students"} />}>
+          <SidebarMenuButton render={<Link href={"/dashboard"} />}>
+            <LayoutDashboardIcon />
+            <span>Dashboard</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton render={<Link href={"/students"} />}>
             <Users />
             <span>Students</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
         <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
+          <CollapsibleTrigger
+            nativeButton={false}
+            render={
+              <SidebarMenuButton
+                tooltip={"Batches"}
+                render={<Link href={"/class"} />}
+              />
+            }
+          >
+            <Building />
+            <span>Class</span>
+            <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
+          </CollapsibleTrigger>
+        </Collapsible>
+        {/* <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
           <CollapsibleTrigger
             render={<SidebarMenuButton tooltip={"Batches"} />}
           >
@@ -32,7 +59,7 @@ export function NavMain() {
             <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
           </CollapsibleTrigger>
           <NavBatchMain />
-        </Collapsible>
+        </Collapsible> */}
       </SidebarMenu>
     </SidebarGroup>
   );
