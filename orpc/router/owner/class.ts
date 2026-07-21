@@ -55,6 +55,19 @@ export const ownerClassRouter = {
       where: {
         clerkOrganizationId: context.organizationId,
       },
+      include: {
+        batches: {
+          select: {
+            name: true,
+            id: true,
+            _count: {
+              select: {
+                students: true,
+              },
+            },
+          },
+        },
+      },
     });
   }),
 };
