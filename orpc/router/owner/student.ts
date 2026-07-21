@@ -45,7 +45,7 @@ export const ownerStudentRouter = {
     const { data } =
       await context.clerk.organizations.getOrganizationInvitationList({
         organizationId: context.organizationId,
-        status: ["pending", "revoked", "expired", "accepted"],
+        status: ["pending"],
         limit: 100,
       });
 
