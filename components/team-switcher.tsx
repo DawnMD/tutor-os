@@ -89,7 +89,7 @@ export function TeamSwitcher() {
         )
         .then(() => {
           queryClient.invalidateQueries({
-            queryKey: orpc.owner.batch.getBatchByOrg.queryKey(),
+            queryKey: orpc.owner.class.getAllClass.queryKey(),
           });
           setOpenDialog(false);
           setOpenMobile(false);
@@ -145,7 +145,7 @@ export function TeamSwitcher() {
                           organization: team.organization.id,
                         }).then(() => {
                           queryClient.invalidateQueries({
-                            queryKey: orpc.owner.batch.getBatchByOrg.queryKey(),
+                            queryKey: orpc.owner.class.getAllClass.queryKey(),
                           });
                         }),
                         {
