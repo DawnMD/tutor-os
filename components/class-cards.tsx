@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
-  AvatarImage,
-} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -145,33 +138,20 @@ export const ClassCards = () => {
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-sm leading-tight font-medium">{item.name}</h3>
           </div>
-          <p className="text-muted-foreground text-sm">{item.description}</p>
-          <AvatarGroup>
-            <Avatar className="size-6">
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=96&h=96&dpr=2&q=80"
-                alt="User 1"
-              />
-              <AvatarFallback>SC</AvatarFallback>
-            </Avatar>
-            <Avatar className="size-6">
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=96&h=96&dpr=2&q=80"
-                alt="User 2"
-              />
-              <AvatarFallback>MR</AvatarFallback>
-            </Avatar>
-            <Avatar className="size-6">
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1485893086445-ed75865251e0?w=96&h=96&dpr=2&q=80"
-                alt="User 3"
-              />
-              <AvatarFallback>EW</AvatarFallback>
-            </Avatar>
-            <AvatarGroupCount className="size-6 border text-[10px]">
-              +3
-            </AvatarGroupCount>
-          </AvatarGroup>
+          <p className="text-muted-foreground text-sm">
+            {item.description ?? "No description"}
+          </p>
+          <div className="flex flex-col gap-2">
+            <Badge variant={"ghost"}>
+              No. of Batchs: {item.batches.length}
+            </Badge>
+            <Badge variant={"ghost"}>
+              No. of Students:{" "}
+              {data
+                .flatMap((c) => c.batches)
+                .reduce((sum, batch) => sum + batch._count.students, 0)}
+            </Badge>
+          </div>
         </div>
         <div className="border-t p-3">
           <Button
