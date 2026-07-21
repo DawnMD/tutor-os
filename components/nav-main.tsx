@@ -1,7 +1,11 @@
 "use client";
 
-import { NavBatchMain } from "@/components/nav-batch-main";
-import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ClassNav } from "@/components/class-nav";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -10,7 +14,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-  BookSearch,
   Building,
   ChevronRightIcon,
   LayoutDashboardIcon,
@@ -49,17 +52,10 @@ export function NavMain() {
             <span>Class</span>
             <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
           </CollapsibleTrigger>
+          <CollapsibleContent>
+            <ClassNav />
+          </CollapsibleContent>
         </Collapsible>
-        {/* <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
-          <CollapsibleTrigger
-            render={<SidebarMenuButton tooltip={"Batches"} />}
-          >
-            <BookSearch />
-            <span>Batches</span>
-            <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
-          </CollapsibleTrigger>
-          <NavBatchMain />
-        </Collapsible> */}
       </SidebarMenu>
     </SidebarGroup>
   );
