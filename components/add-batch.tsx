@@ -79,7 +79,7 @@ const DAY_LABELS = Object.fromEntries(
   DAYS.map((day) => [day.value, day.label]),
 ) satisfies Record<number, string>;
 
-export const AddBatch = () => {
+export const AddBatch = ({ classId }: { classId: string }) => {
   const queryClient = useQueryClient();
   const [openDialog, setOpenDialog] = useState(false);
   const { setOpenMobile } = useSidebar();
@@ -88,7 +88,7 @@ export const AddBatch = () => {
     orpc.owner.batch.createBatch.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: orpc.owner.batch.getBatchByOrg.queryKey(),
+          queryKey: orpc.owner.class.getAllClass.queryKey(),
         });
         setOpenDialog(false);
         setOpenMobile(false);
@@ -125,7 +125,7 @@ export const AddBatch = () => {
           start: item.startMinutes,
           end: item.endMinutes,
         })),
-        classId: "",
+        classId,
       }),
       {
         loading: "Creating batch",
