@@ -1,8 +1,8 @@
-import { OwnerStudentsData } from "@/components/owner-students-data";
 import { auth } from "@clerk/nextjs/server";
+import { StudentTable } from "./_components/student-table";
 
 export default async function StudentsPage() {
   await auth.protect();
 
-  return <OwnerStudentsData />;
+  return <StudentTable />;
 }
