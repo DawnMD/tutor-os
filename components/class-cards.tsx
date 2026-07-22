@@ -146,10 +146,7 @@ export const ClassCards = () => {
               No. of Batchs: {item.batches.length}
             </Badge>
             <Badge variant={"ghost"}>
-              No. of Students:{" "}
-              {data
-                .flatMap((c) => c.batches)
-                .reduce((sum, batch) => sum + batch._count.students, 0)}
+              No. of Students: {item.studentCount}
             </Badge>
           </div>
         </div>
