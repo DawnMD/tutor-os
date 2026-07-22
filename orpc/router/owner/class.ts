@@ -51,23 +51,30 @@ export const ownerClassRouter = {
       });
     }),
   getAllClass: ownerProcedure.handler(async ({ context }) => {
-    return await context.db.class.findMany({
+    const classes = await context.db.class.findMany({
       where: {
         clerkOrganizationId: context.organizationId,
       },
       include: {
         batches: {
           select: {
-            name: true,
             id: true,
-            _count: {
+            name: true,
+            students: {
               select: {
-                students: true,
+                studentId: true,
               },
             },
           },
         },
       },
     });
+
+    return classes.map((cls) => ({
+      ...cls,
+      studentCount: new Set(
+        cls.batches.flatMap((b) => b.students.map((s) => s.studentId)),
+      ).size,
+    }));
   }),
 };
