@@ -43,40 +43,43 @@ export const ownerBatchRouter = {
       where: {
         clerkOrganizationId: context.organizationId,
       },
+      include: {
+        class: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }),
-  getBatchSchedulesById: ownerProcedure
+  getBatchDataById: ownerProcedure
     .input(
       z.object({
-        batchId: z.string(),
-      }),
-    )
-    .handler(async ({ input, context }) => {
-      return await context.db.batchSchedule.findMany({
-        where: {
-          batchId: input.batchId,
-        },
-      });
-    }),
-  addStudentToBatch: ownerProcedure
-    .input(
-      z.object({
-        studentId: z.string(),
         batchId: z.string(),
       }),
     )
     .handler(async ({ context, input }) => {
-      await context.db.batchStudent.upsert({
-        where: {
-          batchId_studentId: {
-            batchId: input.batchId,
-            studentId: input.studentId,
+      return await context.db.batch.findUnique({
+        where: { id: input.batchId },
+        include: {
+          class: true,
+          students: {
+            include: {
+              student: true,
+            },
           },
-        },
-        update: {},
-        create: {
-          batchId: input.batchId,
-          studentId: input.studentId,
+          schedules: true,
+          sessions: {
+            orderBy: { classDate: "desc" },
+            take: 10,
+            include: {
+              attendance: true,
+            },
+          },
+          exams: {
+            orderBy: { examDate: "desc" },
+            take: 5,
+          },
         },
       });
     }),
