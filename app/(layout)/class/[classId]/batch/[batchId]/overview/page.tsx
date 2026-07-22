@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
+import BatchOverviewContent from "./_components/batch-overview-content";
 
 export default async function BatchOverviewpage({
   params,
@@ -6,5 +7,5 @@ export default async function BatchOverviewpage({
   await auth.protect();
   const { batchId } = await params;
 
-  return <div>{batchId}</div>;
+  return <BatchOverviewContent batchId={batchId} />;
 }
