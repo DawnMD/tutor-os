@@ -4,101 +4,6 @@ import { ORPCError } from "@orpc/client";
 import z from "zod";
 
 export const ownerStudentRouter = {
-  getActiveStudentsByOrg: ownerProcedure.handler(async ({ context }) => {
-    const users = await context.db.student.findMany({
-      where: {
-        clerkOrganizationId: context.organizationId,
-        archivedAt: null,
-      },
-      include: {
-        batches: {
-          select: {
-            batch: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        fullName: "asc",
-      },
-    });
-
-    const data = users.map((student) => ({
-      id: student.id,
-      user_id: student.clerkUserId,
-      name: student.fullName,
-      email: student.email,
-      joinedAt: student.createdAt,
-      batches: student.batches.map((b) => ({
-        id: b.batch.id,
-        name: b.batch.name,
-      })),
-    }));
-
-    return data;
-  }),
-  getPendingStudentsByOrg: ownerProcedure.handler(async ({ context }) => {
-    const { data } =
-      await context.clerk.organizations.getOrganizationInvitationList({
-        organizationId: context.organizationId,
-        status: ["pending"],
-        limit: 100,
-      });
-
-    return data.map((invitation) => ({
-      id: invitation.id,
-      email: invitation.emailAddress,
-      role: invitation.role,
-      createdAt: invitation.createdAt,
-      expiresAt: invitation.expiresAt,
-      status: invitation.status,
-    }));
-  }),
-  getArchieveStudentsByOrg: ownerProcedure.handler(async ({ context }) => {
-    const users = await context.db.student.findMany({
-      where: {
-        clerkOrganizationId: context.organizationId,
-        NOT: {
-          archivedAt: null,
-        },
-      },
-      include: {
-        batches: {
-          select: {
-            batch: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        fullName: "asc",
-      },
-    });
-
-    const data = users.map((student) => ({
-      id: student.id,
-      user_id: student.clerkUserId,
-      name: student.fullName,
-      email: student.email,
-      joinedAt: student.createdAt,
-      archievedAt: student.archivedAt,
-      createdAt: student.createdAt,
-      batches: student.batches.map((b) => ({
-        id: b.batch.id,
-        name: b.batch.name,
-      })),
-    }));
-
-    return data;
-  }),
   addStundent: ownerProcedure
     .input(
       z.object({
@@ -163,7 +68,6 @@ export const ownerStudentRouter = {
         invitationId: input.invitationId,
       });
     }),
-
   addStudentToBatches: ownerProcedure
     .input(
       z.object({
@@ -230,4 +134,57 @@ export const ownerStudentRouter = {
 
       return true;
     }),
+  getAllStudents: ownerProcedure.handler(async ({ context }) => {
+    const [clerkUsers, dbUsers] = await Promise.all([
+      context.clerk.organizations.getOrganizationInvitationList({
+        organizationId: context.organizationId,
+        status: ["pending", "accepted", "revoked", "expired"],
+        limit: 100,
+      }),
+      context.db.student.findMany({
+        where: {
+          clerkOrganizationId: context.organizationId,
+        },
+        include: {
+          batches: {
+            select: {
+              batch: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          fullName: "asc",
+        },
+      }),
+    ]);
+
+    const studentMap = new Map(
+      dbUsers.map((student) => [student.email.toLowerCase(), student]),
+    );
+
+    const merged = clerkUsers.data.map((invitation) => {
+      const student = studentMap.get(invitation.emailAddress.toLowerCase());
+
+      return {
+        ...invitation,
+        studentId: student?.id ?? null,
+        clerkUserId: student?.clerkUserId ?? null,
+        fullName: student?.fullName ?? null,
+        phone: student?.phone ?? null,
+        guardianName: student?.guardianName ?? null,
+        guardianPhone: student?.guardianPhone ?? null,
+        batches: student?.batches ?? [],
+        joinedAt: student?.createdAt,
+        archievedAt: student?.archivedAt ?? null,
+        status: !!student?.archivedAt ? "archieved" : invitation.status,
+      };
+    });
+
+    return merged;
+  }),
 };
