@@ -65,10 +65,7 @@ export default function BatchOverviewContent({
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
           {/* Student Summary */}
-          <StudentSummaryCard
-            students={batch.students}
-            totalStudents={totalStudents}
-          />
+          <StudentSummaryCard totalStudents={totalStudents} batch={batch} />
 
           {/* Upcoming Exams */}
           <UpcomingExamsCard exams={batch.exams} />

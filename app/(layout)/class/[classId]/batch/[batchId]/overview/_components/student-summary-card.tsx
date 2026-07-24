@@ -7,20 +7,18 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface StudentSummaryCardProps {
-  students: NonNullable<
-    Outputs["owner"]["batch"]["getBatchDataById"]
-  >["students"];
   totalStudents: number;
+  batch: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>;
 }
 
 export default function StudentSummaryCard({
-  students,
+  batch,
   totalStudents,
 }: StudentSummaryCardProps) {
-  const archivedStudents = students.filter(
+  const archivedStudents = batch.students.filter(
     (bs) => bs.student.archivedAt,
   ).length;
-  const recentlyJoined = [...students]
+  const recentlyJoined = [...batch.students]
     .sort(
       (a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime(),
     )
@@ -74,8 +72,10 @@ export default function StudentSummaryCard({
         <Button
           variant="outline"
           className="w-full"
-          // nativeButton={false}
-          // render={<Link href={`/class/${}`} />}
+          nativeButton={false}
+          render={
+            <Link href={`/class/${batch.classId}/batch/${batch.id}/students`} />
+          }
         >
           <span>View All Students</span>
           <ArrowRight className="w-4 h-4 ml-2" />
