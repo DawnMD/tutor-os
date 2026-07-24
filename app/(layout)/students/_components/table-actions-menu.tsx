@@ -44,16 +44,6 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
     }),
   );
 
-  const { mutateAsync: revokeInvitation } = useMutation(
-    orpc.owner.student.revokeInvitation.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: orpc.owner.student.getAllStudents.queryKey(),
-        });
-      },
-    }),
-  );
-
   return (
     <>
       <DropdownMenu>
@@ -67,12 +57,9 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {!student.archievedAt && (
+            {!student.archivedAt && (
               <DropdownMenuItem
-                disabled={!student.studentId}
                 onClick={() => {
-                  if (!student.clerkUserId) return;
-
                   toast.promise(
                     archieveStudent({ studentId: student.clerkUserId }),
                     {
@@ -86,12 +73,9 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
                 Archieve
               </DropdownMenuItem>
             )}
-            {student.archievedAt && (
+            {!!student.archivedAt && (
               <DropdownMenuItem
-                disabled={!student.studentId}
                 onClick={() => {
-                  if (!student.clerkUserId) return;
-
                   toast.promise(
                     restoreStudent({ studentId: student.clerkUserId }),
                     {
@@ -105,40 +89,17 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
                 Restore
               </DropdownMenuItem>
             )}
-            {student.studentId && (
-              <DropdownMenuItem onClick={() => setOpen(true)}>
-                Add To Batch
-              </DropdownMenuItem>
-            )}
-            {student.status === "pending" && (
-              <DropdownMenuItem
-                disabled={student.status !== "pending"}
-                onClick={() => {
-                  if (!student.id) return;
-
-                  toast.promise(
-                    revokeInvitation({ invitationId: student.id }),
-                    {
-                      loading: "Revoking invitation...",
-                      success: "Revoked",
-                      error: "Failed to revoke invitation",
-                    },
-                  );
-                }}
-              >
-                Revoke Invitation
-              </DropdownMenuItem>
-            )}
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              Add To Batch
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      {student.studentId && (
-        <AddStudentToBatchAction
-          open={open}
-          setOpen={setOpen}
-          student={student}
-        />
-      )}
+      <AddStudentToBatchAction
+        open={open}
+        setOpen={setOpen}
+        student={student}
+      />
     </>
   );
 };

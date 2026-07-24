@@ -77,12 +77,10 @@ export const AddStudentToBatchAction = ({
   }, [open, batches, form]);
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!student.studentId) return;
-
     toast.promise(
       addStudentToBatches({
         batchIds: data.batches,
-        studentId: student.studentId,
+        studentId: student.id,
       }),
       {
         loading: "Saving changes...",
