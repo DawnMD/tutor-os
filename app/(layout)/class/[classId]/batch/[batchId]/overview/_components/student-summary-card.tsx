@@ -74,8 +74,8 @@ export default function StudentSummaryCard({
         <Button
           variant="outline"
           className="w-full"
-          nativeButton={false}
-          render={<Link href={"/students"} />}
+          // nativeButton={false}
+          // render={<Link href={`/class/${}`} />}
         >
           <span>View All Students</span>
           <ArrowRight className="w-4 h-4 ml-2" />
