@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Outputs } from "@/orpc/router";
-import { Archive, Edit2, UserPlus } from "lucide-react";
+import { Archive, Edit2, Menu } from "lucide-react";
+import { AddStudent } from "./add-student";
 
 interface BatchHeaderProps {
   batch: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>;
@@ -33,14 +34,11 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" size="sm">
-          <UserPlus className="w-4 h-4" />
-          Invite Student
-        </Button>
+        <AddStudent batchName={batch.name} batchId={batch.id} />
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={<Button variant="ghost" size="icon" />}
-          ></DropdownMenuTrigger>
+          <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
+            <Menu />
+          </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Edit2 className="w-4 h-4 mr-2" />

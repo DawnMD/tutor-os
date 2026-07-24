@@ -1,4 +1,5 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import { ORPCError } from "@orpc/client";
 import * as z from "zod";
 
 export const ownerBatchRouter = {
@@ -82,5 +83,61 @@ export const ownerBatchRouter = {
           },
         },
       });
+    }),
+  addStudent: ownerProcedure
+    .input(
+      z.object({
+        studentIds: z.array(z.string()),
+        batchId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const batch = await context.db.batch.findFirst({
+        where: {
+          id: input.batchId,
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (!batch) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      const students = await context.db.student.findMany({
+        where: {
+          id: { in: input.studentIds },
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (students.length !== input.studentIds.length) {
+        throw new ORPCError("BAD_REQUEST");
+      }
+
+      await context.db.$transaction(async (tx) => {
+        // Remove all current students from the batch
+        await tx.batchStudent.deleteMany({
+          where: {
+            batchId: input.batchId,
+          },
+        });
+
+        // Add the selected students
+        if (input.studentIds.length > 0) {
+          await tx.batchStudent.createMany({
+            data: input.studentIds.map((studentId) => ({
+              batchId: input.batchId,
+              studentId,
+            })),
+            skipDuplicates: true,
+          });
+        }
+      });
+
+      return true;
     }),
 };
