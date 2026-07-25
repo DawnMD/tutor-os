@@ -128,6 +128,7 @@ export const batchStudentRouter = {
                   id: true,
                   classDate: true,
                   topic: true,
+                  summary: true,
                 },
               },
             },
@@ -164,6 +165,26 @@ export const batchStudentRouter = {
         throw new ORPCError("NOT_FOUND");
       }
 
+      // Upcoming exams for the batch (not yet taken / in the future),
+      // scoped to this batch only.
+      const now = new Date();
+      const takenExamIds = new Set(student.examResults.map((r) => r.exam.id));
+      const upcomingExams = (
+        await context.db.exam.findMany({
+          where: {
+            batchId: input.batchId,
+            examDate: { gte: now },
+          },
+          orderBy: { examDate: "asc" },
+          select: {
+            id: true,
+            title: true,
+            examDate: true,
+            totalMarks: true,
+          },
+        })
+      ).filter((exam) => !takenExamIds.has(exam.id));
+
       const attendanceSummary = {
         total: student.attendance.length,
         present: student.attendance.filter(
@@ -189,6 +210,8 @@ export const batchStudentRouter = {
                 ),
         },
         latestExam: student.examResults[0] ?? null,
+        upcomingExams,
+        nextExam: upcomingExams[0] ?? null,
       };
     }),
 };
