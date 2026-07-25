@@ -3,6 +3,9 @@ import { ownerBatchRouter } from "./owner/batch";
 import { ownerStudentRouter } from "./owner/student";
 import { ownerClassRouter } from "./owner/class";
 import { batchStudentRouter } from "./owner/batchStudent";
+import { ownerBatchSessionRouter } from "./owner/batchSession";
+import { ownerExamRouter } from "./owner/exam";
+import { ownerAttendanceRouter } from "./owner/attendance";
 
 export const router = {
   owner: {
@@ -10,6 +13,9 @@ export const router = {
     student: ownerStudentRouter,
     class: ownerClassRouter,
     batchStudent: batchStudentRouter,
+    batchSession: ownerBatchSessionRouter,
+    exam: ownerExamRouter,
+    attendance: ownerAttendanceRouter,
   },
 };
 
