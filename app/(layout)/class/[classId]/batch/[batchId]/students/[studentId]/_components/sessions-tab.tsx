@@ -1,7 +1,11 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { CalendarClock, NotebookPen } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { AttendanceStatusBadge } from "./attendance-status-badge";
 import { EmptyState } from "./empty-state";
 import { StudentDashboard } from "./utils";
@@ -11,6 +15,12 @@ interface SessionsTabProps {
 }
 
 export function SessionsTab({ attendance }: SessionsTabProps) {
+  const { classId, batchId } = useParams<{
+    classId: string;
+    batchId: string;
+  }>();
+  const sessionsHref = `/class/${classId}/batch/${batchId}/sessions`;
+
   if (attendance.length === 0) {
     return (
       <Card>
@@ -28,8 +38,16 @@ export function SessionsTab({ attendance }: SessionsTabProps) {
   return (
     <div className="space-y-4">
       {attendance.map((entry) => (
-        <Card key={entry.session.id} size="sm">
-          <CardContent className="space-y-3">
+        <Link
+          key={entry.session.id}
+          href={`${sessionsHref}?session=${entry.session.id}`}
+          className="block"
+        >
+          <Card
+            size="sm"
+            className="transition-colors hover:ring-foreground/15"
+          >
+            <CardContent className="space-y-3">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="font-semibold">
@@ -58,8 +76,9 @@ export function SessionsTab({ attendance }: SessionsTabProps) {
                 {entry.remarks}
               </p>
             )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );
