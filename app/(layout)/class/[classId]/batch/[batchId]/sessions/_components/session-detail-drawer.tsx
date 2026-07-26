@@ -45,7 +45,7 @@ interface SessionDetailDrawerProps {
   schedules: SessionSchedule[];
   totalStudents: number;
   onEdit: (session: Session) => void;
-  onViewAttendance: () => void;
+  onViewAttendance: (session: Session) => void;
 }
 
 const STATUS_ROWS: {
@@ -234,7 +234,7 @@ export function SessionDetailDrawer({
             <Button
               variant="outline"
               className="w-full"
-              onClick={onViewAttendance}
+              onClick={() => onViewAttendance(session)}
             >
               <CheckCircle2 className="size-4" />
               View Attendance

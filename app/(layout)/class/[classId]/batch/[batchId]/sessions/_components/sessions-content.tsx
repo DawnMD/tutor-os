@@ -238,8 +238,10 @@ export default function SessionsContent({
           setDrawerOpen(false);
           openEdit(session);
         }}
-        onViewAttendance={() =>
-          router.push(`/class/${classId}/batch/${batchId}/students`)
+        onViewAttendance={(session) =>
+          router.push(
+            `/class/${classId}/batch/${batchId}/attendance?session=${session.id}`,
+          )
         }
       />
 
