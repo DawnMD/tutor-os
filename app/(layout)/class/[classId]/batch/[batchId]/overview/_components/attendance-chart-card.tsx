@@ -7,8 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import { Outputs } from "@/orpc/router";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  attendedFromCounts,
+  countStatuses,
+  percentage,
+} from "../../attendance/_components/utils";
 
 interface AttendanceChartCardProps {
   sessions: NonNullable<
@@ -16,9 +27,17 @@ interface AttendanceChartCardProps {
   >["sessions"];
 }
 
+const chartConfig = {
+  rate: {
+    label: "Attendance",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig;
+
 export default function AttendanceChartCard({
   sessions,
 }: AttendanceChartCardProps) {
+  // Oldest -> newest across the last 10 sessions.
   const last10Sessions = sessions.slice(0, 10).reverse();
 
   if (last10Sessions.length === 0) {
@@ -31,20 +50,21 @@ export default function AttendanceChartCard({
     );
   }
 
-  // Calculate attendance for each session
   const chartData = last10Sessions.map((session) => {
-    const attendanceCount = session.attendance.length;
-    const percentage =
-      attendanceCount > 0 ? Math.round((attendanceCount / 1) * 100) : 0;
+    const counts = countStatuses(session.attendance.map((r) => r.status));
     return {
       date: new Date(session.classDate).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       }),
-      count: attendanceCount,
-      percentage: Math.min(percentage, 100),
+      rate: counts.marked
+        ? percentage(attendedFromCounts(counts), counts.marked)
+        : null,
+      present: attendedFromCounts(counts),
     };
   });
+
+  const hasData = chartData.some((d) => d.rate != null);
 
   return (
     <Card>
@@ -53,22 +73,37 @@ export default function AttendanceChartCard({
         <CardDescription>Last {last10Sessions.length} sessions</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {chartData.map((data, index: number) => (
-            <div key={index} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{data.date}</span>
-                <Badge variant="secondary">{data.count} present</Badge>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                <div
-                  className="bg-primary h-full transition-all rounded-full"
-                  style={{ width: `${Math.min(data.percentage * 10, 100)}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        {hasData ? (
+          <ChartContainer config={chartConfig} className="h-64 w-full">
+            <BarChart accessibilityLayer data={chartData}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tickLine={false}
+                axisLine={false}
+                width={32}
+                tickFormatter={(v) => `${v}`}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent formatter={(value) => `${value}%`} />
+                }
+              />
+              <Bar dataKey="rate" fill="var(--color-rate)" radius={4} />
+            </BarChart>
+          </ChartContainer>
+        ) : (
+          <p className="py-12 text-center text-sm text-muted-foreground">
+            No attendance recorded yet.
+          </p>
+        )}
       </CardContent>
     </Card>
   );

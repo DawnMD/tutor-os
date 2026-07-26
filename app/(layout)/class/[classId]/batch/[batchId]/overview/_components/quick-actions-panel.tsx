@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, CheckSquare, BookOpen, FileText, UserPlus } from "lucide-react";
+import { Play, CheckSquare, BookOpen, UserPlus } from "lucide-react";
 import Link from "next/link";
 
 interface QuickActionsPanelProps {
@@ -20,7 +20,7 @@ export default function QuickActionsPanel({
     description: string;
     color: string;
     bgColor: string;
-    href?: string;
+    href: string;
   }[] = [
     {
       icon: Play,
@@ -44,13 +44,7 @@ export default function QuickActionsPanel({
       description: "Add new exam",
       color: "text-purple-600 dark:text-purple-400",
       bgColor: "bg-purple-50 dark:bg-purple-950",
-    },
-    {
-      icon: FileText,
-      label: "Upload Notes",
-      description: "Share study materials",
-      color: "text-orange-600 dark:text-orange-400",
-      bgColor: "bg-orange-50 dark:bg-orange-950",
+      href: `/class/${classId}/batch/${batchId}/exams?create=1`,
     },
     {
       icon: UserPlus,
@@ -58,6 +52,7 @@ export default function QuickActionsPanel({
       description: "Add new student",
       color: "text-pink-600 dark:text-pink-400",
       bgColor: "bg-pink-50 dark:bg-pink-950",
+      href: `/students/pending`,
     },
   ];
 
@@ -74,8 +69,8 @@ export default function QuickActionsPanel({
               key={action.label}
               variant="outline"
               className="w-full h-auto justify-start p-3 hover:bg-muted"
-              nativeButton={!action.href}
-              render={action.href ? <Link href={action.href} /> : undefined}
+              nativeButton={false}
+              render={<Link href={action.href} />}
             >
               <div className={`p-2 rounded mr-3 ${action.bgColor}`}>
                 <IconComponent className={`w-4 h-4 ${action.color}`} />

@@ -15,14 +15,10 @@ export default function StudentSummaryCard({
   batch,
   totalStudents,
 }: StudentSummaryCardProps) {
-  const archivedStudents = batch.students.filter(
-    (bs) => bs.student.archivedAt,
-  ).length;
-  const recentlyJoined = [...batch.students]
-    .sort(
-      (a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime(),
-    )
-    .slice(0, 3);
+  // Roster is active-only; total (incl. archived) comes from the server count.
+  const archivedStudents = batch._count.students - batch.students.length;
+  // Server already orders the roster by joinedAt desc.
+  const recentlyJoined = batch.students.slice(0, 3);
 
   return (
     <Card>

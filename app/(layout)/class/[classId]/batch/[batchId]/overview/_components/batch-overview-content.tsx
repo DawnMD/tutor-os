@@ -1,9 +1,17 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import AttendanceChartCard from "./attendance-chart-card";
 import BatchHeader from "./batch-header";
+import BatchOverviewSkeleton from "./batch-overview-skeleton";
 import KPICards from "./kpi-cards";
 import QuickActionsPanel from "./quick-actions-panel";
 import RecentSessionsCard from "./recent-sessions-card";
@@ -19,7 +27,7 @@ interface BatchOverviewContentProps {
 export default function BatchOverviewContent({
   batchId,
 }: BatchOverviewContentProps) {
-  const { data: batch, isLoading } = useQuery(
+  const { data: batch, isLoading, isError } = useQuery(
     orpc.owner.batch.getBatchDataById.queryOptions({
       input: {
         batchId,
@@ -27,14 +35,29 @@ export default function BatchOverviewContent({
     }),
   );
 
-  if (!batch || isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <BatchOverviewSkeleton />;
   }
 
-  const totalStudents = batch.students.length;
-  const activeStudents = batch.students.filter(
-    (bs) => !bs.student.archivedAt,
-  ).length;
+  if (isError || !batch) {
+    return (
+      <Card className="border-dashed py-0">
+        <Empty className="py-16">
+          <EmptyHeader>
+            <EmptyTitle>Batch not found</EmptyTitle>
+            <EmptyDescription>
+              This batch may have been deleted or you don&apos;t have access to
+              it.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </Card>
+    );
+  }
+
+  // Roster is pre-filtered to active students server-side.
+  const activeStudents = batch.students.length;
+  const totalStudents = batch._count.students;
 
   return (
     <div className="space-y-6">

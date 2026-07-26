@@ -3,6 +3,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Outputs } from "@/orpc/router";
 import { BookOpen, Calendar, TrendingUp, Users } from "lucide-react";
+import {
+  attendedFromCounts,
+  countStatuses,
+  percentage,
+} from "../../attendance/_components/utils";
+import { examAveragePct } from "./utils";
 
 interface KPICardsProps {
   batch: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>;
@@ -15,19 +21,12 @@ export default function KPICards({
   totalStudents,
   activeStudents,
 }: KPICardsProps) {
-  // Calculate attendance percentage from sessions
-  const getAttendancePercentage = () => {
-    if (batch.sessions.length === 0) return 0;
-    const latestSessions = batch.sessions.slice(0, 10);
-    const totalAttendance = latestSessions.reduce((acc: number, session) => {
-      return acc + session.attendance.length;
-    }, 0);
-    return latestSessions.length > 0
-      ? Math.round(
-          (totalAttendance / (latestSessions.length * activeStudents)) * 100,
-        )
-      : 0;
-  };
+  // Attendance rate across recorded sessions: present + late over students marked.
+  const attendanceCounts = countStatuses(
+    batch.sessions.flatMap((session) =>
+      session.attendance.map((r) => r.status),
+    ),
+  );
 
   const getNextClass = () => {
     const today = new Date();
@@ -48,7 +47,11 @@ export default function KPICards({
 
   const nextClass = getNextClass();
   const upcomingExam = getUpcomingExam();
-  const attendancePercentage = getAttendancePercentage();
+  // When nothing is scheduled ahead, fall back to the latest graded exam.
+  const latestGraded = upcomingExam
+    ? null
+    : batch.exams.find((exam) => examAveragePct(exam) != null);
+  const latestGradedAvg = latestGraded ? examAveragePct(latestGraded) : null;
 
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
@@ -79,8 +82,16 @@ export default function KPICards({
           <TrendingUp className="w-4 h-4 text-muted-foreground" />
         </CardHeader>
         <CardContent className="space-y-2">
-          <div className="text-2xl font-bold">{attendancePercentage}%</div>
-          <p className="text-xs text-muted-foreground">Last 10 sessions</p>
+          <div className="text-2xl font-bold">
+            {attendanceCounts.marked === 0
+              ? "—"
+              : `${percentage(attendedFromCounts(attendanceCounts), attendanceCounts.marked)}%`}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {attendanceCounts.marked === 0
+              ? "No attendance recorded"
+              : "Last 10 sessions"}
+          </p>
         </CardContent>
       </Card>
 
@@ -114,12 +125,18 @@ export default function KPICards({
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="text-2xl font-bold truncate">
-            {upcomingExam ? upcomingExam.title.substring(0, 10) : "None"}
+            {upcomingExam
+              ? upcomingExam.title
+              : latestGradedAvg != null
+                ? `${latestGradedAvg}%`
+                : "None"}
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground truncate">
             {upcomingExam
               ? new Date(upcomingExam.examDate).toLocaleDateString()
-              : "No upcoming exams"}
+              : latestGraded
+                ? `${latestGraded.title} avg`
+                : "No upcoming exams"}
           </p>
         </CardContent>
       </Card>

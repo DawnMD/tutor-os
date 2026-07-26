@@ -12,6 +12,10 @@ import {
 import { Outputs } from "@/orpc/router";
 import { AlertCircle, CheckCircle2, Play } from "lucide-react";
 import Link from "next/link";
+import {
+  attendedFromCounts,
+  countStatuses,
+} from "../../attendance/_components/utils";
 
 interface TodaySessionCardProps {
   batch: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>;
@@ -51,7 +55,11 @@ export default function TodaySessionCard({ batch }: TodaySessionCardProps) {
     return `${hours}:${mins.toString().padStart(2, "0")}`;
   };
 
-  const attendanceCount = todaySession?.attendance.length || 0;
+  const attendanceCount = todaySession
+    ? attendedFromCounts(
+        countStatuses(todaySession.attendance.map((r) => r.status)),
+      )
+    : 0;
   const totalStudents = batch.students.length;
   const attendancePercentage =
     totalStudents > 0 ? Math.round((attendanceCount / totalStudents) * 100) : 0;
@@ -133,7 +141,16 @@ export default function TodaySessionCard({ batch }: TodaySessionCardProps) {
             </Button>
           ) : (
             <>
-              <Button variant="outline" className="flex-1">
+              <Button
+                variant="outline"
+                className="flex-1"
+                nativeButton={false}
+                render={
+                  <Link
+                    href={`/class/${batch.classId}/batch/${batch.id}/attendance`}
+                  />
+                }
+              >
                 Mark Attendance
               </Button>
               <Button
