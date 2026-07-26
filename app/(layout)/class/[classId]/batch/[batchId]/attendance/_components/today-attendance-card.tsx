@@ -458,8 +458,7 @@ export function TodayAttendanceCard({
                       onClick={() => toggleRemarks(student.id)}
                       className={cn(
                         "size-8 shrink-0",
-                        (remarksVisible || entry?.remarks) &&
-                          "text-foreground",
+                        (remarksVisible || entry?.remarks) && "text-foreground",
                       )}
                     >
                       <MessageSquare className="size-4" />
@@ -468,16 +467,14 @@ export function TodayAttendanceCard({
                 </div>
 
                 {remarksVisible && (
-                  <div className="px-5 pb-3 sm:pl-[4.25rem] sm:pr-6">
+                  <div className="px-5 pb-3 sm:pl-17 sm:pr-6">
                     <InputGroup className="h-8">
                       <InputGroupAddon>
                         <MessageSquare className="size-3.5" />
                       </InputGroupAddon>
                       <InputGroupInput
                         value={entry?.remarks ?? ""}
-                        onChange={(e) =>
-                          setRemarks(student.id, e.target.value)
-                        }
+                        onChange={(e) => setRemarks(student.id, e.target.value)}
                         readOnly={completed}
                         placeholder="Add a remark (optional)"
                       />
