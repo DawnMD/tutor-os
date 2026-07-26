@@ -21,11 +21,6 @@ export const batchStudentRouter = {
           classId: true,
           id: true,
           students: {
-            where: {
-              student: {
-                archivedAt: null,
-              },
-            },
             orderBy: {
               student: {
                 fullName: "asc",
@@ -42,6 +37,7 @@ export const batchStudentRouter = {
                   phone: true,
                   guardianName: true,
                   guardianPhone: true,
+                  archivedAt: true,
                 },
               },
             },

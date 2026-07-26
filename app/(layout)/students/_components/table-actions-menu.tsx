@@ -24,23 +24,29 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
 
+  const invalidate = () => {
+    queryClient.invalidateQueries({
+      queryKey: orpc.owner.student.getAllStudents.queryKey(),
+    });
+    // Archiving/restoring here also affects every batch this student is in,
+    // so invalidate the batch-scoped queries across all batches (partial key).
+    queryClient.invalidateQueries({
+      queryKey: orpc.owner.batchStudent.getStudentsByBatch.key(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: orpc.owner.batch.getBatchDataById.key(),
+    });
+  };
+
   const { mutateAsync: archieveStudent } = useMutation(
     orpc.owner.student.archieveStudent.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: orpc.owner.student.getAllStudents.queryKey(),
-        });
-      },
+      onSuccess: invalidate,
     }),
   );
 
   const { mutateAsync: restoreStudent } = useMutation(
     orpc.owner.student.unArchieveStudent.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: orpc.owner.student.getAllStudents.queryKey(),
-        });
-      },
+      onSuccess: invalidate,
     }),
   );
 
@@ -61,7 +67,7 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
               <DropdownMenuItem
                 onClick={() => {
                   toast.promise(
-                    archieveStudent({ studentId: student.clerkUserId }),
+                    archieveStudent({ studentId: student.id }),
                     {
                       loading: "Archieving",
                       success: "Archieved",
@@ -77,7 +83,7 @@ export const TableActionsMenu = ({ student }: { student: Student }) => {
               <DropdownMenuItem
                 onClick={() => {
                   toast.promise(
-                    restoreStudent({ studentId: student.clerkUserId }),
+                    restoreStudent({ studentId: student.id }),
                     {
                       loading: "Restoreing student...",
                       success: "Restored",

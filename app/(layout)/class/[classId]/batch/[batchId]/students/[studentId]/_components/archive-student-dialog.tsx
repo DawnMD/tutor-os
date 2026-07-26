@@ -40,10 +40,13 @@ export function ArchiveStudentDialog({
   const { mutateAsync } = useMutation(
     orpc.owner.student.archieveStudent.mutationOptions({
       onSuccess: () => {
+        // archivedAt is global to the student, so refresh every batch's
+        // roster and overview, plus the global students list.
         queryClient.invalidateQueries({
-          queryKey: orpc.owner.batchStudent.getStudentsByBatch.queryKey({
-            input: { batchId },
-          }),
+          queryKey: orpc.owner.batchStudent.getStudentsByBatch.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batch.getBatchDataById.key(),
         });
         queryClient.invalidateQueries({
           queryKey: orpc.owner.student.getAllStudents.queryKey(),

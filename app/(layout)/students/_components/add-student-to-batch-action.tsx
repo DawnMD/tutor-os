@@ -55,6 +55,13 @@ export const AddStudentToBatchAction = ({
         queryClient.invalidateQueries({
           queryKey: orpc.owner.student.getAllStudents.queryKey(),
         });
+        // Batch membership changed — refresh batch rosters and overviews.
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batchStudent.getStudentsByBatch.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batch.getBatchDataById.key(),
+        });
         setOpen(false);
       },
     }),

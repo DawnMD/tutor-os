@@ -1,9 +1,11 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Outputs } from "@/orpc/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Link from "next/link";
+import { TableActionsMenu } from "./table-actions-menu";
 
 // student type
 export type Student =
@@ -26,9 +28,24 @@ export const columns: ColumnDef<Student>[] = [
             />
           }
           variant={"link"}
+          className={row.original.archivedAt ? "text-muted-foreground" : ""}
         >
           {row.original.fullName}
         </Button>
+      );
+    },
+  },
+  {
+    id: "status",
+    accessorFn: (row) => row.archivedAt,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      return row.original.archivedAt ? (
+        <Badge variant="secondary">Archived</Badge>
+      ) : (
+        <Badge variant="outline">Active</Badge>
       );
     },
   },
@@ -57,8 +74,8 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "actions",
-    // cell: ({ row }) => {
-    //   return <TableActionsMenu student={row.original} />;
-    // },
+    cell: ({ row }) => {
+      return <TableActionsMenu student={row.original} />;
+    },
   },
 ];
