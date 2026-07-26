@@ -1,3 +1,4 @@
+import { BATCH_COLOR_IDS } from "@/lib/batch-colors";
 import { ownerProcedure } from "@/orpc/orpc";
 import { ORPCError } from "@orpc/client";
 import * as z from "zod";
@@ -8,6 +9,7 @@ export const ownerBatchRouter = {
       z.object({
         name: z.string(),
         classId: z.string(),
+        color: z.enum(BATCH_COLOR_IDS),
         schdeules: z.array(
           z.object({
             day: z.number(),
@@ -24,6 +26,7 @@ export const ownerBatchRouter = {
             clerkOrganizationId: context.organizationId,
             name: input.name,
             classId: input.classId,
+            color: input.color,
           },
         });
 
@@ -39,6 +42,44 @@ export const ownerBatchRouter = {
         return batch;
       });
     }),
+  getCalendarData: ownerProcedure
+    .input(
+      z.object({
+        rangeStart: z.coerce.date(),
+        rangeEnd: z.coerce.date(),
+      }),
+    )
+    .handler(async ({ context, input }) =>
+      context.db.batch.findMany({
+        where: {
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: {
+          id: true,
+          name: true,
+          color: true,
+          classId: true,
+          class: { select: { name: true } },
+          schedules: {
+            select: { dayOfWeek: true, startMinutes: true, endMinutes: true },
+          },
+          sessions: {
+            where: { classDate: { gte: input.rangeStart, lte: input.rangeEnd } },
+            select: {
+              id: true,
+              classDate: true,
+              topic: true,
+              completedAt: true,
+            },
+          },
+          exams: {
+            where: { examDate: { gte: input.rangeStart, lte: input.rangeEnd } },
+            select: { id: true, title: true, examDate: true },
+          },
+        },
+      }),
+    ),
   getBatchByOrg: ownerProcedure.handler(async ({ context }) => {
     return await context.db.batch.findMany({
       where: {
