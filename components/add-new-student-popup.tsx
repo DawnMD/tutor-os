@@ -39,8 +39,9 @@ export const AddNewStudentPopup = () => {
     orpc.owner.student.addStundent.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: orpc.owner.student.getPendingStudentsByOrg.queryKey(),
+          queryKey: orpc.owner.student.getPendingInvitations.queryKey(),
         });
+        form.reset();
         setOpen(false);
       },
     }),
