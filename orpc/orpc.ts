@@ -24,7 +24,7 @@ const timingMiddleware = os.middleware(async ({ path, next }) => {
   const result = await next();
 
   const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  console.log(`[ORPC] ${path} took ${end - start}ms to execute`);
 
   return result;
 });
