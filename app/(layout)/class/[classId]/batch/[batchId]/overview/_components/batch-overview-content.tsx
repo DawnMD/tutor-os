@@ -72,7 +72,11 @@ export default function BatchOverviewContent({
           <StudentSummaryCard totalStudents={totalStudents} batch={batch} />
 
           {/* Upcoming Exams */}
-          <UpcomingExamsCard exams={batch.exams} />
+          <UpcomingExamsCard
+            exams={batch.exams}
+            classId={batch.classId}
+            batchId={batch.id}
+          />
 
           {/* Quick Actions */}
           <QuickActionsPanel batchId={batch.id} classId={batch.classId} />

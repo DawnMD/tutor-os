@@ -78,6 +78,13 @@ export function AddExamResultDialog({
             input: { batchId, studentId },
           }),
         });
+        // Keep the batch Exams page (aggregates + grading grid) in sync.
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.exam.getExamsPage.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.exam.getExamDetail.key(),
+        });
         setOpen(false);
       },
     }),

@@ -40,6 +40,10 @@ const BATCH_LINKS = ({
       href: `/class/${classId}/batch/${batchId}/attendance`,
     },
     {
+      name: "Exams",
+      href: `/class/${classId}/batch/${batchId}/exams`,
+    },
+    {
       name: "Students",
       href: `/class/${classId}/batch/${batchId}/students`,
     },

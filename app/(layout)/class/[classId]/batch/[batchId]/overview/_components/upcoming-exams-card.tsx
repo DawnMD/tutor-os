@@ -1,5 +1,7 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,16 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, BookOpen } from "lucide-react";
 import { Outputs } from "@/orpc/router";
+import { BookOpen, Calendar, Plus } from "lucide-react";
+import Link from "next/link";
 
 interface UpcomingExamsCardProps {
   exams: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>["exams"];
+  classId: string;
+  batchId: string;
 }
 
-export default function UpcomingExamsCard({ exams }: UpcomingExamsCardProps) {
+export default function UpcomingExamsCard({
+  exams,
+  classId,
+  batchId,
+}: UpcomingExamsCardProps) {
+  const examsHref = `/class/${classId}/batch/${batchId}/exams`;
   const today = new Date();
   const upcomingExams = exams
     .filter((exam) => new Date(exam.examDate) >= today)
@@ -38,9 +46,10 @@ export default function UpcomingExamsCard({ exams }: UpcomingExamsCardProps) {
         {upcomingExams.length > 0 ? (
           <>
             {upcomingExams.map((exam) => (
-              <div
+              <Link
                 key={exam.id}
-                className="p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                href={`${examsHref}?exam=${exam.id}`}
+                className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-start justify-between mb-2">
                   <p className="font-medium text-sm truncate flex-1">
@@ -54,7 +63,7 @@ export default function UpcomingExamsCard({ exams }: UpcomingExamsCardProps) {
                   <Calendar className="w-3 h-3" />
                   <span>{new Date(exam.examDate).toLocaleDateString()}</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </>
         ) : (
@@ -65,7 +74,12 @@ export default function UpcomingExamsCard({ exams }: UpcomingExamsCardProps) {
         )}
 
         {/* CTA Button */}
-        <Button variant="outline" className="w-full mt-2">
+        <Button
+          variant="outline"
+          nativeButton={false}
+          className="w-full mt-2"
+          render={<Link href={`${examsHref}?create=1`} />}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Create Exam
         </Button>
