@@ -128,14 +128,15 @@ model AttendanceRecord {
 }
 
 model Exam {
-  id         String       @id @default(cuid())
-  batchId    String
-  title      String
-  totalMarks Int
-  examDate   DateTime
-  createdAt  DateTime     @default(now())
-  batch      Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  results    ExamResult[]
+  id          String       @id @default(cuid())
+  batchId     String
+  title       String
+  totalMarks  Int
+  examDate    DateTime
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+  batch       Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  results     ExamResult[]
 
   @@unique([batchId, title])
   @@index([batchId])

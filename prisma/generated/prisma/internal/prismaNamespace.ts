@@ -1223,6 +1223,7 @@ export const ExamScalarFieldEnum = {
   title: 'title',
   totalMarks: 'totalMarks',
   examDate: 'examDate',
+  completedAt: 'completedAt',
   createdAt: 'createdAt'
 } as const
 
