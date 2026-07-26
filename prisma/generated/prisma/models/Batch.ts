@@ -29,6 +29,7 @@ export type BatchMinAggregateOutputType = {
   clerkOrganizationId: string | null
   classId: string | null
   name: string | null
+  color: string | null
   archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -39,6 +40,7 @@ export type BatchMaxAggregateOutputType = {
   clerkOrganizationId: string | null
   classId: string | null
   name: string | null
+  color: string | null
   archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -49,6 +51,7 @@ export type BatchCountAggregateOutputType = {
   clerkOrganizationId: number
   classId: number
   name: number
+  color: number
   archivedAt: number
   createdAt: number
   updatedAt: number
@@ -61,6 +64,7 @@ export type BatchMinAggregateInputType = {
   clerkOrganizationId?: true
   classId?: true
   name?: true
+  color?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -71,6 +75,7 @@ export type BatchMaxAggregateInputType = {
   clerkOrganizationId?: true
   classId?: true
   name?: true
+  color?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +86,7 @@ export type BatchCountAggregateInputType = {
   clerkOrganizationId?: true
   classId?: true
   name?: true
+  color?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -164,6 +170,7 @@ export type BatchGroupByOutputType = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color: string | null
   archivedAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -195,6 +202,7 @@ export type BatchWhereInput = {
   clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
+  color?: Prisma.StringNullableFilter<"Batch"> | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -210,6 +218,7 @@ export type BatchOrderByWithRelationInput = {
   clerkOrganizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -229,6 +238,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
+  color?: Prisma.StringNullableFilter<"Batch"> | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -244,6 +254,7 @@ export type BatchOrderByWithAggregationInput = {
   clerkOrganizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -260,6 +271,7 @@ export type BatchScalarWhereWithAggregatesInput = {
   clerkOrganizationId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   classId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   name?: Prisma.StringWithAggregatesFilter<"Batch"> | string
+  color?: Prisma.StringNullableWithAggregatesFilter<"Batch"> | string | null
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Batch"> | Date | string
@@ -269,6 +281,7 @@ export type BatchCreateInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -284,6 +297,7 @@ export type BatchUncheckedCreateInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -297,6 +311,7 @@ export type BatchUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -312,6 +327,7 @@ export type BatchUncheckedUpdateInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -326,6 +342,7 @@ export type BatchCreateManyInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -335,6 +352,7 @@ export type BatchUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -345,6 +363,7 @@ export type BatchUncheckedUpdateManyInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -370,6 +389,7 @@ export type BatchCountOrderByAggregateInput = {
   clerkOrganizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -380,6 +400,7 @@ export type BatchMaxOrderByAggregateInput = {
   clerkOrganizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -390,6 +411,7 @@ export type BatchMinOrderByAggregateInput = {
   clerkOrganizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -502,6 +524,7 @@ export type BatchCreateWithoutClassInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -515,6 +538,7 @@ export type BatchUncheckedCreateWithoutClassInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -558,6 +582,7 @@ export type BatchScalarWhereInput = {
   clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
+  color?: Prisma.StringNullableFilter<"Batch"> | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -567,6 +592,7 @@ export type BatchCreateWithoutSchedulesInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -581,6 +607,7 @@ export type BatchUncheckedCreateWithoutSchedulesInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -609,6 +636,7 @@ export type BatchUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -623,6 +651,7 @@ export type BatchUncheckedUpdateWithoutSchedulesInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -635,6 +664,7 @@ export type BatchCreateWithoutStudentsInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -649,6 +679,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -677,6 +708,7 @@ export type BatchUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -691,6 +723,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -703,6 +736,7 @@ export type BatchCreateWithoutSessionsInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -717,6 +751,7 @@ export type BatchUncheckedCreateWithoutSessionsInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -745,6 +780,7 @@ export type BatchUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -759,6 +795,7 @@ export type BatchUncheckedUpdateWithoutSessionsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -771,6 +808,7 @@ export type BatchCreateWithoutExamsInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -785,6 +823,7 @@ export type BatchUncheckedCreateWithoutExamsInput = {
   clerkOrganizationId: string
   classId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -813,6 +852,7 @@ export type BatchUpdateWithoutExamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -827,6 +867,7 @@ export type BatchUncheckedUpdateWithoutExamsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -839,6 +880,7 @@ export type BatchCreateManyClassInput = {
   id?: string
   clerkOrganizationId: string
   name: string
+  color?: string | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -848,6 +890,7 @@ export type BatchUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -861,6 +904,7 @@ export type BatchUncheckedUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -874,6 +918,7 @@ export type BatchUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -942,6 +987,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   clerkOrganizationId?: boolean
   classId?: boolean
   name?: boolean
+  color?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -958,6 +1004,7 @@ export type BatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   clerkOrganizationId?: boolean
   classId?: boolean
   name?: boolean
+  color?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -969,6 +1016,7 @@ export type BatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   clerkOrganizationId?: boolean
   classId?: boolean
   name?: boolean
+  color?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -980,12 +1028,13 @@ export type BatchSelectScalar = {
   clerkOrganizationId?: boolean
   classId?: boolean
   name?: boolean
+  color?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "classId" | "name" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
+export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "classId" | "name" | "color" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
 export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Batch$studentsArgs<ExtArgs>
@@ -1015,6 +1064,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     clerkOrganizationId: string
     classId: string
     name: string
+    color: string | null
     archivedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1450,6 +1500,7 @@ export interface BatchFieldRefs {
   readonly clerkOrganizationId: Prisma.FieldRef<"Batch", 'String'>
   readonly classId: Prisma.FieldRef<"Batch", 'String'>
   readonly name: Prisma.FieldRef<"Batch", 'String'>
+  readonly color: Prisma.FieldRef<"Batch", 'String'>
   readonly archivedAt: Prisma.FieldRef<"Batch", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Batch", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Batch", 'DateTime'>
