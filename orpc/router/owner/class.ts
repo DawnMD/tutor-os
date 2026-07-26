@@ -60,6 +60,7 @@ export const ownerClassRouter = {
           select: {
             id: true,
             name: true,
+            color: true,
             students: {
               select: {
                 studentId: true,
