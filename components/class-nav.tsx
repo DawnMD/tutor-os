@@ -12,6 +12,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { resolveBatchColor } from "@/lib/batch-colors";
+import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRightIcon } from "lucide-react";
@@ -86,6 +88,12 @@ export const ClassNav = () => {
                           nativeButton={false}
                           render={<SidebarMenuSubButton />}
                         >
+                          <span
+                            className={cn(
+                              "size-2 shrink-0 rounded-full",
+                              resolveBatchColor(batch.color, batch.id).dot,
+                            )}
+                          />
                           <span>{batch.name}</span>
                           <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/sub-collapsible:rotate-90" />
                         </CollapsibleTrigger>

@@ -12,6 +12,8 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
+import { resolveBatchColor } from "@/lib/batch-colors";
+import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Building, CheckIcon } from "lucide-react";
@@ -171,6 +173,12 @@ export const ClassCards = () => {
                   <Link href={`/class/${item.id}/batch/${batch.id}/overview`} />
                 }
               >
+                <span
+                  className={cn(
+                    "size-2 rounded-full",
+                    resolveBatchColor(batch.color, batch.id).dot,
+                  )}
+                />
                 {`Open ${batch.name}`}
               </Button>
             ))}

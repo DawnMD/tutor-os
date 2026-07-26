@@ -20,6 +20,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -32,6 +33,8 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { BATCH_COLOR_IDS, BATCH_COLORS } from "@/lib/batch-colors";
+import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -73,6 +76,7 @@ const formSchema = z.object({
     )
     .min(1, "Add at least one email address."),
   name: z.string(),
+  color: z.enum(BATCH_COLOR_IDS),
 });
 
 const DAY_LABELS = Object.fromEntries(
@@ -101,6 +105,7 @@ export const AddBatch = ({ classId }: { classId: string }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      color: BATCH_COLORS[0].id,
       schedules: [
         {
           dayOfWeek: 1,
@@ -120,6 +125,7 @@ export const AddBatch = ({ classId }: { classId: string }) => {
     toast.promise(
       mutateAsync({
         name: data.name,
+        color: data.color,
         schdeules: data.schedules.map((item) => ({
           day: item.dayOfWeek,
           start: item.startMinutes,
@@ -173,6 +179,33 @@ export const AddBatch = ({ classId }: { classId: string }) => {
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="color"
+                control={form.control}
+                render={({ field }) => (
+                  <Field>
+                    <FieldLabel>Color</FieldLabel>
+                    <RadioGroup
+                      aria-label="Batch color"
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                      className="flex flex-wrap gap-2"
+                    >
+                      {BATCH_COLORS.map((color) => (
+                        <RadioGroupItem
+                          key={color.id}
+                          value={color.id}
+                          aria-label={color.label}
+                          className={cn(
+                            "size-6 border-transparent transition-transform data-checked:scale-110 data-checked:ring-2 data-checked:ring-ring data-checked:ring-offset-2 data-checked:ring-offset-background",
+                            color.swatch,
+                          )}
+                        />
+                      ))}
+                    </RadioGroup>
                   </Field>
                 )}
               />

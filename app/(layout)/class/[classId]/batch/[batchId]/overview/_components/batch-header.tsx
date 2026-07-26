@@ -9,6 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { resolveBatchColor } from "@/lib/batch-colors";
+import { cn } from "@/lib/utils";
 import { Outputs } from "@/orpc/router";
 import { Archive, Edit2, Menu } from "lucide-react";
 import { AddStudent } from "./add-student";
@@ -22,6 +24,12 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b pb-6">
       <div className="space-y-2">
         <div className="flex items-center gap-3 flex-wrap">
+          <span
+            className={cn(
+              "size-3 shrink-0 rounded-full",
+              resolveBatchColor(batch.color, batch.id).dot,
+            )}
+          />
           <h1 className="text-3xl font-bold tracking-tight">{batch.name}</h1>
           <Badge variant="secondary">{batch.class.name}</Badge>
           {!batch.archivedAt && <Badge variant="default">Active</Badge>}

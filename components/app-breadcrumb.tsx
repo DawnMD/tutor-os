@@ -19,6 +19,7 @@ type Crumb = { label: string; href?: string };
 
 const STATIC_LABELS: Record<string, string> = {
   dashboard: "Dashboard",
+  calendar: "Calendar",
   students: "Students",
   class: "Class",
 };

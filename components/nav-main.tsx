@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Building,
+  CalendarIcon,
   ChevronRightIcon,
   LayoutDashboardIcon,
   Users,
@@ -33,6 +34,12 @@ export function NavMain() {
           <SidebarMenuButton render={<Link href={"/dashboard"} />}>
             <LayoutDashboardIcon />
             <span>Dashboard</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton render={<Link href={"/calendar"} />}>
+            <CalendarIcon />
+            <span>Calendar</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
         <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
