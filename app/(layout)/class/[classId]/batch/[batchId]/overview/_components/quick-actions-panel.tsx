@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play, CheckSquare, BookOpen, FileText, UserPlus } from "lucide-react";
+import Link from "next/link";
 
 interface QuickActionsPanelProps {
   batchId: string;
@@ -13,13 +14,21 @@ export default function QuickActionsPanel({
   batchId,
   classId,
 }: QuickActionsPanelProps) {
-  const actions = [
+  const actions: {
+    icon: typeof Play;
+    label: string;
+    description: string;
+    color: string;
+    bgColor: string;
+    href?: string;
+  }[] = [
     {
       icon: Play,
       label: "Start Session",
       description: "Begin today's class",
       color: "text-blue-600 dark:text-blue-400",
       bgColor: "bg-blue-50 dark:bg-blue-950",
+      href: `/class/${classId}/batch/${batchId}/sessions`,
     },
     {
       icon: CheckSquare,
@@ -64,6 +73,8 @@ export default function QuickActionsPanel({
               key={action.label}
               variant="outline"
               className="w-full h-auto justify-start p-3 hover:bg-muted"
+              nativeButton={!action.href}
+              render={action.href ? <Link href={action.href} /> : undefined}
             >
               <div className={`p-2 rounded mr-3 ${action.bgColor}`}>
                 <IconComponent className={`w-4 h-4 ${action.color}`} />

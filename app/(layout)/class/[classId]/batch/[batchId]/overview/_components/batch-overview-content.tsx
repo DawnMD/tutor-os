@@ -59,7 +59,11 @@ export default function BatchOverviewContent({
           <WeeklyScheduleCard schedules={batch.schedules} />
 
           {/* Recent Sessions Card */}
-          <RecentSessionsCard sessions={batch.sessions} />
+          <RecentSessionsCard
+            sessions={batch.sessions}
+            classId={batch.classId}
+            batchId={batch.id}
+          />
         </div>
 
         {/* Right Column - Sidebar */}

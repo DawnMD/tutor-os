@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Outputs } from "@/orpc/router";
 import { AlertCircle, CheckCircle2, Play } from "lucide-react";
+import Link from "next/link";
 
 interface TodaySessionCardProps {
   batch: NonNullable<Outputs["owner"]["batch"]["getBatchDataById"]>;
 }
 
 export default function TodaySessionCard({ batch }: TodaySessionCardProps) {
+  const sessionsHref = `/class/${batch.classId}/batch/${batch.id}/sessions`;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -121,7 +123,11 @@ export default function TodaySessionCard({ batch }: TodaySessionCardProps) {
         {/* Actions */}
         <div className="flex gap-2 pt-4">
           {!todaySession ? (
-            <Button className="w-full">
+            <Button
+              className="w-full"
+              nativeButton={false}
+              render={<Link href={sessionsHref} />}
+            >
               <Play className="w-4 h-4 mr-2" />
               Start Session
             </Button>
@@ -130,7 +136,14 @@ export default function TodaySessionCard({ batch }: TodaySessionCardProps) {
               <Button variant="outline" className="flex-1">
                 Mark Attendance
               </Button>
-              <Button variant="outline" className="flex-1">
+              <Button
+                variant="outline"
+                className="flex-1"
+                nativeButton={false}
+                render={
+                  <Link href={`${sessionsHref}?session=${todaySession.id}`} />
+                }
+              >
                 View Session
               </Button>
             </>

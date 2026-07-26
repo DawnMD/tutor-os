@@ -10,18 +10,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Outputs } from "@/orpc/router";
-import { BookOpen, CheckCircle2, Clock } from "lucide-react";
+import { ArrowRight, BookOpen, CheckCircle2, Clock } from "lucide-react";
+import Link from "next/link";
 
 interface RecentSessionsCardProps {
   sessions: NonNullable<
     Outputs["owner"]["batch"]["getBatchDataById"]
   >["sessions"];
+  classId: string;
+  batchId: string;
 }
 
 export default function RecentSessionsCard({
   sessions,
+  classId,
+  batchId,
 }: RecentSessionsCardProps) {
   const recentSessions = sessions.slice(0, 5);
+  const sessionsHref = `/class/${classId}/batch/${batchId}/sessions`;
 
   if (recentSessions.length === 0) {
     return (
@@ -35,9 +41,22 @@ export default function RecentSessionsCard({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Recent Sessions</CardTitle>
-        <CardDescription>Last {recentSessions.length} classes</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between space-y-0">
+        <div className="space-y-1.5">
+          <CardTitle className="text-lg">Recent Sessions</CardTitle>
+          <CardDescription>
+            Last {recentSessions.length} classes
+          </CardDescription>
+        </div>
+        <Button
+          variant="ghost"
+          nativeButton={false}
+          size="sm"
+          render={<Link href={sessionsHref} />}
+        >
+          View all
+          <ArrowRight className="w-4 h-4" />
+        </Button>
       </CardHeader>
       <CardContent className="space-y-3">
         {recentSessions.map((session) => (
@@ -69,7 +88,12 @@ export default function RecentSessionsCard({
                 )}
               </div>
             </div>
-            <Button variant="ghost" size="sm">
+            <Button
+              variant="ghost"
+              size="sm"
+              nativeButton={false}
+              render={<Link href={`${sessionsHref}?session=${session.id}`} />}
+            >
               View
             </Button>
           </div>
