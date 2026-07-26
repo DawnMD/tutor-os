@@ -147,6 +147,7 @@ export const BatchSessionScalarFieldEnum = {
   classDate: 'classDate',
   topic: 'topic',
   summary: 'summary',
+  completedAt: 'completedAt',
   createdAt: 'createdAt'
 } as const
 

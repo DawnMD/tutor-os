@@ -99,14 +99,15 @@ model BatchStudent {
 }
 
 model BatchSession {
-  id         String             @id @default(cuid())
-  batchId    String
-  classDate  DateTime
-  topic      String?
-  summary    String?
-  createdAt  DateTime           @default(now())
-  batch      Batch              @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  attendance AttendanceRecord[]
+  id          String             @id @default(cuid())
+  batchId     String
+  classDate   DateTime
+  topic       String?
+  summary     String?
+  completedAt DateTime?
+  createdAt   DateTime           @default(now())
+  batch       Batch              @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  attendance  AttendanceRecord[]
 
   @@unique([batchId, classDate])
   @@index([batchId])

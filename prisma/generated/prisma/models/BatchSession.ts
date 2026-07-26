@@ -30,6 +30,7 @@ export type BatchSessionMinAggregateOutputType = {
   classDate: Date | null
   topic: string | null
   summary: string | null
+  completedAt: Date | null
   createdAt: Date | null
 }
 
@@ -39,6 +40,7 @@ export type BatchSessionMaxAggregateOutputType = {
   classDate: Date | null
   topic: string | null
   summary: string | null
+  completedAt: Date | null
   createdAt: Date | null
 }
 
@@ -48,6 +50,7 @@ export type BatchSessionCountAggregateOutputType = {
   classDate: number
   topic: number
   summary: number
+  completedAt: number
   createdAt: number
   _all: number
 }
@@ -59,6 +62,7 @@ export type BatchSessionMinAggregateInputType = {
   classDate?: true
   topic?: true
   summary?: true
+  completedAt?: true
   createdAt?: true
 }
 
@@ -68,6 +72,7 @@ export type BatchSessionMaxAggregateInputType = {
   classDate?: true
   topic?: true
   summary?: true
+  completedAt?: true
   createdAt?: true
 }
 
@@ -77,6 +82,7 @@ export type BatchSessionCountAggregateInputType = {
   classDate?: true
   topic?: true
   summary?: true
+  completedAt?: true
   createdAt?: true
   _all?: true
 }
@@ -159,6 +165,7 @@ export type BatchSessionGroupByOutputType = {
   classDate: Date
   topic: string | null
   summary: string | null
+  completedAt: Date | null
   createdAt: Date
   _count: BatchSessionCountAggregateOutputType | null
   _min: BatchSessionMinAggregateOutputType | null
@@ -189,6 +196,7 @@ export type BatchSessionWhereInput = {
   classDate?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   topic?: Prisma.StringNullableFilter<"BatchSession"> | string | null
   summary?: Prisma.StringNullableFilter<"BatchSession"> | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"BatchSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
   attendance?: Prisma.AttendanceRecordListRelationFilter
@@ -200,6 +208,7 @@ export type BatchSessionOrderByWithRelationInput = {
   classDate?: Prisma.SortOrder
   topic?: Prisma.SortOrderInput | Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   batch?: Prisma.BatchOrderByWithRelationInput
   attendance?: Prisma.AttendanceRecordOrderByRelationAggregateInput
@@ -215,6 +224,7 @@ export type BatchSessionWhereUniqueInput = Prisma.AtLeast<{
   classDate?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   topic?: Prisma.StringNullableFilter<"BatchSession"> | string | null
   summary?: Prisma.StringNullableFilter<"BatchSession"> | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"BatchSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
   attendance?: Prisma.AttendanceRecordListRelationFilter
@@ -226,6 +236,7 @@ export type BatchSessionOrderByWithAggregationInput = {
   classDate?: Prisma.SortOrder
   topic?: Prisma.SortOrderInput | Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.BatchSessionCountOrderByAggregateInput
   _max?: Prisma.BatchSessionMaxOrderByAggregateInput
@@ -241,6 +252,7 @@ export type BatchSessionScalarWhereWithAggregatesInput = {
   classDate?: Prisma.DateTimeWithAggregatesFilter<"BatchSession"> | Date | string
   topic?: Prisma.StringNullableWithAggregatesFilter<"BatchSession"> | string | null
   summary?: Prisma.StringNullableWithAggregatesFilter<"BatchSession"> | string | null
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"BatchSession"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BatchSession"> | Date | string
 }
 
@@ -249,6 +261,7 @@ export type BatchSessionCreateInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   batch: Prisma.BatchCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceRecordCreateNestedManyWithoutSessionInput
@@ -260,6 +273,7 @@ export type BatchSessionUncheckedCreateInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   attendance?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutSessionInput
 }
@@ -269,6 +283,7 @@ export type BatchSessionUpdateInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.BatchUpdateOneRequiredWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceRecordUpdateManyWithoutSessionNestedInput
@@ -280,6 +295,7 @@ export type BatchSessionUncheckedUpdateInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutSessionNestedInput
 }
@@ -290,6 +306,7 @@ export type BatchSessionCreateManyInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -298,6 +315,7 @@ export type BatchSessionUpdateManyMutationInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -307,6 +325,7 @@ export type BatchSessionUncheckedUpdateManyInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -331,6 +350,7 @@ export type BatchSessionCountOrderByAggregateInput = {
   classDate?: Prisma.SortOrder
   topic?: Prisma.SortOrder
   summary?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -340,6 +360,7 @@ export type BatchSessionMaxOrderByAggregateInput = {
   classDate?: Prisma.SortOrder
   topic?: Prisma.SortOrder
   summary?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -349,6 +370,7 @@ export type BatchSessionMinOrderByAggregateInput = {
   classDate?: Prisma.SortOrder
   topic?: Prisma.SortOrder
   summary?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -418,6 +440,7 @@ export type BatchSessionCreateWithoutBatchInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   attendance?: Prisma.AttendanceRecordCreateNestedManyWithoutSessionInput
 }
@@ -427,6 +450,7 @@ export type BatchSessionUncheckedCreateWithoutBatchInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   attendance?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutSessionInput
 }
@@ -466,6 +490,7 @@ export type BatchSessionScalarWhereInput = {
   classDate?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
   topic?: Prisma.StringNullableFilter<"BatchSession"> | string | null
   summary?: Prisma.StringNullableFilter<"BatchSession"> | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"BatchSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BatchSession"> | Date | string
 }
 
@@ -474,6 +499,7 @@ export type BatchSessionCreateWithoutAttendanceInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   batch: Prisma.BatchCreateNestedOneWithoutSessionsInput
 }
@@ -484,6 +510,7 @@ export type BatchSessionUncheckedCreateWithoutAttendanceInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -508,6 +535,7 @@ export type BatchSessionUpdateWithoutAttendanceInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.BatchUpdateOneRequiredWithoutSessionsNestedInput
 }
@@ -518,6 +546,7 @@ export type BatchSessionUncheckedUpdateWithoutAttendanceInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -526,6 +555,7 @@ export type BatchSessionCreateManyBatchInput = {
   classDate: Date | string
   topic?: string | null
   summary?: string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -534,6 +564,7 @@ export type BatchSessionUpdateWithoutBatchInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceRecordUpdateManyWithoutSessionNestedInput
 }
@@ -543,6 +574,7 @@ export type BatchSessionUncheckedUpdateWithoutBatchInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutSessionNestedInput
 }
@@ -552,6 +584,7 @@ export type BatchSessionUncheckedUpdateManyWithoutBatchInput = {
   classDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -592,6 +625,7 @@ export type BatchSessionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   classDate?: boolean
   topic?: boolean
   summary?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
   attendance?: boolean | Prisma.BatchSession$attendanceArgs<ExtArgs>
@@ -604,6 +638,7 @@ export type BatchSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   classDate?: boolean
   topic?: boolean
   summary?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batchSession"]>
@@ -614,6 +649,7 @@ export type BatchSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   classDate?: boolean
   topic?: boolean
   summary?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batchSession"]>
@@ -624,10 +660,11 @@ export type BatchSessionSelectScalar = {
   classDate?: boolean
   topic?: boolean
   summary?: boolean
+  completedAt?: boolean
   createdAt?: boolean
 }
 
-export type BatchSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "batchId" | "classDate" | "topic" | "summary" | "createdAt", ExtArgs["result"]["batchSession"]>
+export type BatchSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "batchId" | "classDate" | "topic" | "summary" | "completedAt" | "createdAt", ExtArgs["result"]["batchSession"]>
 export type BatchSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
   attendance?: boolean | Prisma.BatchSession$attendanceArgs<ExtArgs>
@@ -652,6 +689,7 @@ export type $BatchSessionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     classDate: Date
     topic: string | null
     summary: string | null
+    completedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["batchSession"]>
   composites: {}
@@ -1083,6 +1121,7 @@ export interface BatchSessionFieldRefs {
   readonly classDate: Prisma.FieldRef<"BatchSession", 'DateTime'>
   readonly topic: Prisma.FieldRef<"BatchSession", 'String'>
   readonly summary: Prisma.FieldRef<"BatchSession", 'String'>
+  readonly completedAt: Prisma.FieldRef<"BatchSession", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"BatchSession", 'DateTime'>
 }
     
