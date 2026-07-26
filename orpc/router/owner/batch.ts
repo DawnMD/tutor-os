@@ -101,28 +101,145 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.db.batch.findUnique({
-        where: { id: input.batchId },
-        include: {
-          class: true,
+      const batch = await context.db.batch.findFirst({
+        where: {
+          id: input.batchId,
+          clerkOrganizationId: context.organizationId,
+        },
+        select: {
+          id: true,
+          name: true,
+          color: true,
+          classId: true,
+          archivedAt: true,
+          createdAt: true,
+          class: { select: { id: true, name: true } },
+          _count: { select: { students: true } }, // total incl. archived
           students: {
-            include: {
-              student: true,
+            where: { student: { archivedAt: null } },
+            orderBy: { joinedAt: "desc" },
+            select: {
+              studentId: true,
+              joinedAt: true,
+              student: { select: { id: true, fullName: true, email: true } },
             },
           },
-          schedules: true,
+          schedules: {
+            orderBy: { dayOfWeek: "asc" },
+            select: {
+              id: true,
+              dayOfWeek: true,
+              startMinutes: true,
+              endMinutes: true,
+            },
+          },
           sessions: {
             orderBy: { classDate: "desc" },
             take: 10,
-            include: {
-              attendance: true,
+            select: {
+              id: true,
+              classDate: true,
+              topic: true,
+              summary: true,
+              completedAt: true,
+              attendance: { select: { studentId: true, status: true } },
             },
           },
           exams: {
             orderBy: { examDate: "desc" },
             take: 5,
+            select: {
+              id: true,
+              title: true,
+              totalMarks: true,
+              examDate: true,
+              completedAt: true,
+              results: { select: { marks: true } },
+            },
           },
         },
+      });
+
+      if (!batch) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return batch;
+    }),
+  updateBatch: ownerProcedure
+    .input(
+      z.object({
+        batchId: z.string(),
+        name: z.string().trim().min(1),
+        color: z.enum(BATCH_COLOR_IDS),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const batch = await context.db.batch.findFirst({
+        where: {
+          id: input.batchId,
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (!batch) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return await context.db.batch.update({
+        where: { id: input.batchId },
+        data: { name: input.name, color: input.color },
+      });
+    }),
+  archieveBatch: ownerProcedure
+    .input(
+      z.object({
+        batchId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const batch = await context.db.batch.findFirst({
+        where: {
+          id: input.batchId,
+          clerkOrganizationId: context.organizationId,
+          archivedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (!batch) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return await context.db.batch.update({
+        where: { id: input.batchId },
+        data: { archivedAt: new Date() },
+      });
+    }),
+  unArchieveBatch: ownerProcedure
+    .input(
+      z.object({
+        batchId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const batch = await context.db.batch.findFirst({
+        where: {
+          id: input.batchId,
+          clerkOrganizationId: context.organizationId,
+        },
+        select: { id: true },
+      });
+
+      if (!batch) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return await context.db.batch.update({
+        where: { id: input.batchId },
+        data: { archivedAt: null },
       });
     }),
   addStudent: ownerProcedure
