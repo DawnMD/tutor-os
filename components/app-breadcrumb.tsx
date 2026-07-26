@@ -49,6 +49,13 @@ export function AppBreadcrumb() {
   const crumbs = buildCrumbs();
 
   function buildCrumbs(): Crumb[] {
+    if (segments[0] === "students") {
+      const crumbs: Crumb[] = [{ label: "Students", href: "/students/joined" }];
+      if (segments[1] === "joined") crumbs.push({ label: "Joined" });
+      if (segments[1] === "pending") crumbs.push({ label: "Pending" });
+      return crumbs;
+    }
+
     if (!isClassRoute) {
       const root = segments[0] ?? "dashboard";
       return [{ label: STATIC_LABELS[root] ?? root }];

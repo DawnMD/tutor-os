@@ -12,6 +12,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import {
   Building,
@@ -32,12 +35,34 @@ export function NavMain() {
             <span>Dashboard</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton render={<Link href={"/students"} />}>
+        <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
+          <CollapsibleTrigger
+            nativeButton={false}
+            render={<SidebarMenuButton tooltip={"Students"} />}
+          >
             <Users />
             <span>Students</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+            <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton
+                  render={<Link href={"/students/joined"} />}
+                >
+                  Joined
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton
+                  render={<Link href={"/students/pending"} />}
+                >
+                  Pending
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </Collapsible>
         <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
           <CollapsibleTrigger
             nativeButton={false}
