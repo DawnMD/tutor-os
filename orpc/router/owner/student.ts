@@ -1,5 +1,5 @@
 import { getBaseUrl } from "@/lib/get-base-url";
-import { ownerProcedure } from "@/orpc/orpc";
+import { OrganizationRole, ownerProcedure } from "@/orpc/orpc";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
 
@@ -15,8 +15,71 @@ export const ownerStudentRouter = {
         redirectUrl: `${getBaseUrl()}/accept-invitation`,
         emailAddress: input.email,
         organizationId: context.organizationId,
-        role: "org:member",
+        role: OrganizationRole.STUDENT,
       });
+    }),
+  getPendingInvitations: ownerProcedure.handler(async ({ context }) => {
+    const { data } =
+      await context.clerk.organizations.getOrganizationInvitationList({
+        organizationId: context.organizationId,
+        status: ["pending"], // list otherwise includes accepted/revoked
+        limit: 500, // Clerk default page size is 10; 500 is the max
+      });
+
+    // Whitelist plain fields — raw OrganizationInvitation includes
+    // privateMetadata/url which must not leak over RPC.
+    return data.map((inv) => ({
+      id: inv.id,
+      emailAddress: inv.emailAddress,
+      status: inv.status,
+      createdAt: inv.createdAt, // unix ms number
+      expiresAt: inv.expiresAt, // unix ms number
+    }));
+  }),
+  revokeInvitation: ownerProcedure
+    .input(
+      z.object({
+        invitationId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      await context.clerk.organizations.revokeOrganizationInvitation({
+        organizationId: context.organizationId,
+        invitationId: input.invitationId,
+        requestingUserId: context.userId,
+      });
+
+      return true;
+    }),
+  resendInvitation: ownerProcedure
+    .input(
+      z.object({
+        invitationId: z.string(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      // Single server procedure (not client-side revoke+create) so it can't
+      // half-fail on the client and the email comes from the trusted record.
+      const existing =
+        await context.clerk.organizations.getOrganizationInvitation({
+          organizationId: context.organizationId,
+          invitationId: input.invitationId,
+        });
+
+      await context.clerk.organizations.revokeOrganizationInvitation({
+        organizationId: context.organizationId,
+        invitationId: input.invitationId,
+        requestingUserId: context.userId,
+      });
+
+      await context.clerk.organizations.createOrganizationInvitation({
+        redirectUrl: `${getBaseUrl()}/accept-invitation`,
+        emailAddress: existing.emailAddress,
+        organizationId: context.organizationId,
+        role: OrganizationRole.STUDENT,
+      });
+
+      return true;
     }),
   archieveStudent: ownerProcedure
     .input(
