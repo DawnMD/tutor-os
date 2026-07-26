@@ -1,3 +1,4 @@
+import { OrganizationRole } from "@/orpc/orpc";
 import { db } from "@/prisma/db";
 import { OrganizationMembershipWebhookEvent } from "@clerk/nextjs/server";
 import { verifyWebhook, WebhookEvent } from "@clerk/nextjs/webhooks";
@@ -6,7 +7,7 @@ import { NextRequest } from "next/server";
 async function onOrganizationMembershipCreated(
   event: OrganizationMembershipWebhookEvent,
 ) {
-  if (event.data.role !== "org:member") {
+  if (event.data.role !== OrganizationRole.STUDENT) {
     return;
   }
 

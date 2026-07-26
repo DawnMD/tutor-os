@@ -2,9 +2,9 @@ import { env } from "@/env";
 import type { Context } from "@/orpc/context";
 import { ORPCError, os } from "@orpc/server";
 
-const OrganizationRole = {
+export const OrganizationRole = {
   OWNER: "org:admin",
-  STUDENT: "org:student",
+  STUDENT: "org:member",
 } as const;
 
 type OrganizationRole =
