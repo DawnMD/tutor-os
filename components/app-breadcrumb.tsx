@@ -79,6 +79,8 @@ export function AppBreadcrumb() {
 
     if (tab === "overview") {
       crumbs.push({ label: "Overview" });
+    } else if (tab === "sessions") {
+      crumbs.push({ label: "Sessions" });
     } else if (tab === "students") {
       crumbs.push({
         label: "Students",
