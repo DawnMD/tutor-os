@@ -37,7 +37,6 @@ export function NavMain() {
         </SidebarMenuItem>
         <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
           <CollapsibleTrigger
-            nativeButton={false}
             render={<SidebarMenuButton tooltip={"Students"} />}
           >
             <Users />
