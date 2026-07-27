@@ -34,9 +34,11 @@ const formSchema = z.object({
 export const AddStudent = ({
   batchName,
   batchId,
+  disabled = false,
 }: {
   batchName: string;
   batchId: string;
+  disabled?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -113,7 +115,9 @@ export const AddStudent = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen} disablePointerDismissal>
-      <DialogTrigger render={<Button variant="outline" size="sm" />}>
+      <DialogTrigger
+        render={<Button variant="outline" size="sm" disabled={disabled} />}
+      >
         <UserPlus className="w-4 h-4" />
         <span>Modify Students</span>
       </DialogTrigger>

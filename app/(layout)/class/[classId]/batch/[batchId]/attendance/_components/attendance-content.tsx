@@ -10,10 +10,12 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { getArchivedScope } from "@/lib/archived-error";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { isToday } from "date-fns";
 import { useState } from "react";
+import { BatchArchivedState } from "../../_components/batch-archived-state";
 import { AttendanceEmptyState } from "./attendance-empty-state";
 import { AttendanceHeader } from "./attendance-header";
 import { AttendanceHistoryCard } from "./attendance-history-card";
@@ -33,7 +35,7 @@ export default function AttendanceContent({
   batchId,
   initialSessionId,
 }: AttendanceContentProps) {
-  const { data: overview, isLoading } = useQuery(
+  const { data: overview, isLoading, error } = useQuery(
     orpc.owner.attendance.getAttendanceOverview.queryOptions({
       input: { batchId },
     }),
@@ -47,6 +49,11 @@ export default function AttendanceContent({
 
   if (isLoading) {
     return <AttendanceSkeleton />;
+  }
+
+  const archivedScope = getArchivedScope(error);
+  if (archivedScope === "batch" || archivedScope === "class") {
+    return <BatchArchivedState scope={archivedScope} />;
   }
 
   if (!overview) {

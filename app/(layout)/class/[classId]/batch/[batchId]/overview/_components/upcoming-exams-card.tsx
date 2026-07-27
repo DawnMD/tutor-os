@@ -36,8 +36,8 @@ export default function UpcomingExamsCard({
   // Most recent exams that actually have graded results (exams arrive newest-first).
   const recentResults = exams
     .map((exam) => ({ exam, avg: examAveragePct(exam) }))
-    .filter((r): r is { exam: (typeof exams)[number]; avg: number } =>
-      r.avg != null,
+    .filter(
+      (r): r is { exam: (typeof exams)[number]; avg: number } => r.avg != null,
     )
     .slice(0, 3);
 
@@ -60,7 +60,7 @@ export default function UpcomingExamsCard({
               <Link
                 key={exam.id}
                 href={`${examsHref}?exam=${exam.id}`}
-                className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                className="block p-3 border hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-start justify-between mb-2">
                   <p className="font-medium text-sm truncate flex-1">
@@ -92,7 +92,7 @@ export default function UpcomingExamsCard({
               <Link
                 key={exam.id}
                 href={`${examsHref}?exam=${exam.id}`}
-                className="flex items-center justify-between gap-2 rounded-lg border p-3 hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between gap-2 border p-3 hover:bg-muted/50 transition-colors"
               >
                 <div className="min-w-0">
                   <p className="font-medium text-sm truncate">{exam.title}</p>
@@ -102,7 +102,10 @@ export default function UpcomingExamsCard({
                   </div>
                 </div>
                 <span
-                  className={cn("text-sm font-semibold shrink-0", gradeColor(avg))}
+                  className={cn(
+                    "text-sm font-semibold shrink-0",
+                    gradeColor(avg),
+                  )}
                 >
                   {avg}% · {gradeFromPercentage(avg)}
                 </span>

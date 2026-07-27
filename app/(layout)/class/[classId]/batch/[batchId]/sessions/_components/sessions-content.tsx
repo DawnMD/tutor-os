@@ -9,11 +9,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { getArchivedScope } from "@/lib/archived-error";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, SearchX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { BatchArchivedState } from "../../_components/batch-archived-state";
 import { SessionDetailDrawer } from "./session-detail-drawer";
 import {
   SessionFormDialog,
@@ -45,7 +47,7 @@ export default function SessionsContent({
   initialSessionId,
 }: SessionsContentProps) {
   const router = useRouter();
-  const { data: batch, isLoading } = useQuery(
+  const { data: batch, isLoading, error } = useQuery(
     orpc.owner.batchSession.getSessionsPage.queryOptions({
       input: { batchId },
     }),
@@ -92,6 +94,11 @@ export default function SessionsContent({
 
   if (isLoading) {
     return <SessionsSkeleton />;
+  }
+
+  const archivedScope = getArchivedScope(error);
+  if (archivedScope === "batch" || archivedScope === "class") {
+    return <BatchArchivedState scope={archivedScope} />;
   }
 
   if (!batch) {

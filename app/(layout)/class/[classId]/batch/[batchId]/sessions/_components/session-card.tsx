@@ -102,7 +102,7 @@ export function SessionCard({
 
         {/* Attendance */}
         {summary.total > 0 ? (
-          <div className="flex flex-wrap items-center gap-4 rounded-md bg-muted/40 px-3 py-2">
+          <div className="flex flex-wrap items-center gap-4 bg-muted/40 px-3 py-2">
             <AttendanceStat
               label="Present"
               value={summary.present}
@@ -130,7 +130,7 @@ export function SessionCard({
             </span>
           </div>
         ) : (
-          <div className="flex items-center gap-2 rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 border border-dashed px-3 py-2 text-xs text-muted-foreground">
             <Users className="size-3.5" />
             Attendance not marked yet
           </div>

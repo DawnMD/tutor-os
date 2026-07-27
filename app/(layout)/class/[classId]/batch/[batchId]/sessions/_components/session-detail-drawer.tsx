@@ -213,7 +213,7 @@ export function SessionDetailDrawer({
                 {STATUS_ROWS.map((row) => (
                   <div
                     key={row.key}
-                    className="flex items-center justify-between rounded-md bg-muted/40 px-3 py-2"
+                    className="flex items-center justify-between bg-muted/40 px-3 py-2"
                   >
                     <span className="flex items-center gap-2 text-sm">
                       <span className={cn("size-2 rounded-full", row.dot)} />
@@ -226,7 +226,7 @@ export function SessionDetailDrawer({
                 ))}
               </div>
             ) : (
-              <div className="flex items-center gap-2 rounded-md border border-dashed px-3 py-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 border border-dashed px-3 py-3 text-sm text-muted-foreground">
                 <Users className="size-4" />
                 Attendance has not been marked for this session.
               </div>
@@ -246,7 +246,7 @@ export function SessionDetailDrawer({
           {/* Attachments (future) */}
           <section className="space-y-3">
             <SectionLabel>Attachments</SectionLabel>
-            <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed px-4 py-6 text-center">
+            <div className="flex flex-col items-center gap-2 border border-dashed px-4 py-6 text-center">
               <div className="flex gap-2 text-muted-foreground">
                 <ImageIcon className="size-5" />
                 <Paperclip className="size-5" />

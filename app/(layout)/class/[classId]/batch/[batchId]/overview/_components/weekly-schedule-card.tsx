@@ -55,7 +55,7 @@ export default function WeeklyScheduleCard({
           {sortedSchedules.map((schedule) => (
             <div
               key={schedule.id}
-              className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+              className="flex items-center justify-between p-3 bg-muted/50 hover:bg-muted transition-colors"
             >
               <div className="flex items-center gap-3">
                 <Badge variant="outline" className="w-12 text-center">

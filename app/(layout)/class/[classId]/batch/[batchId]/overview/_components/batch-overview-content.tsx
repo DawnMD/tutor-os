@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Empty,
@@ -8,7 +9,9 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { orpc } from "@/orpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TriangleAlert } from "lucide-react";
+import { toast } from "sonner";
 import AttendanceChartCard from "./attendance-chart-card";
 import BatchHeader from "./batch-header";
 import BatchOverviewSkeleton from "./batch-overview-skeleton";
@@ -27,6 +30,7 @@ interface BatchOverviewContentProps {
 export default function BatchOverviewContent({
   batchId,
 }: BatchOverviewContentProps) {
+  const queryClient = useQueryClient();
   const { data: batch, isLoading, isError } = useQuery(
     orpc.owner.batch.getBatchDataById.queryOptions({
       input: {
@@ -34,6 +38,16 @@ export default function BatchOverviewContent({
       },
     }),
   );
+
+  const { mutateAsync: unArchieveClass, isPending: isRestoringClass } =
+    useMutation(
+      orpc.owner.class.unArchieveClass.mutationOptions({
+        onSuccess: () => {
+          // Restoring the class re-enables this batch everywhere.
+          queryClient.invalidateQueries();
+        },
+      }),
+    );
 
   if (isLoading) {
     return <BatchOverviewSkeleton />;
@@ -58,9 +72,43 @@ export default function BatchOverviewContent({
   // Roster is pre-filtered to active students server-side.
   const activeStudents = batch.students.length;
   const totalStudents = batch._count.students;
+  const classArchived = Boolean(batch.class.archivedAt);
+
+  const onRestoreClass = () => {
+    toast.promise(unArchieveClass({ id: batch.classId }), {
+      loading: "Restoring class...",
+      success: "Class restored",
+      error: (err) =>
+        err instanceof Error ? err.message : "Failed to restore class",
+    });
+  };
 
   return (
     <div className="space-y-6">
+      {classArchived && (
+        <Card className="border-dashed border-destructive/50 bg-destructive/5 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <TriangleAlert className="mt-0.5 size-5 shrink-0 text-destructive" />
+              <div className="space-y-0.5">
+                <p className="text-sm font-medium">Class archived</p>
+                <p className="text-sm text-muted-foreground">
+                  The class &ldquo;{batch.class.name}&rdquo; is archived. Restore
+                  the class to make changes to this batch.
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={onRestoreClass}
+              disabled={isRestoringClass}
+              className="shrink-0"
+            >
+              Restore Class
+            </Button>
+          </div>
+        </Card>
+      )}
+
       {/* Batch Header */}
       <BatchHeader batch={batch} />
 

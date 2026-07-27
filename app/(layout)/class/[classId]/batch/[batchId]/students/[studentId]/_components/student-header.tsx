@@ -13,6 +13,7 @@ import {
 import { format } from "date-fns";
 import {
   Archive,
+  ArchiveRestore,
   ArrowRightLeft,
   CalendarDays,
   GraduationCap,
@@ -32,9 +33,10 @@ export function StudentHeader({ student }: StudentHeaderProps) {
   const batchName = membership?.batch.name ?? "—";
   const className = membership?.batch.class.name ?? "—";
   const joinedAt = membership?.joinedAt;
-  const isActive = true; // scoped student is fetched as non-archived
+  const isActive = !student.archivedAt;
 
-  const { openEdit, openMove, openArchive } = useStudentActions();
+  const { openEdit, openMove, openArchive, unarchive, isArchived } =
+    useStudentActions();
 
   return (
     <div className="flex flex-col gap-4 border-b pb-6 lg:flex-row lg:items-start lg:justify-between">
@@ -93,22 +95,29 @@ export function StudentHeader({ student }: StudentHeaderProps) {
             <span>Actions</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={openEdit}>
+            <DropdownMenuItem onClick={openEdit} disabled={isArchived}>
               <Pencil />
               Edit Student
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={openMove}>
+            <DropdownMenuItem onClick={openMove} disabled={isArchived}>
               <ArrowRightLeft />
               Move to Another Batch
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-destructive"
-              onClick={openArchive}
-            >
-              <Archive />
-              Archive Student
-            </DropdownMenuItem>
+            {isArchived ? (
+              <DropdownMenuItem onClick={unarchive}>
+                <ArchiveRestore />
+                Unarchive Student
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={openArchive}
+              >
+                <Archive />
+                Archive Student
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

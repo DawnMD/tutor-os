@@ -16,7 +16,8 @@ import {
 import { useStudentActions } from "./student-actions";
 
 export function QuickActionsCard() {
-  const { openMarkAttendance, openAddExamResult } = useStudentActions();
+  const { openMarkAttendance, openAddExamResult, isArchived } =
+    useStudentActions();
 
   const actions = [
     { icon: CheckSquare, label: "Mark Attendance", onClick: openMarkAttendance },
@@ -41,6 +42,7 @@ export function QuickActionsCard() {
             size="sm"
             className="w-full justify-start"
             onClick={action.onClick}
+            disabled={isArchived}
           >
             <action.icon />
             {action.label}

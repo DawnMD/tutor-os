@@ -7,10 +7,12 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { getArchivedScope } from "@/lib/archived-error";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { BatchArchivedState } from "../../_components/batch-archived-state";
 import { DeleteExamDialog } from "./delete-exam-dialog";
 import { ExamFormDialog, ExamFormMode } from "./exam-form-dialog";
 import { ExamGradingCard } from "./exam-grading-card";
@@ -38,7 +40,7 @@ export default function ExamsContent({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { data: batch, isLoading } = useQuery(
+  const { data: batch, isLoading, error } = useQuery(
     orpc.owner.exam.getExamsPage.queryOptions({ input: { batchId } }),
   );
 
@@ -53,6 +55,11 @@ export default function ExamsContent({
 
   if (isLoading) {
     return <ExamsSkeleton />;
+  }
+
+  const archivedScope = getArchivedScope(error);
+  if (archivedScope === "batch" || archivedScope === "class") {
+    return <BatchArchivedState scope={archivedScope} />;
   }
 
   if (!batch) {

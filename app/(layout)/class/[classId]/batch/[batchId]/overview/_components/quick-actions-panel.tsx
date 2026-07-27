@@ -72,7 +72,7 @@ export default function QuickActionsPanel({
               nativeButton={false}
               render={<Link href={action.href} />}
             >
-              <div className={`p-2 rounded mr-3 ${action.bgColor}`}>
+              <div className={`p-2 mr-3 ${action.bgColor}`}>
                 <IconComponent className={`w-4 h-4 ${action.color}`} />
               </div>
               <div className="text-left">

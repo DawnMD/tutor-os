@@ -62,7 +62,7 @@ export default function RecentSessionsCard({
         {recentSessions.map((session) => (
           <div
             key={session.id}
-            className="flex items-start justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+            className="flex items-start justify-between p-3 border hover:bg-muted/50 transition-colors"
           >
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">

@@ -30,6 +30,8 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const isArchived = Boolean(batch.archivedAt);
+  const classArchived = Boolean(batch.class.archivedAt);
+  const isEffectivelyArchived = isArchived || classArchived;
 
   const { mutateAsync: unarchive, isPending: isUnarchiving } = useMutation(
     orpc.owner.batch.unArchieveBatch.mutationOptions({
@@ -76,7 +78,9 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
           />
           <h1 className="text-3xl font-bold tracking-tight">{batch.name}</h1>
           <Badge variant="secondary">{batch.class.name}</Badge>
-          {isArchived ? (
+          {classArchived ? (
+            <Badge variant="outline">Class archived</Badge>
+          ) : isArchived ? (
             <Badge variant="outline">Archived</Badge>
           ) : (
             <Badge variant="default">Active</Badge>
@@ -90,7 +94,11 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
       </div>
 
       <div className="flex gap-2">
-        <AddStudent batchName={batch.name} batchId={batch.id} />
+        <AddStudent
+          batchName={batch.name}
+          batchId={batch.id}
+          disabled={isEffectivelyArchived}
+        />
         <DropdownMenu>
           <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
             <Menu />
@@ -98,14 +106,17 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               onClick={() => setEditOpen(true)}
-              disabled={isArchived}
+              disabled={isEffectivelyArchived}
             >
               <Edit2 className="w-4 h-4 mr-2" />
               Edit Batch
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {isArchived ? (
-              <DropdownMenuItem onClick={onUnarchive} disabled={isUnarchiving}>
+              <DropdownMenuItem
+                onClick={onUnarchive}
+                disabled={isUnarchiving || classArchived}
+              >
                 <ArchiveRestore className="w-4 h-4 mr-2" />
                 Unarchive Batch
               </DropdownMenuItem>

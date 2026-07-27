@@ -3,13 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DashboardKpis } from "@/lib/dashboard-stats";
 import Link from "next/link";
-import {
-  CalendarCheck,
-  Layers,
-  Mail,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { CalendarCheck, Layers, Mail, TrendingUp, Users } from "lucide-react";
 
 interface DashboardKpiCardsProps {
   kpis: DashboardKpis;
@@ -67,13 +61,15 @@ export function DashboardKpiCards({
       />
       <KpiTile
         title="Attendance"
-        value={kpis.attendanceRate30d == null ? "—" : `${kpis.attendanceRate30d}%`}
+        value={
+          kpis.attendanceRate30d == null ? "—" : `${kpis.attendanceRate30d}%`
+        }
         subtext="Last 30 days"
         icon={<TrendingUp className="h-4 w-4" />}
       />
       <Link
         href="/students/pending"
-        className="rounded-xl focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        className="focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
       >
         <KpiTile
           title="Pending invites"

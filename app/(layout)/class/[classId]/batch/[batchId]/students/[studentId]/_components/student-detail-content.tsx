@@ -1,8 +1,10 @@
 "use client";
 
+import { getArchivedScope } from "@/lib/archived-error";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { UserX } from "lucide-react";
+import { BatchArchivedState } from "../../../_components/batch-archived-state";
 import { EmptyState } from "./empty-state";
 import { QuickActionsCard } from "./quick-actions-card";
 import { StudentActionsProvider } from "./student-actions";
@@ -22,7 +24,7 @@ export function StudentDetailContent({
   batchId,
   studentId,
 }: StudentDetailContentProps) {
-  const { data: student, isLoading } = useQuery(
+  const { data: student, isLoading, error } = useQuery(
     orpc.owner.batchStudent.getStudentDashboard.queryOptions({
       input: { batchId, studentId },
     }),
@@ -30,6 +32,11 @@ export function StudentDetailContent({
 
   if (isLoading) {
     return <StudentDetailSkeleton />;
+  }
+
+  const archivedScope = getArchivedScope(error);
+  if (archivedScope === "batch" || archivedScope === "class") {
+    return <BatchArchivedState scope={archivedScope} />;
   }
 
   if (!student) {

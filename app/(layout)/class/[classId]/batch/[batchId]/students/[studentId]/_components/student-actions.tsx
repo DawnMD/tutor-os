@@ -1,6 +1,9 @@
 "use client";
 
+import { orpc } from "@/orpc/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { AddExamResultDialog } from "./add-exam-result-dialog";
 import { ArchiveStudentDialog } from "./archive-student-dialog";
 import { EditStudentDialog } from "./edit-student-dialog";
@@ -19,9 +22,11 @@ export type StudentTab =
 interface StudentActionsContextValue {
   tab: StudentTab;
   setTab: (tab: StudentTab) => void;
+  isArchived: boolean;
   openEdit: () => void;
   openMove: () => void;
   openArchive: () => void;
+  unarchive: () => void;
   openMarkAttendance: () => void;
   openAddExamResult: () => void;
 }
@@ -62,17 +67,48 @@ export function StudentActionsProvider({
   const [markAttendanceOpen, setMarkAttendanceOpen] = useState(false);
   const [addExamResultOpen, setAddExamResultOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+  const isArchived = Boolean(student.archivedAt);
+
+  const { mutateAsync: unArchieveStudent } = useMutation(
+    orpc.owner.student.unArchieveStudent.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batchStudent.getStudentDashboard.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.student.getAllStudents.queryKey(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batchStudent.getStudentsByBatch.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: orpc.owner.batch.getBatchDataById.key(),
+        });
+      },
+    }),
+  );
+
   const value = useMemo<StudentActionsContextValue>(
     () => ({
       tab,
       setTab,
+      isArchived,
       openEdit: () => setEditOpen(true),
       openMove: () => setMoveOpen(true),
       openArchive: () => setArchiveOpen(true),
+      unarchive: () => {
+        toast.promise(unArchieveStudent({ studentId }), {
+          loading: "Restoring student...",
+          success: "Student restored",
+          error: (err) =>
+            err instanceof Error ? err.message : "Failed to restore student",
+        });
+      },
       openMarkAttendance: () => setMarkAttendanceOpen(true),
       openAddExamResult: () => setAddExamResultOpen(true),
     }),
-    [tab],
+    [tab, isArchived, unArchieveStudent, studentId],
   );
 
   return (
