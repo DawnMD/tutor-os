@@ -17,3 +17,11 @@ export const AttendanceStatus = {
 } as const
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
+
+
+export const OverrideType = {
+  MOVED: 'MOVED',
+  EXTRA: 'EXTRA'
+} as const
+
+export type OverrideType = (typeof OverrideType)[keyof typeof OverrideType]

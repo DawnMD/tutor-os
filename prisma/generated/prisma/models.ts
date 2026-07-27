@@ -11,6 +11,8 @@
 export type * from './models/Class'
 export type * from './models/Student'
 export type * from './models/Batch'
+export type * from './models/Holiday'
+export type * from './models/ScheduleOverride'
 export type * from './models/BatchSchedule'
 export type * from './models/BatchStudent'
 export type * from './models/BatchSession'

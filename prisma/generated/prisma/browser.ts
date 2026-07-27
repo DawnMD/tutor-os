@@ -33,6 +33,16 @@ export type Student = Prisma.StudentModel
  */
 export type Batch = Prisma.BatchModel
 /**
+ * Model Holiday
+ * 
+ */
+export type Holiday = Prisma.HolidayModel
+/**
+ * Model ScheduleOverride
+ * 
+ */
+export type ScheduleOverride = Prisma.ScheduleOverrideModel
+/**
  * Model BatchSchedule
  * 
  */

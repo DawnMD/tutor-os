@@ -400,6 +400,8 @@ export const ModelName = {
   Class: 'Class',
   Student: 'Student',
   Batch: 'Batch',
+  Holiday: 'Holiday',
+  ScheduleOverride: 'ScheduleOverride',
   BatchSchedule: 'BatchSchedule',
   BatchStudent: 'BatchStudent',
   BatchSession: 'BatchSession',
@@ -421,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "class" | "student" | "batch" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult"
+    modelProps: "class" | "student" | "batch" | "holiday" | "scheduleOverride" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -644,6 +646,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BatchCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BatchCountAggregateOutputType> | number
+        }
+      }
+    }
+    Holiday: {
+      payload: Prisma.$HolidayPayload<ExtArgs>
+      fields: Prisma.HolidayFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HolidayFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HolidayFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        findFirst: {
+          args: Prisma.HolidayFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HolidayFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        findMany: {
+          args: Prisma.HolidayFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>[]
+        }
+        create: {
+          args: Prisma.HolidayCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        createMany: {
+          args: Prisma.HolidayCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HolidayCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>[]
+        }
+        delete: {
+          args: Prisma.HolidayDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        update: {
+          args: Prisma.HolidayUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        deleteMany: {
+          args: Prisma.HolidayDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HolidayUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HolidayUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>[]
+        }
+        upsert: {
+          args: Prisma.HolidayUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HolidayPayload>
+        }
+        aggregate: {
+          args: Prisma.HolidayAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHoliday>
+        }
+        groupBy: {
+          args: Prisma.HolidayGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HolidayGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HolidayCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HolidayCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScheduleOverride: {
+      payload: Prisma.$ScheduleOverridePayload<ExtArgs>
+      fields: Prisma.ScheduleOverrideFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduleOverrideFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduleOverrideFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduleOverrideFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduleOverrideFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        findMany: {
+          args: Prisma.ScheduleOverrideFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>[]
+        }
+        create: {
+          args: Prisma.ScheduleOverrideCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        createMany: {
+          args: Prisma.ScheduleOverrideCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScheduleOverrideCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>[]
+        }
+        delete: {
+          args: Prisma.ScheduleOverrideDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        update: {
+          args: Prisma.ScheduleOverrideUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduleOverrideDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduleOverrideUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScheduleOverrideUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>[]
+        }
+        upsert: {
+          args: Prisma.ScheduleOverrideUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleOverridePayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduleOverrideAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduleOverride>
+        }
+        groupBy: {
+          args: Prisma.ScheduleOverrideGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleOverrideGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduleOverrideCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleOverrideCountAggregateOutputType> | number
         }
       }
     }
@@ -1174,6 +1324,32 @@ export const BatchScalarFieldEnum = {
 export type BatchScalarFieldEnum = (typeof BatchScalarFieldEnum)[keyof typeof BatchScalarFieldEnum]
 
 
+export const HolidayScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  date: 'date',
+  name: 'name',
+  createdAt: 'createdAt'
+} as const
+
+export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
+
+
+export const ScheduleOverrideScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  type: 'type',
+  date: 'date',
+  newDate: 'newDate',
+  startMinutes: 'startMinutes',
+  endMinutes: 'endMinutes',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type ScheduleOverrideScalarFieldEnum = (typeof ScheduleOverrideScalarFieldEnum)[keyof typeof ScheduleOverrideScalarFieldEnum]
+
+
 export const BatchScheduleScalarFieldEnum = {
   id: 'id',
   batchId: 'batchId',
@@ -1295,6 +1471,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OverrideType'
+ */
+export type EnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType'>
+    
+
+
+/**
+ * Reference to a field of type 'OverrideType[]'
+ */
+export type ListEnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType[]'>
     
 
 
@@ -1493,6 +1683,8 @@ export type GlobalOmitConfig = {
   class?: Prisma.ClassOmit
   student?: Prisma.StudentOmit
   batch?: Prisma.BatchOmit
+  holiday?: Prisma.HolidayOmit
+  scheduleOverride?: Prisma.ScheduleOverrideOmit
   batchSchedule?: Prisma.BatchScheduleOmit
   batchStudent?: Prisma.BatchStudentOmit
   batchSession?: Prisma.BatchSessionOmit
