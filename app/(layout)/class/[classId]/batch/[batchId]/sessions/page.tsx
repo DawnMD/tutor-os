@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import SessionsContent from "./_components/sessions-content";
 import { requireOwnerPage } from "@/lib/roles";
+
+export const metadata: Metadata = {
+  title: "Sessions",
+};
 
 export default async function BatchSessionsPage({
   params,

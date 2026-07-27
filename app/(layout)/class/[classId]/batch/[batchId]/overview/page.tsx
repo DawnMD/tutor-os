@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { isOwner } from "@/lib/roles";
 import BatchOverviewContent from "./_components/batch-overview-content";
 import { StudentBatchOverview } from "./_components/student-batch-overview";
+
+export const metadata: Metadata = {
+  title: "Batch overview",
+};
 
 export default async function BatchOverviewpage({
   params,

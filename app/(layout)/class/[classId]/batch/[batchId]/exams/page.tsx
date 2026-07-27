@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { isOwner } from "@/lib/roles";
 import ExamsContent from "./_components/exams-content";
 import { StudentExams } from "./_components/student-exams";
+
+export const metadata: Metadata = {
+  title: "Exams",
+};
 
 export default async function BatchExamsPage({
   params,

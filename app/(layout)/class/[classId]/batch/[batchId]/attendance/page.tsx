@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { isOwner } from "@/lib/roles";
 import AttendanceContent from "./_components/attendance-content";
 import { StudentAttendance } from "./_components/student-attendance";
+
+export const metadata: Metadata = {
+  title: "Attendance",
+};
 
 export default async function BatchAttendancePage({
   params,

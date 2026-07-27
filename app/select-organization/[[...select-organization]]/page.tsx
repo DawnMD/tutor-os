@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { OrganizationList } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+
+export const metadata: Metadata = {
+  title: "Select organization",
+};
 
 export default async function SelectOrganizationPage() {
   await auth.protect();

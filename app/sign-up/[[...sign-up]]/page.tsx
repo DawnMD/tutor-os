@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { SignUp } from '@clerk/nextjs';
 import { ChartLine, Clock, ShieldCheck, Sparkles } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Sign up',
+};
 
 export default function SignUpPage() {
   return (
