@@ -7,13 +7,19 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function MainLayout({ children }: LayoutProps<"/">) {
   await auth.protect();
 
+  const { orgId, orgRole } = await auth();
+
+  // The shell is shared by both roles, but every page assumes an active org.
+  if (!orgId) redirect("/select-organization");
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar orgRole={orgRole ?? null} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
