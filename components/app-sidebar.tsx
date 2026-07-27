@@ -6,10 +6,13 @@ import { NavMain } from "@/components/nav-main";
 import { NavStudent } from "@/components/nav-student";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
@@ -28,6 +31,11 @@ export function AppSidebar({ orgRole, ...props }: AppSidebarProps) {
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>{isOwner ? <NavMain /> : <NavStudent />}</SidebarContent>
+      <SidebarGroup className="mt-auto group-data-[collapsible=icon]:hidden">
+        <SidebarGroupContent>
+          <ThemeToggle />
+        </SidebarGroupContent>
+      </SidebarGroup>
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
