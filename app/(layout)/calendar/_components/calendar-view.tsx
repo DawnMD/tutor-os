@@ -9,7 +9,11 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { resolveBatchColor } from "@/lib/batch-colors";
-import { buildEventMap, getGridRange } from "@/lib/calendar-events";
+import {
+  buildEventMap,
+  getGridRange,
+  type CalendarEvent,
+} from "@/lib/calendar-events";
 import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -25,16 +29,43 @@ import { CalendarDayCell } from "./calendar-day-cell";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function CalendarView() {
+type CalendarSource = "owner" | "student";
+
+/** Student links stay within shared, role-valid routes (no owner-only pages). */
+function studentEventHref(event: CalendarEvent) {
+  if (event.kind === "exam") {
+    return `/class/${event.classId}/batch/${event.batchId}/exams`;
+  }
+  return `/class/${event.classId}/batch/${event.batchId}/overview`;
+}
+
+export function CalendarView({
+  source = "owner",
+}: {
+  source?: CalendarSource;
+}) {
+  const isStudent = source === "student";
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const { gridStart, gridEnd } = useMemo(() => getGridRange(month), [month]);
 
-  const { data, isLoading } = useQuery(
+  const ownerQuery = useQuery(
     orpc.owner.batch.getCalendarData.queryOptions({
       input: { rangeStart: gridStart, rangeEnd: gridEnd },
       placeholderData: keepPreviousData,
+      enabled: !isStudent,
     }),
   );
+
+  const studentQuery = useQuery(
+    orpc.student.calendar.getCalendarData.queryOptions({
+      input: { rangeStart: gridStart, rangeEnd: gridEnd },
+      placeholderData: keepPreviousData,
+      enabled: isStudent,
+    }),
+  );
+
+  const { data, isLoading } = isStudent ? studentQuery : ownerQuery;
+  const getEventHref = isStudent ? studentEventHref : undefined;
 
   const days = useMemo(
     () => eachDayOfInterval({ start: gridStart, end: gridEnd }),
@@ -130,8 +161,9 @@ export function CalendarView() {
             </EmptyMedia>
             <EmptyTitle>No batches yet</EmptyTitle>
             <EmptyDescription>
-              Create a class and batch with a schedule to see it on the
-              calendar.
+              {isStudent
+                ? "Once your tutor enrolls you in a batch with a schedule, it'll appear here."
+                : "Create a class and batch with a schedule to see it on the calendar."}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
@@ -143,6 +175,7 @@ export function CalendarView() {
               day={day}
               month={month}
               events={eventMap.get(format(day, "yyyy-MM-dd")) ?? []}
+              getEventHref={getEventHref}
             />
           ))}
         </div>

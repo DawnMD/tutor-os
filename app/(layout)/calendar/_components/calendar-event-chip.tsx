@@ -12,7 +12,10 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, GraduationCapIcon } from "lucide-react";
 import Link from "next/link";
 
-function eventHref(event: CalendarEvent) {
+export type GetEventHref = (event: CalendarEvent) => string;
+
+/** Owner links: exam → overview, session/schedule → sessions (owner-only). */
+function ownerEventHref(event: CalendarEvent) {
   if (event.kind === "exam") {
     return `/class/${event.classId}/batch/${event.batchId}/overview`;
   }
@@ -46,7 +49,13 @@ function eventTooltip(event: CalendarEvent) {
   }
 }
 
-export function CalendarEventChip({ event }: { event: CalendarEvent }) {
+export function CalendarEventChip({
+  event,
+  getEventHref = ownerEventHref,
+}: {
+  event: CalendarEvent;
+  getEventHref?: GetEventHref;
+}) {
   const color = resolveBatchColor(event.colorId, event.batchId);
 
   return (
@@ -54,7 +63,7 @@ export function CalendarEventChip({ event }: { event: CalendarEvent }) {
       <TooltipTrigger
         render={
           <Link
-            href={eventHref(event)}
+            href={getEventHref(event)}
             className={cn(
               "flex items-center gap-1 truncate rounded border px-1.5 py-0.5 text-xs",
               color.chip,

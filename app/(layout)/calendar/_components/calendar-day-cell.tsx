@@ -12,7 +12,7 @@ import { resolveBatchColor } from "@/lib/batch-colors";
 import type { CalendarEvent } from "@/lib/calendar-events";
 import { cn } from "@/lib/utils";
 import { format, isSameMonth, isToday } from "date-fns";
-import { CalendarEventChip } from "./calendar-event-chip";
+import { CalendarEventChip, type GetEventHref } from "./calendar-event-chip";
 
 const MAX_VISIBLE = 3;
 const MAX_DOTS = 4;
@@ -21,9 +21,15 @@ interface CalendarDayCellProps {
   day: Date;
   month: Date;
   events: CalendarEvent[];
+  getEventHref?: GetEventHref;
 }
 
-export function CalendarDayCell({ day, month, events }: CalendarDayCellProps) {
+export function CalendarDayCell({
+  day,
+  month,
+  events,
+  getEventHref,
+}: CalendarDayCellProps) {
   const outsideMonth = !isSameMonth(day, month);
   const today = isToday(day);
   const visible = events.slice(0, MAX_VISIBLE);
@@ -67,7 +73,7 @@ export function CalendarDayCell({ day, month, events }: CalendarDayCellProps) {
       {/* Chips on wider screens */}
       <div className="hidden flex-col gap-1 sm:flex">
         {visible.map((event, i) => (
-          <CalendarEventChip key={i} event={event} />
+          <CalendarEventChip key={i} event={event} getEventHref={getEventHref} />
         ))}
 
         {overflow > 0 && (
@@ -89,7 +95,11 @@ export function CalendarDayCell({ day, month, events }: CalendarDayCellProps) {
               </PopoverHeader>
               <div className="flex flex-col gap-1">
                 {events.map((event, i) => (
-                  <CalendarEventChip key={i} event={event} />
+                  <CalendarEventChip
+                    key={i}
+                    event={event}
+                    getEventHref={getEventHref}
+                  />
                 ))}
               </div>
             </PopoverContent>
