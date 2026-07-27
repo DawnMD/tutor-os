@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -16,7 +15,7 @@ import { resolveBatchColor } from "@/lib/batch-colors";
 import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Building, CheckIcon } from "lucide-react";
+import { Archive, Building, CheckIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -37,7 +36,7 @@ export const ClassCards = () => {
     }),
   );
 
-  const { mutateAsync: unqrchieveClass } = useMutation(
+  const { mutateAsync: unarchiveClass } = useMutation(
     orpc.owner.class.unArchieveClass.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -84,28 +83,30 @@ export const ClassCards = () => {
           <EmptyMedia variant="icon">
             <Building />
           </EmptyMedia>
-          <EmptyTitle>Cloud Storage Empty</EmptyTitle>
+          <EmptyTitle>No classes yet</EmptyTitle>
           <EmptyDescription>
-            Upload files to your cloud storage to access them anywhere.
+            Create your first class to start adding batches and students.
           </EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>
-          <Button variant="outline" size="sm">
-            Upload Files
-          </Button>
-        </EmptyContent>
       </Empty>
     );
   }
 
   return data.map((item) => (
-    <Card key={item.id} className="w-full p-0">
+    <Card key={item.id} className={cn("w-full p-0", item.archivedAt && "opacity-60")}>
       <CardContent className="p-0 flex flex-col h-full">
         <div className="flex items-center justify-between border-b px-3 py-2">
-          <Badge variant="secondary">
-            <CheckIcon aria-hidden="true" />
-            Live
-          </Badge>
+          {item.archivedAt ? (
+            <Badge variant="outline">
+              <Archive aria-hidden="true" />
+              Archived
+            </Badge>
+          ) : (
+            <Badge variant="secondary">
+              <CheckIcon aria-hidden="true" />
+              Live
+            </Badge>
+          )}
           {!item.archivedAt ? (
             <Button
               variant="destructive"
@@ -116,21 +117,21 @@ export const ClassCards = () => {
                     id: item.id,
                   }),
                   {
-                    loading: "Arcieving...",
-                    success: "Archieved",
-                    error: "Failed to archieve",
+                    loading: "Archiving...",
+                    success: "Archived",
+                    error: "Failed to archive",
                   },
                 )
               }
             >
-              Archieve
+              Archive
             </Button>
           ) : (
             <Button
               variant="default"
               onClick={() =>
                 toast.promise(
-                  unqrchieveClass({
+                  unarchiveClass({
                     id: item.id,
                   }),
                   {
@@ -149,20 +150,16 @@ export const ClassCards = () => {
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-sm leading-tight font-medium">{item.name}</h3>
           </div>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm line-clamp-2">
             {item.description ?? "No description"}
           </p>
           <div className="flex flex-col gap-2">
-            <Badge variant={"ghost"}>
-              No. of Batchs: {item.batches.length}
-            </Badge>
-            <Badge variant={"ghost"}>
-              No. of Students: {item.studentCount}
-            </Badge>
+            <Badge variant={"ghost"}>Batches: {item.batches.length}</Badge>
+            <Badge variant={"ghost"}>Students: {item.studentCount}</Badge>
           </div>
         </div>
         {!!item.batches.length && (
-          <div className="border-t p-3 flex gap-2">
+          <div className="border-t p-3 flex flex-wrap gap-2">
             {item.batches.map((batch) => (
               <Button
                 key={batch.id}
