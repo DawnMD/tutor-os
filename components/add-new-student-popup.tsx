@@ -48,7 +48,6 @@ export const AddNewStudentPopup = () => {
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-expect-error //zodResolver type error
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",

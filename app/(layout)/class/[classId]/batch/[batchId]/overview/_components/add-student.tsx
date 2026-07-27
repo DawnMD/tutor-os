@@ -85,7 +85,6 @@ export const AddStudent = ({
   }, [batchId, students]);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-expect-error //resolver issue
     resolver: zodResolver(formSchema),
     defaultValues: {
       students: studentsInBatch,

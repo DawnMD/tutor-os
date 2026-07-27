@@ -58,7 +58,13 @@ interface ExamFormDialogProps {
 
 const COPY: Record<
   ExamFormMode["kind"],
-  { title: string; description: string; submit: string; loading: string; done: string }
+  {
+    title: string;
+    description: string;
+    submit: string;
+    loading: string;
+    done: string;
+  }
 > = {
   create: {
     title: "Create exam",
@@ -87,7 +93,6 @@ export function ExamFormDialog({
   const [dateOpen, setDateOpen] = useState(false);
 
   const form = useForm<FormValues>({
-    // @ts-expect-error zodResolver output/input mismatch on optional coercions
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: mode.kind === "edit" ? mode.source.title : "",

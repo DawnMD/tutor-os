@@ -91,7 +91,6 @@ export function AddExamResultDialog({
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-expect-error //resolver issue
     resolver: zodResolver(formSchema),
     defaultValues: {
       examId: "",
@@ -152,10 +151,7 @@ export function AddExamResultDialog({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="add-exam-result-exam">Exam</FieldLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger
                         id="add-exam-result-exam"
                         className="w-full"
@@ -190,7 +186,9 @@ export function AddExamResultDialog({
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="add-exam-result-marks">Marks</FieldLabel>
+                    <FieldLabel htmlFor="add-exam-result-marks">
+                      Marks
+                    </FieldLabel>
                     <div className="flex items-center gap-2">
                       <Input
                         id="add-exam-result-marks"
@@ -200,9 +198,7 @@ export function AddExamResultDialog({
                         aria-invalid={fieldState.invalid}
                         className="flex-1"
                         value={Number.isNaN(field.value) ? "" : field.value}
-                        onChange={(e) =>
-                          field.onChange(e.target.valueAsNumber)
-                        }
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}

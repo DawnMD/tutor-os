@@ -49,7 +49,6 @@ export function EditBatchDialog({
   const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
-    // @ts-expect-error zodResolver output/input mismatch on the color enum
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: batch.name,

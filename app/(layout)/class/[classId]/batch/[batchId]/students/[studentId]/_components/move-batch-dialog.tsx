@@ -87,7 +87,6 @@ export function MoveBatchDialog({
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-expect-error //resolver issue
     resolver: zodResolver(formSchema),
     defaultValues: {
       toBatchId: "",

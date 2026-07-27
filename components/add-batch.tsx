@@ -101,7 +101,6 @@ export const AddBatch = ({ classId }: { classId: string }) => {
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-expect-error //zodResolver type error
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
