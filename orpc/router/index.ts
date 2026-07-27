@@ -7,6 +7,8 @@ import { ownerBatchSessionRouter } from "./owner/batchSession";
 import { ownerExamRouter } from "./owner/exam";
 import { ownerAttendanceRouter } from "./owner/attendance";
 import { ownerDashboardRouter } from "./owner/dashboard";
+import { ownerHolidayRouter } from "./owner/holiday";
+import { ownerScheduleOverrideRouter } from "./owner/scheduleOverride";
 import { studentMeRouter } from "./student/me";
 import { studentBatchRouter } from "./student/batch";
 import { studentDashboardRouter } from "./student/dashboard";
@@ -24,6 +26,8 @@ export const router = {
     exam: ownerExamRouter,
     attendance: ownerAttendanceRouter,
     dashboard: ownerDashboardRouter,
+    holiday: ownerHolidayRouter,
+    scheduleOverride: ownerScheduleOverrideRouter,
   },
   student: {
     me: studentMeRouter,

@@ -18,8 +18,13 @@ export const ownerDashboardRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const [batches, activeStudentCount, classCount, recentStudents] =
-        await Promise.all([
+      const [
+        batches,
+        activeStudentCount,
+        classCount,
+        recentStudents,
+        holidays,
+      ] = await Promise.all([
           context.db.batch.findMany({
             where: activeBatchWhere(context.organizationId),
             select: {
@@ -60,6 +65,23 @@ export const ownerDashboardRouter = {
                   totalMarks: true,
                 },
               },
+              overrides: {
+                where: {
+                  OR: [
+                    { date: { gte: input.rangeStart, lte: input.rangeEnd } },
+                    { newDate: { gte: input.rangeStart, lte: input.rangeEnd } },
+                  ],
+                },
+                select: {
+                  id: true,
+                  type: true,
+                  date: true,
+                  newDate: true,
+                  startMinutes: true,
+                  endMinutes: true,
+                  reason: true,
+                },
+              },
               students: {
                 where: { student: { archivedAt: null } },
                 select: {
@@ -96,8 +118,21 @@ export const ownerDashboardRouter = {
               createdAt: true,
             },
           }),
+          context.db.holiday.findMany({
+            where: {
+              clerkOrganizationId: context.organizationId,
+              date: { gte: input.rangeStart, lte: input.rangeEnd },
+            },
+            select: { id: true, date: true, name: true },
+          }),
         ]);
 
-      return { batches, activeStudentCount, classCount, recentStudents };
+      return {
+        batches,
+        activeStudentCount,
+        classCount,
+        recentStudents,
+        holidays,
+      };
     }),
 };

@@ -123,6 +123,33 @@ export async function assertActiveExam(ctx: GuardContext, examId: string) {
   return exam;
 }
 
+/**
+ * Assert an org-owned schedule override whose batch (and class) is active.
+ * Mirrors {@link assertActiveSession}. Returns the fields override call sites
+ * need (`batchId`).
+ */
+export async function assertActiveOverride(
+  ctx: GuardContext,
+  overrideId: string,
+) {
+  const override = await ctx.db.scheduleOverride.findFirst({
+    where: {
+      id: overrideId,
+      batch: { clerkOrganizationId: ctx.organizationId },
+    },
+    select: {
+      id: true,
+      batchId: true,
+      batch: { select: batchGuardSelect },
+    },
+  });
+
+  if (!override) throw new ORPCError("NOT_FOUND");
+  throwIfBatchArchived(override.batch);
+
+  return override;
+}
+
 /** Assert an org-owned student that is not archived. */
 export async function assertActiveStudent(ctx: GuardContext, studentId: string) {
   const student = await ctx.db.student.findFirst({

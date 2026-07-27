@@ -26,7 +26,7 @@ export const studentDashboardRouter = {
     .handler(async ({ context, input }) => {
       const student = await getCurrentStudent(context);
 
-      const [batches, attendanceTotals] = await Promise.all([
+      const [batches, attendanceTotals, holidays] = await Promise.all([
         context.db.batch.findMany({
           where: enrolledActiveBatchWhere(context.organizationId, student.id),
           select: {
@@ -73,6 +73,23 @@ export const studentDashboardRouter = {
                 },
               },
             },
+            overrides: {
+              where: {
+                OR: [
+                  { date: { gte: input.rangeStart, lte: input.rangeEnd } },
+                  { newDate: { gte: input.rangeStart, lte: input.rangeEnd } },
+                ],
+              },
+              select: {
+                id: true,
+                type: true,
+                date: true,
+                newDate: true,
+                startMinutes: true,
+                endMinutes: true,
+                reason: true,
+              },
+            },
           },
         }),
         // All-time attendance totals across the student's enrolled active
@@ -90,6 +107,14 @@ export const studentDashboardRouter = {
           },
           _count: { _all: true },
         }),
+        // Holidays are org-wide, safe to expose to students.
+        context.db.holiday.findMany({
+          where: {
+            clerkOrganizationId: context.organizationId,
+            date: { gte: input.rangeStart, lte: input.rangeEnd },
+          },
+          select: { id: true, date: true, name: true },
+        }),
       ]);
 
       return {
@@ -98,6 +123,7 @@ export const studentDashboardRouter = {
           status: row.status,
           count: row._count._all,
         })),
+        holidays,
       };
     }),
 };
