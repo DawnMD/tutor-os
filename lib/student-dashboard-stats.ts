@@ -56,6 +56,11 @@ export type ClassOccurrence = {
 } & (
   | { kind: "schedule" }
   | {
+      kind: "override";
+      overrideType: "MOVED" | "EXTRA";
+      reason: string | null;
+    }
+  | {
       kind: "session";
       topic: string | null;
       status: AttendanceStatus | null;
@@ -64,9 +69,12 @@ export type ClassOccurrence = {
 );
 
 /**
- * Build class occurrences across `[startOfDay(now), +days)`. Merge rule mirrors
- * the calendar's buildEventMap: a concrete session on a day replaces that
- * batch's schedule-derived rows for the day.
+ * Build class occurrences across `[startOfDay(now), +days)`. Merge rules mirror
+ * the calendar's buildEventMap:
+ * - a concrete session on a day wins over everything derived for that batch;
+ * - a MOVED override cancels its batch's template rows on the original day and
+ *   a moved-in / extra class produces an `override` row on the target day;
+ * - an org-wide holiday suppresses only template-derived (`schedule`) rows.
  */
 function buildOccurrences(
   data: StudentDashboardData,
@@ -79,6 +87,9 @@ function buildOccurrences(
   for (let i = 0; i < days; i++) {
     const day = addDays(from, i);
     const dow = getDay(day);
+    const isHoliday = data.holidays.some((h) =>
+      isSameDay(new Date(h.date), day),
+    );
 
     for (const batch of data.batches) {
       const base = {
@@ -118,6 +129,30 @@ function buildOccurrences(
         continue;
       }
 
+      const movedOut = batch.overrides.some(
+        (o) => o.type === "MOVED" && isSameDay(new Date(o.date), day),
+      );
+
+      // Moved-in / extra classes landing this day.
+      for (const o of batch.overrides) {
+        if (o.startMinutes == null || o.endMinutes == null) continue;
+        const landsHere =
+          o.type === "MOVED"
+            ? o.newDate != null && isSameDay(new Date(o.newDate), day)
+            : isSameDay(new Date(o.date), day);
+        if (!landsHere) continue;
+        occurrences.push({
+          ...base,
+          kind: "override",
+          overrideType: o.type,
+          reason: o.reason,
+          when: addMinutes(day, o.startMinutes),
+          timeLabel: `${minutesToTime(o.startMinutes)}–${minutesToTime(o.endMinutes)}`,
+        });
+      }
+
+      // Template rows: suppressed on a holiday or when moved out.
+      if (movedOut || isHoliday) continue;
       for (const sch of batch.schedules) {
         if (sch.dayOfWeek !== dow) continue;
         occurrences.push({

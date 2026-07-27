@@ -105,6 +105,11 @@ export type TodayEntry = {
 } & (
   | { kind: "schedule" }
   | {
+      kind: "override";
+      overrideType: "MOVED" | "EXTRA";
+      reason: string | null;
+    }
+  | {
       kind: "session";
       topic: string | null;
       completed: boolean;
@@ -113,16 +118,26 @@ export type TodayEntry = {
     }
 );
 
+export type TodaySchedule = {
+  holiday: { name: string } | null;
+  entries: TodayEntry[];
+};
+
 /**
- * Today's entries. Merge rule mirrors calendar's buildEventMap: a concrete
- * session today replaces that batch's schedule-derived rows.
+ * Today's entries. Merge rules mirror the calendar's buildEventMap:
+ * - a concrete session today wins over everything derived for that batch;
+ * - a MOVED override cancels its batch's template rows on its original day and
+ *   a moved-in / extra class produces an `override` row on the target day;
+ * - an org-wide holiday suppresses only template-derived (`schedule`) rows.
  */
 export function buildTodaySchedule(
   data: DashboardData,
   now: Date,
-): TodayEntry[] {
+): TodaySchedule {
   const entries: TodayEntry[] = [];
   const todayDow = getDay(now);
+  const holidayToday =
+    data.holidays.find((h) => isSameDay(new Date(h.date), now)) ?? null;
 
   for (const batch of data.batches) {
     const base = {
@@ -156,6 +171,30 @@ export function buildTodaySchedule(
       continue;
     }
 
+    const movedOut = batch.overrides.some(
+      (o) => o.type === "MOVED" && isSameDay(new Date(o.date), now),
+    );
+
+    // Moved-in / extra classes landing today.
+    for (const o of batch.overrides) {
+      if (o.startMinutes == null || o.endMinutes == null) continue;
+      const landsToday =
+        o.type === "MOVED"
+          ? o.newDate != null && isSameDay(new Date(o.newDate), now)
+          : isSameDay(new Date(o.date), now);
+      if (!landsToday) continue;
+      entries.push({
+        ...base,
+        kind: "override",
+        overrideType: o.type,
+        reason: o.reason,
+        timeLabel: `${minutesToTime(o.startMinutes)}–${minutesToTime(o.endMinutes)}`,
+        sortKey: o.startMinutes,
+      });
+    }
+
+    // Template rows: suppressed on a holiday or when moved out.
+    if (movedOut || holidayToday) continue;
     for (const sch of batch.schedules) {
       if (sch.dayOfWeek === todayDow) {
         entries.push({
@@ -168,7 +207,11 @@ export function buildTodaySchedule(
     }
   }
 
-  return entries.sort((a, b) => a.sortKey - b.sortKey);
+  entries.sort((a, b) => a.sortKey - b.sortKey);
+  return {
+    holiday: holidayToday ? { name: holidayToday.name } : null,
+    entries,
+  };
 }
 
 // --- Attendance trend (8 weekly buckets) ------------------------------------

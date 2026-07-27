@@ -39,6 +39,22 @@ export type CalendarBatch = {
     title: string;
     examDate: Date;
   }[];
+  overrides: {
+    id: string;
+    type: "MOVED" | "EXTRA";
+    date: Date;
+    newDate: Date | null;
+    startMinutes: number | null;
+    endMinutes: number | null;
+    reason: string | null;
+  }[];
+};
+
+/** Org-wide holiday: cancels every batch's template-derived chips that day. */
+export type CalendarHoliday = {
+  id: string;
+  date: Date;
+  name: string;
 };
 
 /** Fields every event carries regardless of kind. */
@@ -66,6 +82,29 @@ export type CalendarEvent =
       kind: "exam";
       examId: string;
       title: string;
+    })
+  | {
+      // Org-level, not tied to any single batch.
+      kind: "holiday";
+      holidayId: string;
+      name: string;
+    }
+  | (BaseEvent & {
+      // The original slot of a MOVED override, struck through on `date`.
+      kind: "cancelled";
+      overrideId: string;
+      startMinutes: number | null;
+      endMinutes: number | null;
+      movedTo: Date | null;
+    })
+  | (BaseEvent & {
+      // A moved-in / extra class landing on this day.
+      kind: "override";
+      overrideId: string;
+      overrideType: "MOVED" | "EXTRA";
+      startMinutes: number;
+      endMinutes: number;
+      reason: string | null;
     });
 
 const DATE_KEY = "yyyy-MM-dd";
@@ -89,14 +128,21 @@ export function getGridRange(month: Date) {
 /**
  * Build a map of `yyyy-MM-dd` -> events for every day in [gridStart, gridEnd].
  *
- * Merge rule: on a given day, if a batch has a concrete session that day, the
- * session replaces all of that batch's schedule-derived chips (sessions are
- * unique per batch+date). Exams are always shown independently.
+ * Merge rules on a given day, per batch:
+ * - A concrete session wins over everything derived for that batch that day
+ *   (template chips, moved-in/extra chips, cancelled markers).
+ * - A MOVED override cancels all of that batch's template chips on its `date`
+ *   (rendered as a struck-through `cancelled` chip) and emits an `override`
+ *   chip on its `newDate`. An EXTRA override emits an `override` chip on `date`.
+ * - An org-wide holiday suppresses only template-derived (`schedule`) chips;
+ *   sessions, exams and override chips still render (deliberately placed).
+ * - Exams are always shown independently.
  */
 export function buildEventMap(
   batches: CalendarBatch[],
   gridStart: Date,
   gridEnd: Date,
+  holidays: CalendarHoliday[] = [],
 ): Map<string, CalendarEvent[]> {
   const map = new Map<string, CalendarEvent[]>();
 
@@ -116,6 +162,9 @@ export function buildEventMap(
   ) {
     days.push(d);
   }
+
+  const isHoliday = (day: Date) =>
+    holidays.some((h) => isSameDay(new Date(h.date), day));
 
   for (const batch of batches) {
     const base: BaseEvent = {
@@ -139,10 +188,47 @@ export function buildEventMap(
           topic: session.topic,
           completed: session.completedAt != null,
         });
-        // Session replaces this batch's schedule chips for the day.
+        // Session replaces everything derived for this batch this day.
         continue;
       }
 
+      // MOVED whose original occurrence is this day: cancel the template slot.
+      const movedOut = batch.overrides.find(
+        (o) => o.type === "MOVED" && isSameDay(new Date(o.date), day),
+      );
+      if (movedOut) {
+        const slot = batch.schedules.find((s) => s.dayOfWeek === getDay(day));
+        push(day, {
+          ...base,
+          kind: "cancelled",
+          overrideId: movedOut.id,
+          startMinutes: slot?.startMinutes ?? null,
+          endMinutes: slot?.endMinutes ?? null,
+          movedTo: movedOut.newDate ? new Date(movedOut.newDate) : null,
+        });
+      }
+
+      // Overrides landing on this day: MOVED newDate, or EXTRA date.
+      for (const o of batch.overrides) {
+        if (o.startMinutes == null || o.endMinutes == null) continue;
+        const landsHere =
+          o.type === "MOVED"
+            ? o.newDate != null && isSameDay(new Date(o.newDate), day)
+            : isSameDay(new Date(o.date), day);
+        if (!landsHere) continue;
+        push(day, {
+          ...base,
+          kind: "override",
+          overrideId: o.id,
+          overrideType: o.type,
+          startMinutes: o.startMinutes,
+          endMinutes: o.endMinutes,
+          reason: o.reason,
+        });
+      }
+
+      // Template chips: suppressed on a holiday day or when moved out.
+      if (movedOut || isHoliday(day)) continue;
       for (const sch of batch.schedules) {
         if (sch.dayOfWeek === getDay(day)) {
           push(day, {
@@ -155,7 +241,7 @@ export function buildEventMap(
       }
     }
 
-    // Exams are independent of schedules/sessions.
+    // Exams are independent of schedules/sessions/overrides/holidays.
     for (const exam of batch.exams) {
       push(new Date(exam.examDate), {
         ...base,
@@ -166,18 +252,43 @@ export function buildEventMap(
     }
   }
 
-  // Order within each day: exams, then sessions, then schedules by start time.
-  const rank = (e: CalendarEvent) =>
-    e.kind === "exam" ? 0 : e.kind === "session" ? 1 : 2;
+  // One holiday banner per holiday, above every batch's chips.
+  for (const holiday of holidays) {
+    push(new Date(holiday.date), {
+      kind: "holiday",
+      holidayId: holiday.id,
+      name: holiday.name,
+    });
+  }
+
+  // Order within each day: holiday, exam, session, override, schedule, cancelled.
+  const rank = (e: CalendarEvent) => {
+    switch (e.kind) {
+      case "holiday":
+        return 0;
+      case "exam":
+        return 1;
+      case "session":
+        return 2;
+      case "override":
+        return 3;
+      case "schedule":
+        return 4;
+      case "cancelled":
+        return 5;
+    }
+  };
+
+  const startOf = (e: CalendarEvent) =>
+    e.kind === "schedule" || e.kind === "override" || e.kind === "cancelled"
+      ? (e.startMinutes ?? 0)
+      : 0;
 
   for (const list of map.values()) {
     list.sort((a, b) => {
       const byRank = rank(a) - rank(b);
       if (byRank !== 0) return byRank;
-      if (a.kind === "schedule" && b.kind === "schedule") {
-        return a.startMinutes - b.startMinutes;
-      }
-      return 0;
+      return startOf(a) - startOf(b);
     });
   }
 
