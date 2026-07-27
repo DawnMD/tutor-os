@@ -1,4 +1,5 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import { assertActiveBatch } from "@/orpc/router/owner/helpers";
 import { AttendanceStatus } from "@/prisma/generated/prisma/enums";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
@@ -11,11 +12,12 @@ export const batchStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
+      await assertActiveBatch(context, input.batchId);
+
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
           clerkOrganizationId: context.organizationId,
-          archivedAt: null,
         },
         select: {
           classId: true,
@@ -64,11 +66,13 @@ export const batchStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
+      // Batch/class archived error wins over any student-level state.
+      await assertActiveBatch(context, input.batchId);
+
       const student = await context.db.student.findFirst({
         where: {
           id: input.studentId,
           clerkOrganizationId: context.organizationId,
-          archivedAt: null,
           batches: {
             some: {
               batchId: input.batchId,
@@ -82,6 +86,7 @@ export const batchStudentRouter = {
           phone: true,
           guardianName: true,
           guardianPhone: true,
+          archivedAt: true,
           createdAt: true,
 
           batches: {

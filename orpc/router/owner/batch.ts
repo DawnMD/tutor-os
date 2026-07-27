@@ -1,5 +1,12 @@
 import { BATCH_COLOR_IDS } from "@/lib/batch-colors";
 import { ownerProcedure } from "@/orpc/orpc";
+import {
+  archivedError,
+  assertActiveBatch,
+  assertActiveClass,
+  activeBatchWhere,
+  getOwnedBatch,
+} from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import * as z from "zod";
 
@@ -20,6 +27,9 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
+      // Validates classId ownership (was missing) and blocks archived classes.
+      await assertActiveClass(context, input.classId);
+
       await context.db.$transaction(async (tx) => {
         const batch = await tx.batch.create({
           data: {
@@ -51,10 +61,7 @@ export const ownerBatchRouter = {
     )
     .handler(async ({ context, input }) =>
       context.db.batch.findMany({
-        where: {
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
+        where: activeBatchWhere(context.organizationId),
         select: {
           id: true,
           name: true,
@@ -88,7 +95,9 @@ export const ownerBatchRouter = {
       include: {
         class: {
           select: {
+            id: true,
             name: true,
+            archivedAt: true,
           },
         },
       },
@@ -113,7 +122,7 @@ export const ownerBatchRouter = {
           classId: true,
           archivedAt: true,
           createdAt: true,
-          class: { select: { id: true, name: true } },
+          class: { select: { id: true, name: true, archivedAt: true } },
           _count: { select: { students: true } }, // total incl. archived
           students: {
             where: { student: { archivedAt: null } },
@@ -175,18 +184,7 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       return await context.db.batch.update({
         where: { id: input.batchId },
@@ -200,18 +198,9 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      // Idempotent: re-archiving an already-archived batch used to throw a
+      // confusing NOT_FOUND.
+      await getOwnedBatch(context, input.batchId, { allowArchived: true });
 
       return await context.db.batch.update({
         where: { id: input.batchId },
@@ -225,16 +214,14 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-        },
-        select: { id: true },
+      const batch = await getOwnedBatch(context, input.batchId, {
+        allowArchived: true,
       });
 
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
+      // A batch inside an archived class can't be unarchived on its own — the
+      // class must be restored first.
+      if (batch.class.archivedAt) {
+        throw archivedError("class");
       }
 
       return await context.db.batch.update({
@@ -250,18 +237,7 @@ export const ownerBatchRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       const students = await context.db.student.findMany({
         where: {

@@ -1,5 +1,6 @@
 import { getBaseUrl } from "@/lib/get-base-url";
 import { OrganizationRole, ownerProcedure } from "@/orpc/orpc";
+import { assertActiveStudent } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
 
@@ -88,7 +89,7 @@ export const ownerStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.db.student.updateMany({
+      const result = await context.db.student.updateMany({
         where: {
           id: input.studentId,
           clerkOrganizationId: context.organizationId,
@@ -97,6 +98,12 @@ export const ownerStudentRouter = {
           archivedAt: new Date(),
         },
       });
+
+      if (result.count === 0) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return true;
     }),
   unArchieveStudent: ownerProcedure
     .input(
@@ -105,7 +112,7 @@ export const ownerStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.db.student.updateMany({
+      const result = await context.db.student.updateMany({
         where: {
           id: input.studentId,
           clerkOrganizationId: context.organizationId,
@@ -114,6 +121,12 @@ export const ownerStudentRouter = {
           archivedAt: null,
         },
       });
+
+      if (result.count === 0) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return true;
     }),
   updateStudent: ownerProcedure
     .input(
@@ -127,6 +140,8 @@ export const ownerStudentRouter = {
     )
     .handler(async ({ context, input }) => {
       const { studentId, ...data } = input;
+
+      await assertActiveStudent(context, studentId);
 
       const result = await context.db.student.updateMany({
         where: {
@@ -153,26 +168,16 @@ export const ownerStudentRouter = {
     .handler(async ({ context, input }) => {
       const { studentId, fromBatchId, toBatchId } = input;
 
-      // Ensure the student belongs to the active organization
-      const student = await context.db.student.findFirst({
-        where: {
-          id: studentId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
+      await assertActiveStudent(context, studentId);
 
-      if (!student) {
-        throw new ORPCError("NOT_FOUND");
-      }
-
-      // Ensure both batches belong to the active organization
+      // Ensure both batches belong to the active organization and are active
+      // (neither the batch nor its class archived).
       const batches = await context.db.batch.findMany({
         where: {
           id: { in: [fromBatchId, toBatchId] },
           clerkOrganizationId: context.organizationId,
           archivedAt: null,
+          class: { archivedAt: null },
         },
         select: { id: true, classId: true },
       });
@@ -210,23 +215,10 @@ export const ownerStudentRouter = {
     .handler(async ({ context, input }) => {
       const { studentId, batchIds } = input;
 
-      // Ensure the student belongs to the active organization
-      const student = await context.db.student.findFirst({
-        where: {
-          id: studentId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: {
-          id: true,
-        },
-      });
+      await assertActiveStudent(context, studentId);
 
-      if (!student) {
-        throw new ORPCError("NOT_FOUND");
-      }
-
-      // Ensure every batch belongs to the active organization
+      // Ensure every batch belongs to the active organization and is active
+      // (neither the batch nor its class archived).
       const batches = await context.db.batch.findMany({
         where: {
           id: {
@@ -234,6 +226,7 @@ export const ownerStudentRouter = {
           },
           clerkOrganizationId: context.organizationId,
           archivedAt: null,
+          class: { archivedAt: null },
         },
         select: {
           id: true,

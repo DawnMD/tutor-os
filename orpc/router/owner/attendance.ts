@@ -1,4 +1,8 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import {
+  assertActiveBatch,
+  assertActiveSession,
+} from "@/orpc/router/owner/helpers";
 import { AttendanceStatus } from "@/prisma/generated/prisma/enums";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
@@ -13,6 +17,8 @@ export const ownerAttendanceRouter = {
   getAttendanceOverview: ownerProcedure
     .input(z.object({ batchId: z.string() }))
     .handler(async ({ context, input }) => {
+      await assertActiveBatch(context, input.batchId);
+
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
@@ -88,17 +94,7 @@ export const ownerAttendanceRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const session = await context.db.batchSession.findFirst({
-        where: {
-          id: input.sessionId,
-          batch: { clerkOrganizationId: context.organizationId },
-        },
-        select: { id: true, completedAt: true },
-      });
-
-      if (!session) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      const session = await assertActiveSession(context, input.sessionId);
 
       // A completed session is locked: the only permitted action is reopening
       // it (complete === false). Any attempt to change attendance is rejected.
@@ -151,18 +147,20 @@ export const ownerAttendanceRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const session = await context.db.batchSession.findFirst({
-        where: {
-          id: input.sessionId,
-          batch: {
-            clerkOrganizationId: context.organizationId,
-          },
-        },
-        select: { id: true },
-      });
+      const session = await assertActiveSession(context, input.sessionId);
 
-      if (!session) {
-        throw new ORPCError("NOT_FOUND");
+      // The student must be an active member of the session's batch.
+      const member = await context.db.batchStudent.findFirst({
+        where: {
+          batchId: session.batchId,
+          studentId: input.studentId,
+          student: { archivedAt: null },
+        },
+      });
+      if (!member) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Student is not an active member of this batch",
+        });
       }
 
       return await context.db.attendanceRecord.upsert({

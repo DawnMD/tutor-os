@@ -1,4 +1,8 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import {
+  assertActiveBatch,
+  assertActiveSession,
+} from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
 
@@ -10,18 +14,7 @@ export const ownerBatchSessionRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       return await context.db.batchSession.findMany({
         where: { batchId: input.batchId },
@@ -40,6 +33,8 @@ export const ownerBatchSessionRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
+      await assertActiveBatch(context, input.batchId);
+
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
@@ -100,18 +95,7 @@ export const ownerBatchSessionRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       const existing = await context.db.batchSession.findUnique({
         where: {
@@ -148,20 +132,7 @@ export const ownerBatchSessionRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const session = await context.db.batchSession.findFirst({
-        where: {
-          id: input.sessionId,
-          batch: {
-            clerkOrganizationId: context.organizationId,
-            archivedAt: null,
-          },
-        },
-        select: { id: true, batchId: true },
-      });
-
-      if (!session) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      const session = await assertActiveSession(context, input.sessionId);
 
       // Guard the unique [batchId, classDate] constraint on date changes.
       const clash = await context.db.batchSession.findUnique({
@@ -197,20 +168,7 @@ export const ownerBatchSessionRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const session = await context.db.batchSession.findFirst({
-        where: {
-          id: input.sessionId,
-          batch: {
-            clerkOrganizationId: context.organizationId,
-            archivedAt: null,
-          },
-        },
-        select: { id: true },
-      });
-
-      if (!session) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveSession(context, input.sessionId);
 
       return await context.db.batchSession.update({
         where: { id: input.sessionId },

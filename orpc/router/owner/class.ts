@@ -1,4 +1,5 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import { ORPCError } from "@orpc/client";
 import z from "zod";
 
 export const ownerClassRouter = {
@@ -25,14 +26,22 @@ export const ownerClassRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.db.class.update({
+      // Org-scoped updateMany so a cross-org id can't be archived.
+      const result = await context.db.class.updateMany({
         where: {
           id: input.id,
+          clerkOrganizationId: context.organizationId,
         },
         data: {
           archivedAt: new Date(),
         },
       });
+
+      if (result.count === 0) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return true;
     }),
   unArchieveClass: ownerProcedure
     .input(
@@ -41,14 +50,21 @@ export const ownerClassRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.db.class.update({
+      const result = await context.db.class.updateMany({
         where: {
           id: input.id,
+          clerkOrganizationId: context.organizationId,
         },
         data: {
           archivedAt: null,
         },
       });
+
+      if (result.count === 0) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      return true;
     }),
   getAllClass: ownerProcedure.handler(async ({ context }) => {
     const classes = await context.db.class.findMany({

@@ -1,4 +1,5 @@
 import { serializer } from "@/orpc/serializer";
+import { ORPCError } from "@orpc/client";
 import {
   QueryClient,
   defaultShouldDehydrateQuery,
@@ -14,6 +15,12 @@ function makeQueryClient() {
           return JSON.stringify({ json, meta });
         },
         staleTime: 60 * 1000, // > 0 to prevent immediate refetching on mount
+        retry: (failureCount, error) => {
+          // Don't retry client errors (4xx) — e.g. the archived-batch CONFLICT
+          // should surface immediately instead of after ~3 retries.
+          if (error instanceof ORPCError && error.status < 500) return false;
+          return failureCount < 3;
+        },
       },
       dehydrate: {
         shouldDehydrateQuery: (query) =>

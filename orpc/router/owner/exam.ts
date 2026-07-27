@@ -1,4 +1,8 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import {
+  assertActiveBatch,
+  assertActiveExam,
+} from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
 
@@ -10,18 +14,7 @@ export const ownerExamRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       return await context.db.exam.findMany({
         where: { batchId: input.batchId },
@@ -42,6 +35,8 @@ export const ownerExamRouter = {
   getExamsPage: ownerProcedure
     .input(z.object({ batchId: z.string() }))
     .handler(async ({ context, input }) => {
+      await assertActiveBatch(context, input.batchId);
+
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
@@ -90,18 +85,7 @@ export const ownerExamRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const batch = await context.db.batch.findFirst({
-        where: {
-          id: input.batchId,
-          clerkOrganizationId: context.organizationId,
-          archivedAt: null,
-        },
-        select: { id: true },
-      });
-
-      if (!batch) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveBatch(context, input.batchId);
 
       const existing = await context.db.exam.findUnique({
         where: {
@@ -135,17 +119,7 @@ export const ownerExamRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const exam = await context.db.exam.findFirst({
-        where: {
-          id: input.examId,
-          batch: { clerkOrganizationId: context.organizationId },
-        },
-        select: { id: true, batchId: true },
-      });
-
-      if (!exam) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      const exam = await assertActiveExam(context, input.examId);
 
       // Guard the unique [batchId, title] constraint on title changes.
       const clash = await context.db.exam.findUnique({
@@ -185,17 +159,7 @@ export const ownerExamRouter = {
   deleteExam: ownerProcedure
     .input(z.object({ examId: z.string() }))
     .handler(async ({ context, input }) => {
-      const exam = await context.db.exam.findFirst({
-        where: {
-          id: input.examId,
-          batch: { clerkOrganizationId: context.organizationId },
-        },
-        select: { id: true },
-      });
-
-      if (!exam) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      await assertActiveExam(context, input.examId);
 
       // ExamResult rows cascade via the schema relation.
       return await context.db.exam.delete({ where: { id: input.examId } });
@@ -207,6 +171,8 @@ export const ownerExamRouter = {
   getExamDetail: ownerProcedure
     .input(z.object({ examId: z.string() }))
     .handler(async ({ context, input }) => {
+      await assertActiveExam(context, input.examId);
+
       const exam = await context.db.exam.findFirst({
         where: {
           id: input.examId,
@@ -267,17 +233,7 @@ export const ownerExamRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const exam = await context.db.exam.findFirst({
-        where: {
-          id: input.examId,
-          batch: { clerkOrganizationId: context.organizationId },
-        },
-        select: { totalMarks: true, batchId: true, completedAt: true },
-      });
-
-      if (!exam) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      const exam = await assertActiveExam(context, input.examId);
 
       // A completed exam is locked: the only permitted action is reopening it
       // (complete === false). Any attempt to change marks is rejected.
@@ -294,10 +250,15 @@ export const ownerExamRouter = {
         });
       }
 
-      // Every graded student must belong to this batch.
+      // Every graded student must be an active member of this batch (archived
+      // students can't be bulk-graded).
       const studentIds = input.results.map((r) => r.studentId);
       const members = await context.db.batchStudent.findMany({
-        where: { batchId: exam.batchId, studentId: { in: studentIds } },
+        where: {
+          batchId: exam.batchId,
+          studentId: { in: studentIds },
+          student: { archivedAt: null },
+        },
         select: { studentId: true },
       });
       const memberIds = new Set(members.map((m) => m.studentId));
@@ -350,26 +311,25 @@ export const ownerExamRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      const exam = await context.db.exam.findFirst({
-        where: {
-          id: input.examId,
-          batch: {
-            clerkOrganizationId: context.organizationId,
-          },
-        },
-        select: {
-          id: true,
-          totalMarks: true,
-        },
-      });
-
-      if (!exam) {
-        throw new ORPCError("NOT_FOUND");
-      }
+      const exam = await assertActiveExam(context, input.examId);
 
       if (input.marks < 0 || input.marks > exam.totalMarks) {
         throw new ORPCError("BAD_REQUEST", {
           message: `Marks must be between 0 and ${exam.totalMarks}`,
+        });
+      }
+
+      // The student must be an active member of this batch.
+      const member = await context.db.batchStudent.findFirst({
+        where: {
+          batchId: exam.batchId,
+          studentId: input.studentId,
+          student: { archivedAt: null },
+        },
+      });
+      if (!member) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Student is not an active member of this batch",
         });
       }
 

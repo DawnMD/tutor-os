@@ -1,4 +1,5 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import { activeBatchWhere } from "@/orpc/router/owner/helpers";
 import * as z from "zod";
 
 /**
@@ -20,10 +21,7 @@ export const ownerDashboardRouter = {
       const [batches, activeStudentCount, classCount, recentStudents] =
         await Promise.all([
           context.db.batch.findMany({
-            where: {
-              clerkOrganizationId: context.organizationId,
-              archivedAt: null,
-            },
+            where: activeBatchWhere(context.organizationId),
             select: {
               id: true,
               name: true,
