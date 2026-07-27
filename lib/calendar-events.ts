@@ -1,6 +1,5 @@
 // Pure event-building logic for the calendar page. No React here.
 
-import type { Outputs } from "@/orpc/router";
 import {
   endOfMonth,
   endOfWeek,
@@ -12,8 +11,35 @@ import {
 } from "date-fns";
 import { resolveBatchColor, type BatchColorId } from "./batch-colors";
 
-export type CalendarBatch =
-  Outputs["owner"]["batch"]["getCalendarData"][number];
+/**
+ * Standalone structural shape the calendar consumes. Both the owner
+ * (`owner.batch.getCalendarData`) and student (`student.calendar.getCalendarData`)
+ * router outputs satisfy this, so the calendar components can render either
+ * role's data without coupling to a single router.
+ */
+export type CalendarBatch = {
+  id: string;
+  name: string;
+  color: string | null;
+  classId: string;
+  class: { name: string };
+  schedules: {
+    dayOfWeek: number;
+    startMinutes: number;
+    endMinutes: number;
+  }[];
+  sessions: {
+    id: string;
+    classDate: Date;
+    topic: string | null;
+    completedAt: Date | null;
+  }[];
+  exams: {
+    id: string;
+    title: string;
+    examDate: Date;
+  }[];
+};
 
 /** Fields every event carries regardless of kind. */
 type BaseEvent = {
