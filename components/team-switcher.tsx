@@ -34,11 +34,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { orpc } from "@/orpc/client";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -50,8 +50,17 @@ const formSchema = z.object({
 
 export function TeamSwitcher() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { isMobile, setOpenMobile } = useSidebar();
+
+  // An org switch can change the viewer's role; re-land on /dashboard and
+  // refresh so the branched server pages re-render for the new role.
+  const afterSetActive = () => {
+    queryClient.invalidateQueries();
+    router.push("/dashboard");
+    router.refresh();
+  };
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -88,11 +97,9 @@ export function TeamSwitcher() {
           }),
         )
         .then(() => {
-          queryClient.invalidateQueries({
-            queryKey: orpc.owner.class.getAllClass.queryKey(),
-          });
           setOpenDialog(false);
           setOpenMobile(false);
+          afterSetActive();
         }),
       {
         loading: "Creating workspace",
@@ -143,11 +150,7 @@ export function TeamSwitcher() {
                       toast.promise(
                         setActive({
                           organization: team.organization.id,
-                        }).then(() => {
-                          queryClient.invalidateQueries({
-                            queryKey: orpc.owner.class.getAllClass.queryKey(),
-                          });
-                        }),
+                        }).then(afterSetActive),
                         {
                           loading: "Switching workspace",
                           success: "Workspace switched",

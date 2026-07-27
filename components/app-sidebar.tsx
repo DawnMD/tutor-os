@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
+import { NavStudent } from "@/components/nav-student";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -12,16 +13,21 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { OrganizationRole } from "@/orpc/orpc";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  orgRole: string | null;
+};
+
+export function AppSidebar({ orgRole, ...props }: AppSidebarProps) {
+  const isOwner = orgRole === OrganizationRole.OWNER;
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <TeamSwitcher />
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain />
-      </SidebarContent>
+      <SidebarContent>{isOwner ? <NavMain /> : <NavStudent />}</SidebarContent>
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
