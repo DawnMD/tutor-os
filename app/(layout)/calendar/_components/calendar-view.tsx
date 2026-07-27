@@ -26,6 +26,7 @@ import {
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { CalendarDayCell } from "./calendar-day-cell";
+import { DayActionsDialog } from "./day-actions-dialog";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -33,6 +34,7 @@ type CalendarSource = "owner" | "student";
 
 /** Student links stay within shared, role-valid routes (no owner-only pages). */
 function studentEventHref(event: CalendarEvent) {
+  if (event.kind === "holiday") return "#";
   if (event.kind === "exam") {
     return `/class/${event.classId}/batch/${event.batchId}/exams`;
   }
@@ -67,14 +69,23 @@ export function CalendarView({
   const { data, isLoading } = isStudent ? studentQuery : ownerQuery;
   const getEventHref = isStudent ? studentEventHref : undefined;
 
+  // Owner-only: clicking a day opens the manage-day dialog.
+  const [actionsDay, setActionsDay] = useState<Date | null>(null);
+
   const days = useMemo(
     () => eachDayOfInterval({ start: gridStart, end: gridEnd }),
     [gridStart, gridEnd],
   );
 
+  const batches = data?.batches;
+  const holidays = data?.holidays;
+
   const eventMap = useMemo(
-    () => (data ? buildEventMap(data, gridStart, gridEnd) : new Map()),
-    [data, gridStart, gridEnd],
+    () =>
+      batches
+        ? buildEventMap(batches, gridStart, gridEnd, holidays)
+        : new Map<string, CalendarEvent[]>(),
+    [batches, holidays, gridStart, gridEnd],
   );
 
   return (
@@ -112,9 +123,9 @@ export function CalendarView({
       </div>
 
       {/* Legend */}
-      {data && data.length > 0 && (
+      {batches && batches.length > 0 && (
         <div className="flex flex-wrap gap-x-4 gap-y-2">
-          {data.map((batch) => {
+          {batches.map((batch) => {
             const color = resolveBatchColor(batch.color, batch.id);
             return (
               <div
@@ -153,7 +164,7 @@ export function CalendarView({
             />
           ))}
         </div>
-      ) : data && data.length === 0 ? (
+      ) : batches && batches.length === 0 ? (
         <Empty className="border border-dashed">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -176,9 +187,23 @@ export function CalendarView({
               month={month}
               events={eventMap.get(format(day, "yyyy-MM-dd")) ?? []}
               getEventHref={getEventHref}
+              onDayClick={isStudent ? undefined : setActionsDay}
             />
           ))}
         </div>
+      )}
+
+      {!isStudent && actionsDay && batches && (
+        <DayActionsDialog
+          key={actionsDay.toISOString()}
+          open={actionsDay != null}
+          onOpenChange={(o) => {
+            if (!o) setActionsDay(null);
+          }}
+          day={actionsDay}
+          events={eventMap.get(format(actionsDay, "yyyy-MM-dd")) ?? []}
+          batches={batches}
+        />
       )}
     </div>
   );

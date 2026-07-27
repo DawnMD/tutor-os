@@ -122,7 +122,7 @@ export function DashboardContent() {
       />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <TodayScheduleCard entries={derived.today} />
+          <TodayScheduleCard schedule={derived.today} />
           <AttendanceTrendCard data={derived.trend} />
           <AttentionStudentsCard students={derived.attention} />
         </div>

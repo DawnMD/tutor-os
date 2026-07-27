@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { AttendanceStatusBadge } from "@/components/student/attendance-status-badge";
+import { Badge } from "@/components/ui/badge";
 import { BATCH_COLORS } from "@/lib/batch-colors";
 import type { ClassOccurrence } from "@/lib/student-dashboard-stats";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,11 @@ export function StudentNextClassCard({
                   {nextClass.timeLabel ? ` · ${nextClass.timeLabel}` : ""}
                 </p>
               </div>
+              {nextClass.kind === "override" && (
+                <Badge variant="secondary">
+                  {nextClass.overrideType === "MOVED" ? "Rescheduled" : "Extra"}
+                </Badge>
+              )}
               <Button
                 variant="ghost"
                 size="icon-sm"
@@ -110,7 +116,11 @@ export function StudentNextClassCard({
                         : (entry.timeLabel ?? "Scheduled")}
                     </p>
                   </div>
-                  {entry.kind === "session" && entry.status ? (
+                  {entry.kind === "override" ? (
+                    <Badge variant="secondary">
+                      {entry.overrideType === "MOVED" ? "Rescheduled" : "Extra"}
+                    </Badge>
+                  ) : entry.kind === "session" && entry.status ? (
                     <AttendanceStatusBadge status={entry.status} />
                   ) : entry.timeLabel ? (
                     <span className="text-xs text-muted-foreground tabular-nums">

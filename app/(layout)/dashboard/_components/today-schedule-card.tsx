@@ -9,16 +9,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BATCH_COLORS } from "@/lib/batch-colors";
-import type { TodayEntry } from "@/lib/dashboard-stats";
+import type { TodaySchedule } from "@/lib/dashboard-stats";
 import { cn } from "@/lib/utils";
-import { ArrowRight, CalendarClock } from "lucide-react";
+import { ArrowRight, CalendarClock, CalendarOff } from "lucide-react";
 import Link from "next/link";
 
 function dotClass(colorId: string) {
   return BATCH_COLORS.find((c) => c.id === colorId)?.dot ?? BATCH_COLORS[0].dot;
 }
 
-export function TodayScheduleCard({ entries }: { entries: TodayEntry[] }) {
+export function TodayScheduleCard({ schedule }: { schedule: TodaySchedule }) {
+  const { holiday, entries } = schedule;
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
@@ -27,16 +29,22 @@ export function TodayScheduleCard({ entries }: { entries: TodayEntry[] }) {
           Today&apos;s schedule
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-3">
+        {holiday && (
+          <div className="flex items-center gap-2 rounded-md border border-rose-300 bg-rose-50 px-3 py-2 text-sm dark:border-rose-800 dark:bg-rose-950/40">
+            <CalendarOff className="size-4 shrink-0 text-rose-600 dark:text-rose-400" />
+            <span className="font-medium">Holiday · {holiday.name}</span>
+          </div>
+        )}
         {entries.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
-            No classes scheduled today.
+            {holiday ? "No extra classes today." : "No classes scheduled today."}
           </p>
         ) : (
           <ul className="divide-y">
-            {entries.map((entry) => (
+            {entries.map((entry, i) => (
               <li
-                key={entry.batchId}
+                key={`${entry.batchId}-${entry.kind}-${entry.sortKey}-${i}`}
                 className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0"
               >
                 <span
@@ -55,13 +63,18 @@ export function TodayScheduleCard({ entries }: { entries: TodayEntry[] }) {
                       : (entry.timeLabel ?? "Scheduled")}
                   </p>
                 </div>
-                {entry.kind === "session" && entry.completed ? (
+                {entry.kind === "override" ? (
+                  <Badge variant="secondary">
+                    {entry.overrideType === "MOVED" ? "Rescheduled" : "Extra"}
+                  </Badge>
+                ) : entry.kind === "session" && entry.completed ? (
                   <Badge variant="secondary">Done</Badge>
-                ) : entry.kind === "schedule" ? (
+                ) : null}
+                {entry.timeLabel && (
                   <span className="text-xs text-muted-foreground tabular-nums">
                     {entry.timeLabel}
                   </span>
-                ) : null}
+                )}
                 <Button
                   variant="ghost"
                   size="icon-sm"
