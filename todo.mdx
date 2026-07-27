@@ -9,3 +9,18 @@
 [x] Link student summary CTA to batch student table
 [ ] Batch student table CTA
 [ ] Invalidate as parallel
+
+# Student view (role-branched shared pages)
+[x] Part 1 — Foundation: roles helper, select-organization page, owner-only page guards, sidebar branching (nav-student), breadcrumb branch, team-switcher role re-land, student helpers + me/batch routers, student gate
+[x] Part 2 — Student dashboard branch (student.dashboard router, student-dashboard-stats, dashboard cards)
+[x] Part 3 — My Batches: batch overview branch (student.batch.getOverview, student-batch-overview, student-archived-state)
+[x] Part 4 — Attendance per batch branch (student.attendance router, student-attendance-stats, student-attendance)
+[x] Part 5 — Exam results per batch branch (student.exam router, student-exam-stats, student-exams — own marks only)
+[x] Part 6 — Calendar branch (CalendarBatch structural type, student.calendar router, CalendarView source prop + getEventHref)
+[x] Part 7 — Notes placeholder disabled sidebar item
+
+## Deferred / hardening
+[ ] Middleware-level path gating in proxy.ts for student-forbidden routes (page guards + RPC roles suffice today)
+[ ] Notes feature: real /class/[classId]/batch/[batchId]/notes route + student branch (currently disabled "coming soon" sidebar item)
+[ ] Exam class-average / rank for students (deliberately omitted for privacy)
+[ ] Left-batch history visibility for students (currently hidden by enrolled-only scope)
