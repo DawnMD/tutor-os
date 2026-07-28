@@ -30,19 +30,23 @@ export function NavMain() {
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        <SidebarMenuItem>
+        <SidebarMenuItem data-tour="nav-dashboard">
           <SidebarMenuButton render={<Link href={"/dashboard"} />}>
             <LayoutDashboardIcon />
             <span>Dashboard</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem data-tour="nav-calendar">
           <SidebarMenuButton render={<Link href={"/calendar"} />}>
             <CalendarIcon />
             <span>Calendar</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
+        <Collapsible
+          className="group/collapsible"
+          render={<SidebarMenuItem />}
+          data-tour="nav-students"
+        >
           <CollapsibleTrigger
             render={<SidebarMenuButton tooltip={"Students"} />}
           >
@@ -69,7 +73,11 @@ export function NavMain() {
             </SidebarMenuSub>
           </CollapsibleContent>
         </Collapsible>
-        <Collapsible className="group/collapsible" render={<SidebarMenuItem />}>
+        <Collapsible
+          className="group/collapsible"
+          render={<SidebarMenuItem />}
+          data-tour="nav-class"
+        >
           <CollapsibleTrigger
             nativeButton={false}
             render={

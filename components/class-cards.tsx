@@ -92,8 +92,14 @@ export const ClassCards = () => {
     );
   }
 
-  return data.map((item) => (
-    <Card key={item.id} className={cn("w-full p-0", item.archivedAt && "opacity-60")}>
+  return data.map((item, index) => (
+    <Card
+      key={item.id}
+      // The cards are siblings in the page grid, so the first one anchors the
+      // tour step that describes them all.
+      data-tour={index === 0 ? "class-cards" : undefined}
+      className={cn("w-full p-0", item.archivedAt && "opacity-60")}
+    >
       <CardContent className="p-0 flex flex-col h-full">
         <div className="flex items-center justify-between border-b px-3 py-2">
           {item.archivedAt ? (

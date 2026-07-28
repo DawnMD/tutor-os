@@ -1,6 +1,7 @@
 "use client";
 
 import { StudentGate } from "@/components/student/student-gate";
+import { PageTour } from "@/components/tour/page-tour";
 import {
   Empty,
   EmptyDescription,
@@ -73,6 +74,7 @@ function StudentDashboardBody() {
   if (data && data.batches.length === 0) {
     return (
       <div className="space-y-6">
+        <PageTour tourId="student-dashboard" />
         <StudentDashboardKpiCards kpis={derived.kpis} />
         <Empty className="border border-dashed">
           <EmptyHeader>
@@ -93,6 +95,7 @@ function StudentDashboardBody() {
 
   return (
     <div className="space-y-6">
+      <PageTour tourId="student-dashboard" />
       <StudentDashboardKpiCards kpis={derived.kpis} />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-6">

@@ -67,7 +67,10 @@ export default function BatchHeader({ batch }: BatchHeaderProps) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b pb-6">
+    <div
+      data-tour="batch-header"
+      className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b pb-6"
+    >
       <div className="space-y-2">
         <div className="flex items-center gap-3 flex-wrap">
           <span

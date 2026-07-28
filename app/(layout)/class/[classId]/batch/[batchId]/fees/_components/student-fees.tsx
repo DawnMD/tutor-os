@@ -191,7 +191,7 @@ function StudentFeesBody({ batchId }: { batchId: string }) {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card data-tour="fees-dues">
         <CardHeader>
           <CardTitle className="text-base">
             {dues.length > 0
@@ -202,7 +202,7 @@ function StudentFeesBody({ batchId }: { batchId: string }) {
         <CardContent>
           {dues.length > 0 ? (
             <ul className="divide-y">
-              {dues.map((due) => {
+              {dues.map((due, index) => {
                 const key = periodKey(due);
                 return (
                   <li
@@ -217,6 +217,8 @@ function StudentFeesBody({ batchId }: { batchId: string }) {
                     </div>
                     <Button
                       size="sm"
+                      // The first due anchors the tour step about paying.
+                      data-tour={index === 0 ? "fees-pay" : undefined}
                       onClick={() => pay(due)}
                       disabled={payingKey != null}
                     >
@@ -234,7 +236,7 @@ function StudentFeesBody({ batchId }: { batchId: string }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card data-tour="fees-payments">
         <CardHeader>
           <CardTitle className="text-base">Payment history</CardTitle>
         </CardHeader>

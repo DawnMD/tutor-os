@@ -69,7 +69,7 @@ export const AddNewStudentPopup = () => {
 
   return (
     <Dialog disablePointerDismissal open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button />}>
+      <DialogTrigger data-tour="invite-student" render={<Button />}>
         <PlusIcon />
         <span>Add Student</span>
       </DialogTrigger>

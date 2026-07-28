@@ -33,7 +33,9 @@ export function FeeRosterTable({
 
   return (
     <>
-      <DataTable columns={columns} data={roster} loading={false} />
+      <div data-tour="fees-roster">
+        <DataTable columns={columns} data={roster} loading={false} />
+      </div>
 
       <RecordPaymentDialog
         // Remount per target so the form resets to defaults.

@@ -60,7 +60,10 @@ export default function KPICards({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div
+      data-tour="batch-kpis"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+    >
       {/* Students Card */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">

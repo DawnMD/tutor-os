@@ -16,7 +16,9 @@ export const PendingInvitationsTable = () => {
       <div className="flex justify-end">
         <AddNewStudentPopup />
       </div>
-      <DataTable data={data} columns={pendingColumns} loading={isLoading} />
+      <div data-tour="pending-table">
+        <DataTable data={data} columns={pendingColumns} loading={isLoading} />
+      </div>
     </div>
   );
 };

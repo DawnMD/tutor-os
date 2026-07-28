@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTour } from "@/components/tour/page-tour";
 import {
   Empty,
   EmptyDescription,
@@ -94,6 +95,7 @@ export function DashboardContent() {
   if (data && data.batches.length === 0) {
     return (
       <div className="space-y-6">
+        <PageTour tourId="owner-dashboard" />
         <DashboardKpiCards
           kpis={derived.kpis}
           pendingInvites={invitations?.length ?? null}
@@ -116,6 +118,7 @@ export function DashboardContent() {
 
   return (
     <div className="space-y-6">
+      <PageTour tourId="owner-dashboard" />
       <DashboardKpiCards
         kpis={derived.kpis}
         pendingInvites={invitations?.length ?? null}

@@ -1,5 +1,6 @@
 import { AppBreadcrumb } from "@/components/app-breadcrumb";
 import { AppSidebar } from "@/components/app-sidebar";
+import { TourReplayButton } from "@/components/tour/tour-replay-button";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -26,6 +27,9 @@ export default async function MainLayout({ children }: LayoutProps<"/">) {
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 " />
             <AppBreadcrumb />
+          </div>
+          <div className="ml-auto px-4">
+            <TourReplayButton />
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>

@@ -22,7 +22,7 @@ export function StudentUpcomingExamsCard({
   exams: StudentUpcomingExam[];
 }) {
   return (
-    <Card>
+    <Card data-tour="student-exams">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
           <GraduationCap className="h-4 w-4 text-muted-foreground" />

@@ -22,7 +22,7 @@ import { format } from "date-fns";
 
 export function FeesHistory({ payments }: { payments: BatchPayment[] }) {
   return (
-    <Card>
+    <Card data-tour="fees-history">
       <CardHeader>
         <CardTitle className="text-base">Payment history</CardTitle>
       </CardHeader>

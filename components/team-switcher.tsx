@@ -115,7 +115,7 @@ export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
   return (
     <>
       <SidebarMenu>
-        <SidebarMenuItem>
+        <SidebarMenuItem data-tour="team-switcher">
           <DropdownMenu>
             <DropdownMenuTrigger
               render={

@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTour } from "@/components/tour/page-tour";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -86,6 +87,8 @@ export default function BatchOverviewContent({
 
   return (
     <div className="space-y-6">
+      <PageTour tourId="owner-batch-overview" />
+
       {classArchived && (
         <Card className="border-dashed border-destructive/50 bg-destructive/5 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

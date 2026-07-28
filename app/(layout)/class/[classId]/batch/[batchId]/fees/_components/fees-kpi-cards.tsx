@@ -56,7 +56,10 @@ export function FeesKpiCards({ kpis }: FeesKpiCardsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      data-tour="fees-kpis"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+    >
       {list.map((kpi) => (
         <Card key={kpi.label} size="sm">
           <CardContent className="flex items-start justify-between gap-3">

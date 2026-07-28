@@ -62,13 +62,13 @@ export function NavStudent() {
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        <SidebarMenuItem>
+        <SidebarMenuItem data-tour="nav-dashboard">
           <SidebarMenuButton render={<Link href={"/dashboard"} />}>
             <LayoutDashboardIcon />
             <span>Dashboard</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem data-tour="nav-calendar">
           <SidebarMenuButton render={<Link href={"/calendar"} />}>
             <CalendarIcon />
             <span>Calendar</span>
@@ -78,6 +78,7 @@ export function NavStudent() {
           defaultOpen
           className="group/collapsible"
           render={<SidebarMenuItem />}
+          data-tour="nav-my-batches"
         >
           <CollapsibleTrigger
             render={<SidebarMenuButton tooltip={"My Batches"} />}

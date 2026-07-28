@@ -3,6 +3,7 @@
 import { StudentArchivedState } from "@/components/student/student-archived-state";
 import { AttendanceStatusBadge } from "@/components/student/attendance-status-badge";
 import { StudentGate } from "@/components/student/student-gate";
+import { PageTour } from "@/components/tour/page-tour";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -93,6 +94,8 @@ function StudentBatchOverviewBody({ batchId }: { batchId: string }) {
 
   return (
     <div className="space-y-6">
+      <PageTour tourId="student-batch-overview" />
+
       <div className="flex items-center gap-3">
         <span className={cn("size-3 shrink-0 rounded-full", color.dot)} />
         <div>
@@ -101,7 +104,10 @@ function StudentBatchOverviewBody({ batchId }: { batchId: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div
+        data-tour="student-batch-summary"
+        className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+      >
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">

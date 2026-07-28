@@ -23,7 +23,7 @@ export function PendingInvitationsCard({
   isLoading: boolean;
 }) {
   return (
-    <Card>
+    <Card data-tour="dashboard-invites">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
           <Mail className="h-4 w-4 text-muted-foreground" />

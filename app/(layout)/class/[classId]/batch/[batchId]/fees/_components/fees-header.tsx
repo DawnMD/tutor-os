@@ -25,7 +25,10 @@ export function FeesHeader({
   const atCurrent = isAtOrAfterCurrent(period);
 
   return (
-    <div className="flex flex-col gap-4 border-b pb-6 md:flex-row md:items-start md:justify-between">
+    <div
+      data-tour="fees-header"
+      className="flex flex-col gap-4 border-b pb-6 md:flex-row md:items-start md:justify-between"
+    >
       <div className="space-y-2">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
@@ -74,7 +77,7 @@ export function FeesHeader({
             <ChevronRight className="size-4" />
           </Button>
         </div>
-        <Button variant="outline" onClick={onEditFee}>
+        <Button variant="outline" data-tour="fees-set-fee" onClick={onEditFee}>
           <Pencil className="size-4" />
           <span className="hidden sm:inline">Edit fee</span>
         </Button>

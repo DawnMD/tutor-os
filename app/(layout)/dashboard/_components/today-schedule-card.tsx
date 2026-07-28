@@ -22,7 +22,7 @@ export function TodayScheduleCard({ schedule }: { schedule: TodaySchedule }) {
   const { holiday, entries } = schedule;
 
   return (
-    <Card>
+    <Card data-tour="dashboard-today">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
           <CalendarClock className="h-4 w-4 text-muted-foreground" />

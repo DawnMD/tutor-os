@@ -60,7 +60,7 @@ export const AddClassCard = () => {
   }
 
   return (
-    <Card className="w-full ">
+    <Card className="w-full " data-tour="add-class">
       <form id="create-class" onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader>
           <CardTitle>Create a new class</CardTitle>

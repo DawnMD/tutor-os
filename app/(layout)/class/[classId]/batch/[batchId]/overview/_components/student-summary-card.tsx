@@ -21,7 +21,7 @@ export default function StudentSummaryCard({
   const recentlyJoined = batch.students.slice(0, 3);
 
   return (
-    <Card>
+    <Card data-tour="batch-student-summary">
       <CardHeader>
         <CardTitle className="text-lg">Student Summary</CardTitle>
       </CardHeader>

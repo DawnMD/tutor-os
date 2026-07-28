@@ -33,7 +33,10 @@ export function StudentDashboardKpiCards({ kpis }: { kpis: StudentKpis }) {
   const latest = kpis.latestResult;
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      data-tour="student-kpis"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+    >
       <KpiTile
         title="Attendance"
         value={kpis.attendanceRate == null ? "—" : `${kpis.attendanceRate}%`}

@@ -57,7 +57,7 @@ export default function QuickActionsPanel({
   ];
 
   return (
-    <Card>
+    <Card data-tour="batch-quick-actions">
       <CardHeader>
         <CardTitle className="text-lg">Quick Actions</CardTitle>
       </CardHeader>

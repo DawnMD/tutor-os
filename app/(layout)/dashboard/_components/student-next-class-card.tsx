@@ -28,7 +28,7 @@ export function StudentNextClassCard({
   today: ClassOccurrence[];
 }) {
   return (
-    <Card>
+    <Card data-tour="student-next-class">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
           <CalendarClock className="h-4 w-4 text-muted-foreground" />

@@ -29,7 +29,9 @@ export const StudentTable = () => {
         />
         Show archived
       </Label>
-      <DataTable data={students} columns={columns} loading={isLoading} />
+      <div data-tour="joined-table">
+        <DataTable data={students} columns={columns} loading={isLoading} />
+      </div>
     </div>
   );
 };
