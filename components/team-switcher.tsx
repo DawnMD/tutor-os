@@ -48,7 +48,7 @@ const formSchema = z.object({
   workspace: z.string(),
 });
 
-export function TeamSwitcher() {
+export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -85,7 +85,7 @@ export function TeamSwitcher() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!createOrganization) return;
+    if (!canCreate || !createOrganization) return;
     toast.promise(
       createOrganization({
         name: data.workspace,
@@ -165,27 +165,31 @@ export function TeamSwitcher() {
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  className="gap-2 p-2"
-                  onClick={() => setOpenDialog(true)}
-                >
-                  <div className="flex size-6 items-center justify-center border bg-transparent">
-                    <PlusIcon className="size-4" />
-                  </div>
-                  <div className="font-medium text-muted-foreground">
-                    Add workspace
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+              {canCreate && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      className="gap-2 p-2"
+                      onClick={() => setOpenDialog(true)}
+                    >
+                      <div className="flex size-6 items-center justify-center border bg-transparent">
+                        <PlusIcon className="size-4" />
+                      </div>
+                      <div className="font-medium text-muted-foreground">
+                        Add workspace
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
       <Dialog
         disablePointerDismissal
-        open={openDialog}
+        open={canCreate && openDialog}
         onOpenChange={setOpenDialog}
       >
         <form id="create-workspace" onSubmit={form.handleSubmit(onSubmit)}>

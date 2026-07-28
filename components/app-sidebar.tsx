@@ -28,7 +28,7 @@ export function AppSidebar({ orgRole, ...props }: AppSidebarProps) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <TeamSwitcher canCreate={isOwner} />
       </SidebarHeader>
       <SidebarContent>{isOwner ? <NavMain /> : <NavStudent />}</SidebarContent>
       <SidebarGroup className="mt-auto group-data-[collapsible=icon]:hidden">
