@@ -407,7 +407,8 @@ export const ModelName = {
   BatchSession: 'BatchSession',
   AttendanceRecord: 'AttendanceRecord',
   Exam: 'Exam',
-  ExamResult: 'ExamResult'
+  ExamResult: 'ExamResult',
+  BatchNote: 'BatchNote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "class" | "student" | "batch" | "holiday" | "scheduleOverride" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult"
+    modelProps: "class" | "student" | "batch" | "holiday" | "scheduleOverride" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult" | "batchNote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1241,6 +1242,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BatchNote: {
+      payload: Prisma.$BatchNotePayload<ExtArgs>
+      fields: Prisma.BatchNoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BatchNoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BatchNoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        findFirst: {
+          args: Prisma.BatchNoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BatchNoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        findMany: {
+          args: Prisma.BatchNoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>[]
+        }
+        create: {
+          args: Prisma.BatchNoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        createMany: {
+          args: Prisma.BatchNoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BatchNoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>[]
+        }
+        delete: {
+          args: Prisma.BatchNoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        update: {
+          args: Prisma.BatchNoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        deleteMany: {
+          args: Prisma.BatchNoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BatchNoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BatchNoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>[]
+        }
+        upsert: {
+          args: Prisma.BatchNoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BatchNotePayload>
+        }
+        aggregate: {
+          args: Prisma.BatchNoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBatchNote>
+        }
+        groupBy: {
+          args: Prisma.BatchNoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BatchNoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BatchNoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BatchNoteCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1414,6 +1489,25 @@ export const ExamResultScalarFieldEnum = {
 } as const
 
 export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof typeof ExamResultScalarFieldEnum]
+
+
+export const BatchNoteScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  batchId: 'batchId',
+  title: 'title',
+  description: 'description',
+  fileKey: 'fileKey',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  uploadedByClerkUserId: 'uploadedByClerkUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BatchNoteScalarFieldEnum = (typeof BatchNoteScalarFieldEnum)[keyof typeof BatchNoteScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1691,6 +1785,7 @@ export type GlobalOmitConfig = {
   attendanceRecord?: Prisma.AttendanceRecordOmit
   exam?: Prisma.ExamOmit
   examResult?: Prisma.ExamResultOmit
+  batchNote?: Prisma.BatchNoteOmit
 }
 
 /* Types for Logging */

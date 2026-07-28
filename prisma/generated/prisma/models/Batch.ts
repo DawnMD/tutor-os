@@ -212,6 +212,7 @@ export type BatchWhereInput = {
   sessions?: Prisma.BatchSessionListRelationFilter
   exams?: Prisma.ExamListRelationFilter
   overrides?: Prisma.ScheduleOverrideListRelationFilter
+  notes?: Prisma.BatchNoteListRelationFilter
 }
 
 export type BatchOrderByWithRelationInput = {
@@ -229,6 +230,7 @@ export type BatchOrderByWithRelationInput = {
   sessions?: Prisma.BatchSessionOrderByRelationAggregateInput
   exams?: Prisma.ExamOrderByRelationAggregateInput
   overrides?: Prisma.ScheduleOverrideOrderByRelationAggregateInput
+  notes?: Prisma.BatchNoteOrderByRelationAggregateInput
 }
 
 export type BatchWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.BatchSessionListRelationFilter
   exams?: Prisma.ExamListRelationFilter
   overrides?: Prisma.ScheduleOverrideListRelationFilter
+  notes?: Prisma.BatchNoteListRelationFilter
 }, "id" | "classId_name">
 
 export type BatchOrderByWithAggregationInput = {
@@ -294,6 +297,7 @@ export type BatchCreateInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateInput = {
@@ -310,6 +314,7 @@ export type BatchUncheckedCreateInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUpdateInput = {
@@ -326,6 +331,7 @@ export type BatchUpdateInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateInput = {
@@ -342,6 +348,7 @@ export type BatchUncheckedUpdateInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateManyInput = {
@@ -541,6 +548,20 @@ export type BatchUpdateOneRequiredWithoutExamsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutExamsInput, Prisma.BatchUpdateWithoutExamsInput>, Prisma.BatchUncheckedUpdateWithoutExamsInput>
 }
 
+export type BatchCreateNestedOneWithoutNotesInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutNotesInput, Prisma.BatchUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutNotesInput
+  connect?: Prisma.BatchWhereUniqueInput
+}
+
+export type BatchUpdateOneRequiredWithoutNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutNotesInput, Prisma.BatchUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutNotesInput
+  upsert?: Prisma.BatchUpsertWithoutNotesInput
+  connect?: Prisma.BatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutNotesInput, Prisma.BatchUpdateWithoutNotesInput>, Prisma.BatchUncheckedUpdateWithoutNotesInput>
+}
+
 export type BatchCreateWithoutClassInput = {
   id?: string
   clerkOrganizationId: string
@@ -554,6 +575,7 @@ export type BatchCreateWithoutClassInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutClassInput = {
@@ -569,6 +591,7 @@ export type BatchUncheckedCreateWithoutClassInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutClassInput = {
@@ -624,6 +647,7 @@ export type BatchCreateWithoutOverridesInput = {
   schedules?: Prisma.BatchScheduleCreateNestedManyWithoutBatchInput
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutOverridesInput = {
@@ -639,6 +663,7 @@ export type BatchUncheckedCreateWithoutOverridesInput = {
   schedules?: Prisma.BatchScheduleUncheckedCreateNestedManyWithoutBatchInput
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutOverridesInput = {
@@ -670,6 +695,7 @@ export type BatchUpdateWithoutOverridesInput = {
   schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutOverridesInput = {
@@ -685,6 +711,7 @@ export type BatchUncheckedUpdateWithoutOverridesInput = {
   schedules?: Prisma.BatchScheduleUncheckedUpdateManyWithoutBatchNestedInput
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutSchedulesInput = {
@@ -700,6 +727,7 @@ export type BatchCreateWithoutSchedulesInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutSchedulesInput = {
@@ -715,6 +743,7 @@ export type BatchUncheckedCreateWithoutSchedulesInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutSchedulesInput = {
@@ -746,6 +775,7 @@ export type BatchUpdateWithoutSchedulesInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutSchedulesInput = {
@@ -761,6 +791,7 @@ export type BatchUncheckedUpdateWithoutSchedulesInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutStudentsInput = {
@@ -776,6 +807,7 @@ export type BatchCreateWithoutStudentsInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutStudentsInput = {
@@ -791,6 +823,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutStudentsInput = {
@@ -822,6 +855,7 @@ export type BatchUpdateWithoutStudentsInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutStudentsInput = {
@@ -837,6 +871,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutSessionsInput = {
@@ -852,6 +887,7 @@ export type BatchCreateWithoutSessionsInput = {
   schedules?: Prisma.BatchScheduleCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutSessionsInput = {
@@ -867,6 +903,7 @@ export type BatchUncheckedCreateWithoutSessionsInput = {
   schedules?: Prisma.BatchScheduleUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutSessionsInput = {
@@ -898,6 +935,7 @@ export type BatchUpdateWithoutSessionsInput = {
   schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutSessionsInput = {
@@ -913,6 +951,7 @@ export type BatchUncheckedUpdateWithoutSessionsInput = {
   schedules?: Prisma.BatchScheduleUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutExamsInput = {
@@ -928,6 +967,7 @@ export type BatchCreateWithoutExamsInput = {
   schedules?: Prisma.BatchScheduleCreateNestedManyWithoutBatchInput
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutExamsInput = {
@@ -943,6 +983,7 @@ export type BatchUncheckedCreateWithoutExamsInput = {
   schedules?: Prisma.BatchScheduleUncheckedCreateNestedManyWithoutBatchInput
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutExamsInput = {
@@ -974,6 +1015,7 @@ export type BatchUpdateWithoutExamsInput = {
   schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutExamsInput = {
@@ -988,6 +1030,87 @@ export type BatchUncheckedUpdateWithoutExamsInput = {
   students?: Prisma.BatchStudentUncheckedUpdateManyWithoutBatchNestedInput
   schedules?: Prisma.BatchScheduleUncheckedUpdateManyWithoutBatchNestedInput
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
+  overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchCreateWithoutNotesInput = {
+  id?: string
+  clerkOrganizationId: string
+  name: string
+  color?: string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  class: Prisma.ClassCreateNestedOneWithoutBatchesInput
+  students?: Prisma.BatchStudentCreateNestedManyWithoutBatchInput
+  schedules?: Prisma.BatchScheduleCreateNestedManyWithoutBatchInput
+  sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
+  exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
+  overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+}
+
+export type BatchUncheckedCreateWithoutNotesInput = {
+  id?: string
+  clerkOrganizationId: string
+  classId: string
+  name: string
+  color?: string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.BatchStudentUncheckedCreateNestedManyWithoutBatchInput
+  schedules?: Prisma.BatchScheduleUncheckedCreateNestedManyWithoutBatchInput
+  sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
+  overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+}
+
+export type BatchCreateOrConnectWithoutNotesInput = {
+  where: Prisma.BatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BatchCreateWithoutNotesInput, Prisma.BatchUncheckedCreateWithoutNotesInput>
+}
+
+export type BatchUpsertWithoutNotesInput = {
+  update: Prisma.XOR<Prisma.BatchUpdateWithoutNotesInput, Prisma.BatchUncheckedUpdateWithoutNotesInput>
+  create: Prisma.XOR<Prisma.BatchCreateWithoutNotesInput, Prisma.BatchUncheckedCreateWithoutNotesInput>
+  where?: Prisma.BatchWhereInput
+}
+
+export type BatchUpdateToOneWithWhereWithoutNotesInput = {
+  where?: Prisma.BatchWhereInput
+  data: Prisma.XOR<Prisma.BatchUpdateWithoutNotesInput, Prisma.BatchUncheckedUpdateWithoutNotesInput>
+}
+
+export type BatchUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  class?: Prisma.ClassUpdateOneRequiredWithoutBatchesNestedInput
+  students?: Prisma.BatchStudentUpdateManyWithoutBatchNestedInput
+  schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
+  sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
+  overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchUncheckedUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  classId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.BatchStudentUncheckedUpdateManyWithoutBatchNestedInput
+  schedules?: Prisma.BatchScheduleUncheckedUpdateManyWithoutBatchNestedInput
+  sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
 }
 
@@ -1014,6 +1137,7 @@ export type BatchUpdateWithoutClassInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutClassInput = {
@@ -1029,6 +1153,7 @@ export type BatchUncheckedUpdateWithoutClassInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateManyWithoutClassInput = {
@@ -1052,6 +1177,7 @@ export type BatchCountOutputType = {
   sessions: number
   exams: number
   overrides: number
+  notes: number
 }
 
 export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1060,6 +1186,7 @@ export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   sessions?: boolean | BatchCountOutputTypeCountSessionsArgs
   exams?: boolean | BatchCountOutputTypeCountExamsArgs
   overrides?: boolean | BatchCountOutputTypeCountOverridesArgs
+  notes?: boolean | BatchCountOutputTypeCountNotesArgs
 }
 
 /**
@@ -1107,6 +1234,13 @@ export type BatchCountOutputTypeCountOverridesArgs<ExtArgs extends runtime.Types
   where?: Prisma.ScheduleOverrideWhereInput
 }
 
+/**
+ * BatchCountOutputType without action
+ */
+export type BatchCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BatchNoteWhereInput
+}
+
 
 export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1123,6 +1257,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sessions?: boolean | Prisma.Batch$sessionsArgs<ExtArgs>
   exams?: boolean | Prisma.Batch$examsArgs<ExtArgs>
   overrides?: boolean | Prisma.Batch$overridesArgs<ExtArgs>
+  notes?: boolean | Prisma.Batch$notesArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batch"]>
 
@@ -1169,6 +1304,7 @@ export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   sessions?: boolean | Prisma.Batch$sessionsArgs<ExtArgs>
   exams?: boolean | Prisma.Batch$examsArgs<ExtArgs>
   overrides?: boolean | Prisma.Batch$overridesArgs<ExtArgs>
+  notes?: boolean | Prisma.Batch$notesArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1187,6 +1323,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     sessions: Prisma.$BatchSessionPayload<ExtArgs>[]
     exams: Prisma.$ExamPayload<ExtArgs>[]
     overrides: Prisma.$ScheduleOverridePayload<ExtArgs>[]
+    notes: Prisma.$BatchNotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1597,6 +1734,7 @@ export interface Prisma__BatchClient<T, Null = never, ExtArgs extends runtime.Ty
   sessions<T extends Prisma.Batch$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BatchSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   exams<T extends Prisma.Batch$examsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$examsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   overrides<T extends Prisma.Batch$overridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$overridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notes<T extends Prisma.Batch$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BatchNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2152,6 +2290,30 @@ export type Batch$overridesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ScheduleOverrideScalarFieldEnum | Prisma.ScheduleOverrideScalarFieldEnum[]
+}
+
+/**
+ * Batch.notes
+ */
+export type Batch$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BatchNote
+   */
+  select?: Prisma.BatchNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BatchNote
+   */
+  omit?: Prisma.BatchNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BatchNoteInclude<ExtArgs> | null
+  where?: Prisma.BatchNoteWhereInput
+  orderBy?: Prisma.BatchNoteOrderByWithRelationInput | Prisma.BatchNoteOrderByWithRelationInput[]
+  cursor?: Prisma.BatchNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BatchNoteScalarFieldEnum | Prisma.BatchNoteScalarFieldEnum[]
 }
 
 /**

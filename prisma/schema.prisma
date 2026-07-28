@@ -70,6 +70,7 @@ model Batch {
   sessions            BatchSession[]
   exams               Exam[]
   overrides           ScheduleOverride[]
+  notes               BatchNote[]
 
   @@unique([classId, name])
   @@index([classId])
@@ -187,4 +188,24 @@ model ExamResult {
 
   @@id([examId, studentId])
   @@index([studentId])
+}
+
+model BatchNote {
+  id                    String   @id @default(cuid())
+  clerkOrganizationId   String
+  batchId               String
+  title                 String
+  description           String?
+  fileKey               String   @unique
+  fileUrl               String
+  fileName              String
+  fileType              String
+  fileSize              Int
+  uploadedByClerkUserId String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  batch                 Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@index([batchId, createdAt])
+  @@index([clerkOrganizationId])
 }

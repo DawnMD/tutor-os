@@ -61,7 +61,8 @@ export const ModelName = {
   BatchSession: 'BatchSession',
   AttendanceRecord: 'AttendanceRecord',
   Exam: 'Exam',
-  ExamResult: 'ExamResult'
+  ExamResult: 'ExamResult',
+  BatchNote: 'BatchNote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -214,6 +215,25 @@ export const ExamResultScalarFieldEnum = {
 } as const
 
 export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof typeof ExamResultScalarFieldEnum]
+
+
+export const BatchNoteScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  batchId: 'batchId',
+  title: 'title',
+  description: 'description',
+  fileKey: 'fileKey',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  uploadedByClerkUserId: 'uploadedByClerkUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BatchNoteScalarFieldEnum = (typeof BatchNoteScalarFieldEnum)[keyof typeof BatchNoteScalarFieldEnum]
 
 
 export const SortOrder = {
