@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "driver.js/dist/driver.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,4 +128,101 @@
   html {
     @apply font-mono;
   }
+}
+
+/*
+ * driver.js tour popover, remapped onto the shadcn tokens. The popover is
+ * portalled to <body> so it can't use Tailwind classes; scoping to the
+ * `tutoros-tour` popoverClass keeps this from leaking into any other use of
+ * driver.js. Dark mode comes for free — the tokens flip under `.dark`.
+ */
+.driver-popover.tutoros-tour {
+  padding: 1rem;
+  max-width: 20rem;
+  font-family: inherit;
+  color: var(--popover-foreground);
+  background-color: var(--popover);
+  border: 1px solid var(--border);
+  /* The app is square-cornered throughout (cards, buttons, tooltips). */
+  border-radius: 0;
+  box-shadow: 0 12px 32px -12px oklch(0 0 0 / 45%);
+}
+
+.driver-popover.tutoros-tour .driver-popover-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.driver-popover.tutoros-tour .driver-popover-description {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.driver-popover.tutoros-tour .driver-popover-close-btn {
+  color: var(--muted-foreground);
+}
+
+.driver-popover.tutoros-tour .driver-popover-close-btn:hover,
+.driver-popover.tutoros-tour .driver-popover-close-btn:focus {
+  color: var(--foreground);
+}
+
+.driver-popover.tutoros-tour .driver-popover-progress-text {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.driver-popover.tutoros-tour .driver-popover-footer-btn {
+  padding: 0.375rem 0.875rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0;
+  color: var(--secondary-foreground);
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+}
+
+.driver-popover.tutoros-tour .driver-popover-footer-btn:hover,
+.driver-popover.tutoros-tour .driver-popover-footer-btn:focus {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.driver-popover.tutoros-tour .driver-popover-next-btn,
+.driver-popover.tutoros-tour .driver-popover-done-btn {
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border-color: transparent;
+}
+
+.driver-popover.tutoros-tour .driver-popover-next-btn:hover,
+.driver-popover.tutoros-tour .driver-popover-next-btn:focus,
+.driver-popover.tutoros-tour .driver-popover-done-btn:hover,
+.driver-popover.tutoros-tour .driver-popover-done-btn:focus {
+  color: var(--primary-foreground);
+  background-color: color-mix(in oklch, var(--primary), transparent 20%);
+}
+
+/*
+ * The arrow is a CSS triangle: three of its four borders are transparent, so
+ * only the side facing the popover takes the background colour.
+ */
+.driver-popover.tutoros-tour .driver-popover-arrow-side-left {
+  border-left-color: var(--popover);
+}
+.driver-popover.tutoros-tour .driver-popover-arrow-side-right {
+  border-right-color: var(--popover);
+}
+.driver-popover.tutoros-tour .driver-popover-arrow-side-top {
+  border-top-color: var(--popover);
+}
+.driver-popover.tutoros-tour .driver-popover-arrow-side-bottom {
+  border-bottom-color: var(--popover);
 }
