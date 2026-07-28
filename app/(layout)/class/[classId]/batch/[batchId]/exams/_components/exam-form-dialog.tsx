@@ -23,10 +23,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { isPastDay, pastDayMatcher } from "@/lib/dates";
 import { orpc } from "@/orpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -38,16 +39,25 @@ export type ExamFormMode =
   | { kind: "create" }
   | { kind: "edit"; source: ExamRow };
 
-const formSchema = z.object({
-  title: z.string().trim().min(1, "Exam title is required"),
-  totalMarks: z
-    .number({ message: "Total marks is required" })
-    .int("Total marks must be a whole number")
-    .min(1, "Total marks must be at least 1"),
-  examDate: z.date({ message: "Pick an exam date" }),
-});
+// Factory so the past-date refinement can exempt an edit dialog's original
+// date (`keepDate`) — editing yesterday's exam must still save.
+function buildFormSchema(keepDate?: Date) {
+  return z.object({
+    title: z.string().trim().min(1, "Exam title is required"),
+    totalMarks: z
+      .number({ message: "Total marks is required" })
+      .int("Total marks must be a whole number")
+      .min(1, "Total marks must be at least 1"),
+    examDate: z
+      .date({ message: "Pick an exam date" })
+      .refine(
+        (d) => !isPastDay(d) || (keepDate != null && isSameDay(d, keepDate)),
+        { message: "Exam date can't be in the past" },
+      ),
+  });
+}
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof buildFormSchema>>;
 
 interface ExamFormDialogProps {
   open: boolean;
@@ -92,8 +102,12 @@ export function ExamFormDialog({
   const queryClient = useQueryClient();
   const [dateOpen, setDateOpen] = useState(false);
 
+  // The dialog remounts per open (parent `key`), so deriving this once is safe.
+  const keepDate =
+    mode.kind === "edit" ? new Date(mode.source.examDate) : undefined;
+
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(buildFormSchema(keepDate)),
     defaultValues: {
       title: mode.kind === "edit" ? mode.source.title : "",
       totalMarks: mode.kind === "edit" ? mode.source.totalMarks : 100,
@@ -254,6 +268,7 @@ export function ExamFormDialog({
                           if (date) field.onChange(date);
                           setDateOpen(false);
                         }}
+                        disabled={pastDayMatcher(keepDate)}
                         autoFocus
                       />
                     </PopoverContent>

@@ -19,9 +19,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import { isPastDay, pastDayMatcher } from "@/lib/dates";
 import { orpc } from "@/orpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -46,7 +47,7 @@ const COPY: Record<
   create: {
     title: "Create session",
     description:
-      "Log a class you conducted — capture the date, topic and a quick summary. You can mark attendance afterwards.",
+      "Log today's class or schedule an upcoming one — capture the date, topic and a quick summary. You can mark attendance afterwards.",
     submit: "Create session",
     loading: "Creating session...",
   },
@@ -72,15 +73,20 @@ export function SessionFormDialog({
   mode,
 }: SessionFormDialogProps) {
   const queryClient = useQueryClient();
+  // Editing a past session must still work: its original date stays allowed.
+  const keepDate =
+    mode.kind === "edit" ? new Date(mode.source.classDate) : undefined;
   // Initial values are derived from `mode`; the parent remounts this dialog on
   // each open (via `key`) so these lazy initializers always run fresh.
   const [classDate, setClassDate] = useState<Date | undefined>(() => {
     if (mode.kind === "create") {
-      return mode.date ?? new Date();
+      // A pre-seeded past date (e.g. from a dimmed cell) falls back to today.
+      return mode.date != null && !isPastDay(mode.date) ? mode.date : new Date();
     }
     if (mode.kind === "edit") {
       return new Date(mode.source.classDate);
     }
+    // Duplicate: start from today rather than the source's (possibly past) date.
     return new Date();
   });
   const [dateOpen, setDateOpen] = useState(false);
@@ -123,6 +129,13 @@ export function SessionFormDialog({
     e.preventDefault();
     if (!classDate) {
       toast.error("Pick a class date");
+      return;
+    }
+    if (
+      isPastDay(classDate) &&
+      !(keepDate != null && isSameDay(classDate, keepDate))
+    ) {
+      toast.error("Class date can't be in the past");
       return;
     }
     if (!topic.trim()) {
@@ -188,6 +201,7 @@ export function SessionFormDialog({
                       setClassDate(date);
                       setDateOpen(false);
                     }}
+                    disabled={pastDayMatcher(keepDate)}
                     autoFocus
                   />
                 </PopoverContent>

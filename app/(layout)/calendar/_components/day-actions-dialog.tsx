@@ -18,6 +18,7 @@ import {
   type CalendarBatch,
   type CalendarEvent,
 } from "@/lib/calendar-events";
+import { isPastDay } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { orpc } from "@/orpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -61,6 +62,10 @@ export function DayActionsDialog({
   const queryClient = useQueryClient();
   const [holidayName, setHolidayName] = useState("");
   const [reschedule, setReschedule] = useState<RescheduleMode | null>(null);
+
+  // Past days can still be opened (to undo a mistaken holiday/override) but
+  // creation actions are disabled.
+  const past = isPastDay(day);
 
   const holiday = events.find((e) => e.kind === "holiday");
   const scheduleChips = events.filter((e) => e.kind === "schedule");
@@ -108,6 +113,7 @@ export function DayActionsDialog({
     deleteOverride.isPending;
 
   function onMarkHoliday() {
+    if (past) return;
     if (!holidayName.trim()) {
       toast.error("Add a holiday name");
       return;
@@ -152,6 +158,14 @@ export function DayActionsDialog({
             </DialogDescription>
           </DialogHeader>
 
+          {past && (
+            <p className="flex items-start gap-1.5 text-xs text-muted-foreground">
+              <TriangleAlert className="mt-0.5 size-3.5 shrink-0 text-amber-500" />
+              This day is in the past — marking holidays, rescheduling and extra
+              classes are disabled. You can still remove existing ones.
+            </p>
+          )}
+
           <div className="space-y-4">
             {/* Holiday section */}
             {holiday && holiday.kind === "holiday" ? (
@@ -181,10 +195,11 @@ export function DayActionsDialog({
                       value={holidayName}
                       onChange={(e) => setHolidayName(e.target.value)}
                       placeholder="e.g. Diwali"
+                      disabled={past}
                     />
                     <Button
                       variant="outline"
-                      disabled={busy}
+                      disabled={busy || past}
                       onClick={onMarkHoliday}
                     >
                       Confirm
@@ -227,7 +242,7 @@ export function DayActionsDialog({
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={busy}
+                        disabled={busy || past}
                         onClick={() =>
                           setReschedule({
                             kind: "MOVED",
@@ -327,7 +342,7 @@ export function DayActionsDialog({
           <DialogFooter className="sm:justify-between">
             <Button
               variant="outline"
-              disabled={busy}
+              disabled={busy || past}
               onClick={() =>
                 setReschedule({ kind: "EXTRA", batches, date: day })
               }

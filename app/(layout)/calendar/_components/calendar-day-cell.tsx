@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { resolveBatchColor } from "@/lib/batch-colors";
 import type { CalendarEvent } from "@/lib/calendar-events";
+import { isPastDay } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { format, isSameMonth, isToday } from "date-fns";
 import { CalendarOff } from "lucide-react";
@@ -36,6 +37,7 @@ export function CalendarDayCell({
 }: CalendarDayCellProps) {
   const outsideMonth = !isSameMonth(day, month);
   const today = isToday(day);
+  const past = !today && isPastDay(day);
 
   // Holiday banners render above the chip list; the rest flow as chips/dots.
   const holidays = events.filter((e) => e.kind === "holiday");
@@ -51,6 +53,9 @@ export function CalendarDayCell({
     <div
       className={cn(
         "flex min-h-24 flex-col gap-1 border-t border-l p-1 sm:min-h-28",
+        // Precedence via tailwind-merge (last conflicting bg-* wins): holiday
+        // rose > past/outside muted. Today pill and hover are unaffected.
+        past && "bg-muted/30",
         outsideMonth && "bg-muted/30",
         holidays.length > 0 && "bg-rose-50/60 dark:bg-rose-950/20",
         interactive && "cursor-pointer transition-colors hover:bg-muted/40",
@@ -63,7 +68,7 @@ export function CalendarDayCell({
             "flex size-6 items-center justify-center text-xs",
             today &&
               "rounded-full bg-primary font-semibold text-primary-foreground",
-            outsideMonth && !today && "text-muted-foreground",
+            (outsideMonth || past) && !today && "text-muted-foreground",
           )}
         >
           {format(day, "d")}

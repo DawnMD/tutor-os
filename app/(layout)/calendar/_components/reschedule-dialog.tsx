@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { minutesToTime, type CalendarBatch } from "@/lib/calendar-events";
+import { isPastDay, pastDayMatcher } from "@/lib/dates";
 import { orpc } from "@/orpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -86,7 +87,11 @@ export function RescheduleDialog({
   const [batchId, setBatchId] = useState(() =>
     mode.kind === "EXTRA" ? "" : mode.batchId,
   );
-  const [date, setDate] = useState<Date | undefined>(() => mode.date);
+  // A past `mode.date` (e.g. from a dimmed cell) defaults to today; past days
+  // are disabled in the picker below anyway.
+  const [date, setDate] = useState<Date | undefined>(() =>
+    isPastDay(mode.date) ? new Date() : mode.date,
+  );
   const [dateOpen, setDateOpen] = useState(false);
   const [start, setStart] = useState(() =>
     mode.kind === "MOVED"
@@ -143,6 +148,12 @@ export function RescheduleDialog({
     }
     if (!date) {
       toast.error("Pick a date");
+      return;
+    }
+    if (isPastDay(date)) {
+      toast.error(
+        isMoved ? "New date can't be in the past" : "Class date can't be in the past",
+      );
       return;
     }
     const startMinutes = inputToMinutes(start);
@@ -257,6 +268,7 @@ export function RescheduleDialog({
                       setDate(d);
                       setDateOpen(false);
                     }}
+                    disabled={pastDayMatcher()}
                     autoFocus
                   />
                 </PopoverContent>
