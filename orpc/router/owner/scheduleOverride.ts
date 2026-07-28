@@ -2,6 +2,7 @@ import { ownerProcedure } from "@/orpc/orpc";
 import {
   assertActiveBatch,
   assertActiveOverride,
+  assertNotPastDate,
 } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import * as z from "zod";
@@ -14,6 +15,9 @@ const minutes = z.number().int().min(0).max(1440);
  * Neither touches `BatchSession`, so attendance math is unaffected. When a
  * moved/extra class is actually conducted, the owner logs a normal session on
  * that date — the session then wins over the override chip.
+ *
+ * Past dates are blocked: strict day-level enforcement lives client-side, with
+ * a lenient 48h server guard here (see `lib/dates.ts` for the convention).
  */
 export const ownerScheduleOverrideRouter = {
   createOverride: ownerProcedure
@@ -40,6 +44,10 @@ export const ownerScheduleOverrideRouter = {
     )
     .handler(async ({ context, input }) => {
       await assertActiveBatch(context, input.batchId);
+      assertNotPastDate(input.date, { label: "Class date" });
+      if (input.type === "MOVED") {
+        assertNotPastDate(input.newDate, { label: "New date" });
+      }
 
       if (input.endMinutes <= input.startMinutes) {
         throw new ORPCError("BAD_REQUEST", {

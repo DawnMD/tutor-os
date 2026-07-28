@@ -2,6 +2,7 @@ import { ownerProcedure } from "@/orpc/orpc";
 import {
   assertActiveBatch,
   assertActiveExam,
+  assertNotPastDate,
 } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
@@ -86,6 +87,7 @@ export const ownerExamRouter = {
     )
     .handler(async ({ context, input }) => {
       await assertActiveBatch(context, input.batchId);
+      assertNotPastDate(input.examDate, { label: "Exam date" });
 
       const existing = await context.db.exam.findUnique({
         where: {
@@ -120,6 +122,10 @@ export const ownerExamRouter = {
     )
     .handler(async ({ context, input }) => {
       const exam = await assertActiveExam(context, input.examId);
+      assertNotPastDate(input.examDate, {
+        allow: exam.examDate,
+        label: "Exam date",
+      });
 
       // Guard the unique [batchId, title] constraint on title changes.
       const clash = await context.db.exam.findUnique({

@@ -1,4 +1,5 @@
 import { ownerProcedure } from "@/orpc/orpc";
+import { assertNotPastDate } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import * as z from "zod";
 
@@ -17,6 +18,8 @@ export const ownerHolidayRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
+      assertNotPastDate(input.date, { label: "Holiday date" });
+
       const existing = await context.db.holiday.findUnique({
         where: {
           clerkOrganizationId_date: {

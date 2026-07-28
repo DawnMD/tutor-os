@@ -1,3 +1,4 @@
+import { isBeyondPastGrace } from "@/lib/dates";
 import type { Context } from "@/orpc/context";
 import { ORPCError } from "@orpc/client";
 
@@ -29,6 +30,27 @@ export function archivedError(scope: ArchivedScope) {
     message: ARCHIVED_MESSAGES[scope],
     data: { reason: "ARCHIVED" as const, scope },
   });
+}
+
+/**
+ * Defense-in-depth guard against past-dated records. Strict day-level blocking
+ * lives client-side (see `lib/dates.ts`); here we only reject dates beyond a
+ * lenient 48h grace window, honoring the "server never does day-equality math"
+ * convention (clients send local-midnight Dates, which can legitimately be up
+ * to ~24h behind server time).
+ */
+export function assertNotPastDate(
+  date: Date,
+  opts: { allow?: Date | null; label?: string } = {},
+) {
+  // Keeping the record's original date is always legal on updates; the client
+  // round-trips the stored local-midnight Date unchanged, so exact ms equality holds.
+  if (opts.allow != null && date.getTime() === opts.allow.getTime()) return;
+  if (isBeyondPastGrace(date)) {
+    throw new ORPCError("BAD_REQUEST", {
+      message: `${opts.label ?? "Date"} can't be in the past`,
+    });
+  }
 }
 
 const batchGuardSelect = {
@@ -87,6 +109,7 @@ export async function assertActiveSession(ctx: GuardContext, sessionId: string) 
     select: {
       id: true,
       batchId: true,
+      classDate: true,
       completedAt: true,
       batch: { select: batchGuardSelect },
     },
@@ -112,6 +135,7 @@ export async function assertActiveExam(ctx: GuardContext, examId: string) {
       id: true,
       batchId: true,
       totalMarks: true,
+      examDate: true,
       completedAt: true,
       batch: { select: batchGuardSelect },
     },

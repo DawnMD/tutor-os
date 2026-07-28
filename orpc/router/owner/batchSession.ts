@@ -2,6 +2,7 @@ import { ownerProcedure } from "@/orpc/orpc";
 import {
   assertActiveBatch,
   assertActiveSession,
+  assertNotPastDate,
 } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
@@ -96,6 +97,7 @@ export const ownerBatchSessionRouter = {
     )
     .handler(async ({ context, input }) => {
       await assertActiveBatch(context, input.batchId);
+      assertNotPastDate(input.classDate, { label: "Class date" });
 
       const existing = await context.db.batchSession.findUnique({
         where: {
@@ -133,6 +135,10 @@ export const ownerBatchSessionRouter = {
     )
     .handler(async ({ context, input }) => {
       const session = await assertActiveSession(context, input.sessionId);
+      assertNotPastDate(input.classDate, {
+        allow: session.classDate,
+        label: "Class date",
+      });
 
       // Guard the unique [batchId, classDate] constraint on date changes.
       const clash = await context.db.batchSession.findUnique({
