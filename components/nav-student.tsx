@@ -47,6 +47,10 @@ const BATCH_LINKS = ({
     name: "Exam Results",
     href: `/class/${classId}/batch/${batchId}/exams`,
   },
+  {
+    name: "Notes",
+    href: `/class/${classId}/batch/${batchId}/notes`,
+  },
 ];
 
 export function NavStudent() {
@@ -141,17 +145,6 @@ function StudentBatchNav() {
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 ))}
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton
-                    aria-disabled
-                    className="pointer-events-none opacity-50"
-                  >
-                    Notes
-                    <span className="ml-auto text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Soon
-                    </span>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
               </SidebarMenuSub>
             </CollapsibleContent>
           </Collapsible>
