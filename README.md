@@ -15,11 +15,12 @@ and layers scheduling, attendance, sessions, and exams on top. Every request is 
 tenant (a coaching institute) via Clerk Organizations, and the entire experience branches on
 the caller's role:
 
-- **Owners / admins** manage classes, batches, enrollment, attendance, sessions, and exams,
-  and get dashboards summarizing KPIs, attendance trends, upcoming exams, and students who
-  need attention.
+- **Owners / admins** manage classes, batches, enrollment, attendance, sessions, exams, notes,
+  and fees, and get dashboards summarizing KPIs, attendance trends, upcoming exams, and
+  students who need attention.
 - **Students** see a read-only, privacy-scoped view of *their own* batches, attendance,
-  exam results, and calendar — sharing the same pages, branched by role.
+  exam results, notes, fee dues, and calendar — sharing the same pages, branched by role,
+  and can pay fees online.
 
 ## Features
 
@@ -33,6 +34,13 @@ the caller's role:
 - **Sessions** — Log class sessions with topics and summaries, and track completion over time.
 - **Exams & grading** — Create exams, grade per-student results, and surface latest scores
   and progress.
+- **Fees & payments** — Per-batch monthly fees priced in paise, with dues computed on the
+  fly (never materialized) so owner and student views agree on exactly which months a
+  student owes. Owners set fees, record manual payments, and review a payment history with
+  KPI cards; students pay online via [Razorpay](https://razorpay.com) (UPI/cards, INR),
+  with a signature-verified webhook as the source of truth for payment status.
+- **Notes** — Attach batch notes with file attachments (via [UploadThing](https://uploadthing.com)),
+  visible to enrolled students.
 - **Dashboards** — Role-specific dashboards with KPI cards, attendance trends, upcoming
   exams, recent activity, and pending invitations.
 - **Student invitations** — Invite students into an organization and manage pending
@@ -51,6 +59,8 @@ the caller's role:
 | Database | [Prisma 7](https://www.prisma.io) ORM over PostgreSQL ([Neon](https://neon.tech) serverless) |
 | UI | [Tailwind CSS v4](https://tailwindcss.com), [shadcn/ui](https://ui.shadcn.com), Base UI, [Recharts](https://recharts.org), [lucide-react](https://lucide.dev) |
 | Forms & validation | [react-hook-form](https://react-hook-form.com) + [Zod](https://zod.dev) |
+| Payments | [Razorpay](https://razorpay.com) (INR, UPI/cards) with signature-verified webhooks |
+| File uploads | [UploadThing](https://uploadthing.com) |
 
 ### Highlights
 
@@ -69,6 +79,8 @@ the caller's role:
 - Node.js 20+
 - A PostgreSQL database (e.g. a free [Neon](https://neon.tech) project)
 - A [Clerk](https://clerk.com) application with Organizations enabled
+- An [UploadThing](https://uploadthing.com) app (for note attachments)
+- A [Razorpay](https://razorpay.com) account (for online fee payments)
 
 ### Setup
 
@@ -78,13 +90,19 @@ the caller's role:
    pnpm install
    ```
 
-2. Create a `.env` file with your database and Clerk credentials (see `env.ts` for the full
-   list of expected variables):
+2. Create a `.env` file with your database, Clerk, UploadThing, and Razorpay credentials
+   (see `env.ts` for the full, validated list of expected variables):
 
    ```env
    DATABASE_URL="postgresql://..."
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_..."
    CLERK_SECRET_KEY="sk_..."
+   CLERK_WEBHOOK_SIGNING_SECRET="whsec_..."
+   UPLOADTHING_TOKEN="..."
+   RAZORPAY_KEY_ID="rzp_..."
+   RAZORPAY_KEY_SECRET="..."
+   RAZORPAY_WEBHOOK_SECRET="..."
+   NEXT_PUBLIC_RAZORPAY_KEY_ID="rzp_..."
    ```
 
 3. Push the Prisma schema to your database and generate the client:
