@@ -16,6 +16,7 @@ import AttendanceChartCard from "./attendance-chart-card";
 import BatchHeader from "./batch-header";
 import BatchOverviewSkeleton from "./batch-overview-skeleton";
 import KPICards from "./kpi-cards";
+import NotesCard from "./notes-card";
 import QuickActionsPanel from "./quick-actions-panel";
 import RecentSessionsCard from "./recent-sessions-card";
 import StudentSummaryCard from "./student-summary-card";
@@ -148,6 +149,9 @@ export default function BatchOverviewContent({
             classId={batch.classId}
             batchId={batch.id}
           />
+
+          {/* Notes */}
+          <NotesCard batchId={batch.id} classId={batch.classId} />
 
           {/* Quick Actions */}
           <QuickActionsPanel batchId={batch.id} classId={batch.classId} />

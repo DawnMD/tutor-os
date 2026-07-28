@@ -37,8 +37,13 @@ export default function BatchOverviewSkeleton() {
           <Skeleton className="h-64" />
         </div>
         <div className="space-y-6">
+          {/* Student summary */}
           <Skeleton className="h-56" />
+          {/* Upcoming exams */}
           <Skeleton className="h-56" />
+          {/* Notes */}
+          <Skeleton className="h-56" />
+          {/* Quick actions */}
           <Skeleton className="h-72" />
         </div>
       </div>
