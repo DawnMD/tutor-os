@@ -28,7 +28,7 @@ const STATIC_LABELS: Record<string, string> = {
 
 export function AppBreadcrumb() {
   const pathname = usePathname();
-  const { orgRole } = useAuth();
+  const { orgRole, isLoaded } = useAuth();
   const isOwner = orgRole === OrganizationRole.OWNER;
 
   const segments = pathname.split("/").filter(Boolean);
@@ -56,7 +56,9 @@ export function AppBreadcrumb() {
   // Student name lookup resolves off their enrolled-batch list cache.
   const { data: studentBatches } = useQuery({
     ...orpc.student.batch.list.queryOptions(),
-    enabled: !isOwner && Boolean(classId),
+    // Wait for Clerk to hydrate: before `isLoaded`, `orgRole` is undefined so an
+    // owner reads as `!isOwner` and this student-only query fires → FORBIDDEN.
+    enabled: isLoaded && !isOwner && Boolean(classId),
   });
 
   const crumbs = buildCrumbs();
