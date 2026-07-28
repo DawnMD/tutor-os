@@ -408,7 +408,8 @@ export const ModelName = {
   AttendanceRecord: 'AttendanceRecord',
   Exam: 'Exam',
   ExamResult: 'ExamResult',
-  BatchNote: 'BatchNote'
+  BatchNote: 'BatchNote',
+  FeePayment: 'FeePayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "class" | "student" | "batch" | "holiday" | "scheduleOverride" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult" | "batchNote"
+    modelProps: "class" | "student" | "batch" | "holiday" | "scheduleOverride" | "batchSchedule" | "batchStudent" | "batchSession" | "attendanceRecord" | "exam" | "examResult" | "batchNote" | "feePayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1316,6 +1317,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FeePayment: {
+      payload: Prisma.$FeePaymentPayload<ExtArgs>
+      fields: Prisma.FeePaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeePaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeePaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.FeePaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeePaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        findMany: {
+          args: Prisma.FeePaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>[]
+        }
+        create: {
+          args: Prisma.FeePaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        createMany: {
+          args: Prisma.FeePaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeePaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.FeePaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        update: {
+          args: Prisma.FeePaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.FeePaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeePaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeePaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.FeePaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeePaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.FeePaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFeePayment>
+        }
+        groupBy: {
+          args: Prisma.FeePaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeePaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeePaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeePaymentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1391,6 +1466,7 @@ export const BatchScalarFieldEnum = {
   classId: 'classId',
   name: 'name',
   color: 'color',
+  monthlyFeePaise: 'monthlyFeePaise',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1510,6 +1586,27 @@ export const BatchNoteScalarFieldEnum = {
 export type BatchNoteScalarFieldEnum = (typeof BatchNoteScalarFieldEnum)[keyof typeof BatchNoteScalarFieldEnum]
 
 
+export const FeePaymentScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  batchId: 'batchId',
+  studentId: 'studentId',
+  periodYear: 'periodYear',
+  periodMonth: 'periodMonth',
+  amountPaise: 'amountPaise',
+  status: 'status',
+  method: 'method',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
+  note: 'note',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1569,20 +1666,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'OverrideType'
- */
-export type EnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType'>
-    
-
-
-/**
- * Reference to a field of type 'OverrideType[]'
- */
-export type ListEnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1593,6 +1676,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OverrideType'
+ */
+export type EnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType'>
+    
+
+
+/**
+ * Reference to a field of type 'OverrideType[]'
+ */
+export type ListEnumOverrideTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OverrideType[]'>
     
 
 
@@ -1621,6 +1718,34 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FeePaymentStatus'
+ */
+export type EnumFeePaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeePaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FeePaymentStatus[]'
+ */
+export type ListEnumFeePaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeePaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FeePaymentMethod'
+ */
+export type EnumFeePaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeePaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'FeePaymentMethod[]'
+ */
+export type ListEnumFeePaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeePaymentMethod[]'>
     
 
 /**
@@ -1786,6 +1911,7 @@ export type GlobalOmitConfig = {
   exam?: Prisma.ExamOmit
   examResult?: Prisma.ExamResultOmit
   batchNote?: Prisma.BatchNoteOmit
+  feePayment?: Prisma.FeePaymentOmit
 }
 
 /* Types for Logging */

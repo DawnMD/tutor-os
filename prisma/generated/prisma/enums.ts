@@ -25,3 +25,20 @@ export const OverrideType = {
 } as const
 
 export type OverrideType = (typeof OverrideType)[keyof typeof OverrideType]
+
+
+export const FeePaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID'
+} as const
+
+export type FeePaymentStatus = (typeof FeePaymentStatus)[keyof typeof FeePaymentStatus]
+
+
+export const FeePaymentMethod = {
+  ONLINE: 'ONLINE',
+  CASH: 'CASH',
+  OFFLINE_UPI: 'OFFLINE_UPI'
+} as const
+
+export type FeePaymentMethod = (typeof FeePaymentMethod)[keyof typeof FeePaymentMethod]

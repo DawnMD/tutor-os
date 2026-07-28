@@ -20,8 +20,18 @@ export type BatchModel = runtime.Types.Result.DefaultSelection<Prisma.$BatchPayl
 
 export type AggregateBatch = {
   _count: BatchCountAggregateOutputType | null
+  _avg: BatchAvgAggregateOutputType | null
+  _sum: BatchSumAggregateOutputType | null
   _min: BatchMinAggregateOutputType | null
   _max: BatchMaxAggregateOutputType | null
+}
+
+export type BatchAvgAggregateOutputType = {
+  monthlyFeePaise: number | null
+}
+
+export type BatchSumAggregateOutputType = {
+  monthlyFeePaise: number | null
 }
 
 export type BatchMinAggregateOutputType = {
@@ -30,6 +40,7 @@ export type BatchMinAggregateOutputType = {
   classId: string | null
   name: string | null
   color: string | null
+  monthlyFeePaise: number | null
   archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +52,7 @@ export type BatchMaxAggregateOutputType = {
   classId: string | null
   name: string | null
   color: string | null
+  monthlyFeePaise: number | null
   archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +64,7 @@ export type BatchCountAggregateOutputType = {
   classId: number
   name: number
   color: number
+  monthlyFeePaise: number
   archivedAt: number
   createdAt: number
   updatedAt: number
@@ -59,12 +72,21 @@ export type BatchCountAggregateOutputType = {
 }
 
 
+export type BatchAvgAggregateInputType = {
+  monthlyFeePaise?: true
+}
+
+export type BatchSumAggregateInputType = {
+  monthlyFeePaise?: true
+}
+
 export type BatchMinAggregateInputType = {
   id?: true
   clerkOrganizationId?: true
   classId?: true
   name?: true
   color?: true
+  monthlyFeePaise?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -76,6 +98,7 @@ export type BatchMaxAggregateInputType = {
   classId?: true
   name?: true
   color?: true
+  monthlyFeePaise?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -87,6 +110,7 @@ export type BatchCountAggregateInputType = {
   classId?: true
   name?: true
   color?: true
+  monthlyFeePaise?: true
   archivedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -131,6 +155,18 @@ export type BatchAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: BatchAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: BatchSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: BatchMinAggregateInputType
@@ -161,6 +197,8 @@ export type BatchGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   _count?: BatchCountAggregateInputType | true
+  _avg?: BatchAvgAggregateInputType
+  _sum?: BatchSumAggregateInputType
   _min?: BatchMinAggregateInputType
   _max?: BatchMaxAggregateInputType
 }
@@ -171,10 +209,13 @@ export type BatchGroupByOutputType = {
   classId: string
   name: string
   color: string | null
+  monthlyFeePaise: number | null
   archivedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: BatchCountAggregateOutputType | null
+  _avg: BatchAvgAggregateOutputType | null
+  _sum: BatchSumAggregateOutputType | null
   _min: BatchMinAggregateOutputType | null
   _max: BatchMaxAggregateOutputType | null
 }
@@ -203,6 +244,7 @@ export type BatchWhereInput = {
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
+  monthlyFeePaise?: Prisma.IntNullableFilter<"Batch"> | number | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -213,6 +255,7 @@ export type BatchWhereInput = {
   exams?: Prisma.ExamListRelationFilter
   overrides?: Prisma.ScheduleOverrideListRelationFilter
   notes?: Prisma.BatchNoteListRelationFilter
+  feePayments?: Prisma.FeePaymentListRelationFilter
 }
 
 export type BatchOrderByWithRelationInput = {
@@ -221,6 +264,7 @@ export type BatchOrderByWithRelationInput = {
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyFeePaise?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -231,6 +275,7 @@ export type BatchOrderByWithRelationInput = {
   exams?: Prisma.ExamOrderByRelationAggregateInput
   overrides?: Prisma.ScheduleOverrideOrderByRelationAggregateInput
   notes?: Prisma.BatchNoteOrderByRelationAggregateInput
+  feePayments?: Prisma.FeePaymentOrderByRelationAggregateInput
 }
 
 export type BatchWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +288,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
+  monthlyFeePaise?: Prisma.IntNullableFilter<"Batch"> | number | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -253,6 +299,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   exams?: Prisma.ExamListRelationFilter
   overrides?: Prisma.ScheduleOverrideListRelationFilter
   notes?: Prisma.BatchNoteListRelationFilter
+  feePayments?: Prisma.FeePaymentListRelationFilter
 }, "id" | "classId_name">
 
 export type BatchOrderByWithAggregationInput = {
@@ -261,12 +308,15 @@ export type BatchOrderByWithAggregationInput = {
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyFeePaise?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BatchCountOrderByAggregateInput
+  _avg?: Prisma.BatchAvgOrderByAggregateInput
   _max?: Prisma.BatchMaxOrderByAggregateInput
   _min?: Prisma.BatchMinOrderByAggregateInput
+  _sum?: Prisma.BatchSumOrderByAggregateInput
 }
 
 export type BatchScalarWhereWithAggregatesInput = {
@@ -278,6 +328,7 @@ export type BatchScalarWhereWithAggregatesInput = {
   classId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   name?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   color?: Prisma.StringNullableWithAggregatesFilter<"Batch"> | string | null
+  monthlyFeePaise?: Prisma.IntNullableWithAggregatesFilter<"Batch"> | number | null
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Batch"> | Date | string
@@ -288,6 +339,7 @@ export type BatchCreateInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -298,6 +350,7 @@ export type BatchCreateInput = {
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateInput = {
@@ -306,6 +359,7 @@ export type BatchUncheckedCreateInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -315,6 +369,7 @@ export type BatchUncheckedCreateInput = {
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUpdateInput = {
@@ -322,6 +377,7 @@ export type BatchUpdateInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,6 +388,7 @@ export type BatchUpdateInput = {
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateInput = {
@@ -340,6 +397,7 @@ export type BatchUncheckedUpdateInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -349,6 +407,7 @@ export type BatchUncheckedUpdateInput = {
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateManyInput = {
@@ -357,6 +416,7 @@ export type BatchCreateManyInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -367,6 +427,7 @@ export type BatchUpdateManyMutationInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,6 +439,7 @@ export type BatchUncheckedUpdateManyInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,9 +466,14 @@ export type BatchCountOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  monthlyFeePaise?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type BatchAvgOrderByAggregateInput = {
+  monthlyFeePaise?: Prisma.SortOrder
 }
 
 export type BatchMaxOrderByAggregateInput = {
@@ -415,6 +482,7 @@ export type BatchMaxOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  monthlyFeePaise?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -426,9 +494,14 @@ export type BatchMinOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  monthlyFeePaise?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type BatchSumOrderByAggregateInput = {
+  monthlyFeePaise?: Prisma.SortOrder
 }
 
 export type BatchScalarRelationFilter = {
@@ -476,6 +549,14 @@ export type BatchUncheckedUpdateManyWithoutClassNestedInput = {
   update?: Prisma.BatchUpdateWithWhereUniqueWithoutClassInput | Prisma.BatchUpdateWithWhereUniqueWithoutClassInput[]
   updateMany?: Prisma.BatchUpdateManyWithWhereWithoutClassInput | Prisma.BatchUpdateManyWithWhereWithoutClassInput[]
   deleteMany?: Prisma.BatchScalarWhereInput | Prisma.BatchScalarWhereInput[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BatchCreateNestedOneWithoutOverridesInput = {
@@ -562,11 +643,26 @@ export type BatchUpdateOneRequiredWithoutNotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutNotesInput, Prisma.BatchUpdateWithoutNotesInput>, Prisma.BatchUncheckedUpdateWithoutNotesInput>
 }
 
+export type BatchCreateNestedOneWithoutFeePaymentsInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutFeePaymentsInput, Prisma.BatchUncheckedCreateWithoutFeePaymentsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutFeePaymentsInput
+  connect?: Prisma.BatchWhereUniqueInput
+}
+
+export type BatchUpdateOneRequiredWithoutFeePaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutFeePaymentsInput, Prisma.BatchUncheckedCreateWithoutFeePaymentsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutFeePaymentsInput
+  upsert?: Prisma.BatchUpsertWithoutFeePaymentsInput
+  connect?: Prisma.BatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutFeePaymentsInput, Prisma.BatchUpdateWithoutFeePaymentsInput>, Prisma.BatchUncheckedUpdateWithoutFeePaymentsInput>
+}
+
 export type BatchCreateWithoutClassInput = {
   id?: string
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -576,6 +672,7 @@ export type BatchCreateWithoutClassInput = {
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutClassInput = {
@@ -583,6 +680,7 @@ export type BatchUncheckedCreateWithoutClassInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -592,6 +690,7 @@ export type BatchUncheckedCreateWithoutClassInput = {
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutClassInput = {
@@ -629,6 +728,7 @@ export type BatchScalarWhereInput = {
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
+  monthlyFeePaise?: Prisma.IntNullableFilter<"Batch"> | number | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Batch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Batch"> | Date | string
@@ -639,6 +739,7 @@ export type BatchCreateWithoutOverridesInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -648,6 +749,7 @@ export type BatchCreateWithoutOverridesInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutOverridesInput = {
@@ -656,6 +758,7 @@ export type BatchUncheckedCreateWithoutOverridesInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -664,6 +767,7 @@ export type BatchUncheckedCreateWithoutOverridesInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutOverridesInput = {
@@ -687,6 +791,7 @@ export type BatchUpdateWithoutOverridesInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -696,6 +801,7 @@ export type BatchUpdateWithoutOverridesInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutOverridesInput = {
@@ -704,6 +810,7 @@ export type BatchUncheckedUpdateWithoutOverridesInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,6 +819,7 @@ export type BatchUncheckedUpdateWithoutOverridesInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutSchedulesInput = {
@@ -719,6 +827,7 @@ export type BatchCreateWithoutSchedulesInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -728,6 +837,7 @@ export type BatchCreateWithoutSchedulesInput = {
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutSchedulesInput = {
@@ -736,6 +846,7 @@ export type BatchUncheckedCreateWithoutSchedulesInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -744,6 +855,7 @@ export type BatchUncheckedCreateWithoutSchedulesInput = {
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutSchedulesInput = {
@@ -767,6 +879,7 @@ export type BatchUpdateWithoutSchedulesInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -776,6 +889,7 @@ export type BatchUpdateWithoutSchedulesInput = {
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutSchedulesInput = {
@@ -784,6 +898,7 @@ export type BatchUncheckedUpdateWithoutSchedulesInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,6 +907,7 @@ export type BatchUncheckedUpdateWithoutSchedulesInput = {
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutStudentsInput = {
@@ -799,6 +915,7 @@ export type BatchCreateWithoutStudentsInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -808,6 +925,7 @@ export type BatchCreateWithoutStudentsInput = {
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutStudentsInput = {
@@ -816,6 +934,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -824,6 +943,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutStudentsInput = {
@@ -847,6 +967,7 @@ export type BatchUpdateWithoutStudentsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -856,6 +977,7 @@ export type BatchUpdateWithoutStudentsInput = {
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutStudentsInput = {
@@ -864,6 +986,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -872,6 +995,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutSessionsInput = {
@@ -879,6 +1003,7 @@ export type BatchCreateWithoutSessionsInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -888,6 +1013,7 @@ export type BatchCreateWithoutSessionsInput = {
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutSessionsInput = {
@@ -896,6 +1022,7 @@ export type BatchUncheckedCreateWithoutSessionsInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -904,6 +1031,7 @@ export type BatchUncheckedCreateWithoutSessionsInput = {
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutSessionsInput = {
@@ -927,6 +1055,7 @@ export type BatchUpdateWithoutSessionsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -936,6 +1065,7 @@ export type BatchUpdateWithoutSessionsInput = {
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutSessionsInput = {
@@ -944,6 +1074,7 @@ export type BatchUncheckedUpdateWithoutSessionsInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -952,6 +1083,7 @@ export type BatchUncheckedUpdateWithoutSessionsInput = {
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutExamsInput = {
@@ -959,6 +1091,7 @@ export type BatchCreateWithoutExamsInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -968,6 +1101,7 @@ export type BatchCreateWithoutExamsInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutExamsInput = {
@@ -976,6 +1110,7 @@ export type BatchUncheckedCreateWithoutExamsInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -984,6 +1119,7 @@ export type BatchUncheckedCreateWithoutExamsInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
   notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutExamsInput = {
@@ -1007,6 +1143,7 @@ export type BatchUpdateWithoutExamsInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1016,6 +1153,7 @@ export type BatchUpdateWithoutExamsInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutExamsInput = {
@@ -1024,6 +1162,7 @@ export type BatchUncheckedUpdateWithoutExamsInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1032,6 +1171,7 @@ export type BatchUncheckedUpdateWithoutExamsInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutNotesInput = {
@@ -1039,6 +1179,7 @@ export type BatchCreateWithoutNotesInput = {
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1048,6 +1189,7 @@ export type BatchCreateWithoutNotesInput = {
   sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutNotesInput = {
@@ -1056,6 +1198,7 @@ export type BatchUncheckedCreateWithoutNotesInput = {
   classId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1064,6 +1207,7 @@ export type BatchUncheckedCreateWithoutNotesInput = {
   sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
   overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutNotesInput = {
@@ -1087,6 +1231,7 @@ export type BatchUpdateWithoutNotesInput = {
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1096,6 +1241,7 @@ export type BatchUpdateWithoutNotesInput = {
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutNotesInput = {
@@ -1104,6 +1250,7 @@ export type BatchUncheckedUpdateWithoutNotesInput = {
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1112,26 +1259,71 @@ export type BatchUncheckedUpdateWithoutNotesInput = {
   sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
   overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
 }
 
-export type BatchCreateManyClassInput = {
+export type BatchCreateWithoutFeePaymentsInput = {
   id?: string
   clerkOrganizationId: string
   name: string
   color?: string | null
+  monthlyFeePaise?: number | null
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  class: Prisma.ClassCreateNestedOneWithoutBatchesInput
+  students?: Prisma.BatchStudentCreateNestedManyWithoutBatchInput
+  schedules?: Prisma.BatchScheduleCreateNestedManyWithoutBatchInput
+  sessions?: Prisma.BatchSessionCreateNestedManyWithoutBatchInput
+  exams?: Prisma.ExamCreateNestedManyWithoutBatchInput
+  overrides?: Prisma.ScheduleOverrideCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteCreateNestedManyWithoutBatchInput
 }
 
-export type BatchUpdateWithoutClassInput = {
+export type BatchUncheckedCreateWithoutFeePaymentsInput = {
+  id?: string
+  clerkOrganizationId: string
+  classId: string
+  name: string
+  color?: string | null
+  monthlyFeePaise?: number | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.BatchStudentUncheckedCreateNestedManyWithoutBatchInput
+  schedules?: Prisma.BatchScheduleUncheckedCreateNestedManyWithoutBatchInput
+  sessions?: Prisma.BatchSessionUncheckedCreateNestedManyWithoutBatchInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutBatchInput
+  overrides?: Prisma.ScheduleOverrideUncheckedCreateNestedManyWithoutBatchInput
+  notes?: Prisma.BatchNoteUncheckedCreateNestedManyWithoutBatchInput
+}
+
+export type BatchCreateOrConnectWithoutFeePaymentsInput = {
+  where: Prisma.BatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BatchCreateWithoutFeePaymentsInput, Prisma.BatchUncheckedCreateWithoutFeePaymentsInput>
+}
+
+export type BatchUpsertWithoutFeePaymentsInput = {
+  update: Prisma.XOR<Prisma.BatchUpdateWithoutFeePaymentsInput, Prisma.BatchUncheckedUpdateWithoutFeePaymentsInput>
+  create: Prisma.XOR<Prisma.BatchCreateWithoutFeePaymentsInput, Prisma.BatchUncheckedCreateWithoutFeePaymentsInput>
+  where?: Prisma.BatchWhereInput
+}
+
+export type BatchUpdateToOneWithWhereWithoutFeePaymentsInput = {
+  where?: Prisma.BatchWhereInput
+  data: Prisma.XOR<Prisma.BatchUpdateWithoutFeePaymentsInput, Prisma.BatchUncheckedUpdateWithoutFeePaymentsInput>
+}
+
+export type BatchUpdateWithoutFeePaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  class?: Prisma.ClassUpdateOneRequiredWithoutBatchesNestedInput
   students?: Prisma.BatchStudentUpdateManyWithoutBatchNestedInput
   schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
   sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
@@ -1140,11 +1332,13 @@ export type BatchUpdateWithoutClassInput = {
   notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
 }
 
-export type BatchUncheckedUpdateWithoutClassInput = {
+export type BatchUncheckedUpdateWithoutFeePaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1156,11 +1350,59 @@ export type BatchUncheckedUpdateWithoutClassInput = {
   notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
 }
 
+export type BatchCreateManyClassInput = {
+  id?: string
+  clerkOrganizationId: string
+  name: string
+  color?: string | null
+  monthlyFeePaise?: number | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BatchUpdateWithoutClassInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.BatchStudentUpdateManyWithoutBatchNestedInput
+  schedules?: Prisma.BatchScheduleUpdateManyWithoutBatchNestedInput
+  sessions?: Prisma.BatchSessionUpdateManyWithoutBatchNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutBatchNestedInput
+  overrides?: Prisma.ScheduleOverrideUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchUncheckedUpdateWithoutClassInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.BatchStudentUncheckedUpdateManyWithoutBatchNestedInput
+  schedules?: Prisma.BatchScheduleUncheckedUpdateManyWithoutBatchNestedInput
+  sessions?: Prisma.BatchSessionUncheckedUpdateManyWithoutBatchNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutBatchNestedInput
+  overrides?: Prisma.ScheduleOverrideUncheckedUpdateManyWithoutBatchNestedInput
+  notes?: Prisma.BatchNoteUncheckedUpdateManyWithoutBatchNestedInput
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutBatchNestedInput
+}
+
 export type BatchUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1178,6 +1420,7 @@ export type BatchCountOutputType = {
   exams: number
   overrides: number
   notes: number
+  feePayments: number
 }
 
 export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1187,6 +1430,7 @@ export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   exams?: boolean | BatchCountOutputTypeCountExamsArgs
   overrides?: boolean | BatchCountOutputTypeCountOverridesArgs
   notes?: boolean | BatchCountOutputTypeCountNotesArgs
+  feePayments?: boolean | BatchCountOutputTypeCountFeePaymentsArgs
 }
 
 /**
@@ -1241,6 +1485,13 @@ export type BatchCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.BatchNoteWhereInput
 }
 
+/**
+ * BatchCountOutputType without action
+ */
+export type BatchCountOutputTypeCountFeePaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeePaymentWhereInput
+}
+
 
 export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1248,6 +1499,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   classId?: boolean
   name?: boolean
   color?: boolean
+  monthlyFeePaise?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1258,6 +1510,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   exams?: boolean | Prisma.Batch$examsArgs<ExtArgs>
   overrides?: boolean | Prisma.Batch$overridesArgs<ExtArgs>
   notes?: boolean | Prisma.Batch$notesArgs<ExtArgs>
+  feePayments?: boolean | Prisma.Batch$feePaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batch"]>
 
@@ -1267,6 +1520,7 @@ export type BatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   classId?: boolean
   name?: boolean
   color?: boolean
+  monthlyFeePaise?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1279,6 +1533,7 @@ export type BatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   classId?: boolean
   name?: boolean
   color?: boolean
+  monthlyFeePaise?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1291,12 +1546,13 @@ export type BatchSelectScalar = {
   classId?: boolean
   name?: boolean
   color?: boolean
+  monthlyFeePaise?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "classId" | "name" | "color" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
+export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "classId" | "name" | "color" | "monthlyFeePaise" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
 export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Batch$studentsArgs<ExtArgs>
@@ -1305,6 +1561,7 @@ export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   exams?: boolean | Prisma.Batch$examsArgs<ExtArgs>
   overrides?: boolean | Prisma.Batch$overridesArgs<ExtArgs>
   notes?: boolean | Prisma.Batch$notesArgs<ExtArgs>
+  feePayments?: boolean | Prisma.Batch$feePaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1324,6 +1581,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     exams: Prisma.$ExamPayload<ExtArgs>[]
     overrides: Prisma.$ScheduleOverridePayload<ExtArgs>[]
     notes: Prisma.$BatchNotePayload<ExtArgs>[]
+    feePayments: Prisma.$FeePaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1331,6 +1589,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     classId: string
     name: string
     color: string | null
+    monthlyFeePaise: number | null
     archivedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1735,6 +1994,7 @@ export interface Prisma__BatchClient<T, Null = never, ExtArgs extends runtime.Ty
   exams<T extends Prisma.Batch$examsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$examsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   overrides<T extends Prisma.Batch$overridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$overridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notes<T extends Prisma.Batch$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BatchNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  feePayments<T extends Prisma.Batch$feePaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$feePaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeePaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1769,6 +2029,7 @@ export interface BatchFieldRefs {
   readonly classId: Prisma.FieldRef<"Batch", 'String'>
   readonly name: Prisma.FieldRef<"Batch", 'String'>
   readonly color: Prisma.FieldRef<"Batch", 'String'>
+  readonly monthlyFeePaise: Prisma.FieldRef<"Batch", 'Int'>
   readonly archivedAt: Prisma.FieldRef<"Batch", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Batch", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Batch", 'DateTime'>
@@ -2314,6 +2575,30 @@ export type Batch$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.BatchNoteScalarFieldEnum | Prisma.BatchNoteScalarFieldEnum[]
+}
+
+/**
+ * Batch.feePayments
+ */
+export type Batch$feePaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeePayment
+   */
+  select?: Prisma.FeePaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeePayment
+   */
+  omit?: Prisma.FeePaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeePaymentInclude<ExtArgs> | null
+  where?: Prisma.FeePaymentWhereInput
+  orderBy?: Prisma.FeePaymentOrderByWithRelationInput | Prisma.FeePaymentOrderByWithRelationInput[]
+  cursor?: Prisma.FeePaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeePaymentScalarFieldEnum | Prisma.FeePaymentScalarFieldEnum[]
 }
 
 /**

@@ -47,6 +47,7 @@ model Student {
   batches             BatchStudent[]
   attendance          AttendanceRecord[]
   examResults         ExamResult[]
+  feePayments         FeePayment[]
 
   @@unique([clerkOrganizationId, clerkUserId])
   @@index([clerkOrganizationId, email])
@@ -61,6 +62,7 @@ model Batch {
   classId             String
   name                String
   color               String?
+  monthlyFeePaise     Int? // null = fees disabled for this batch
   archivedAt          DateTime?
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
@@ -71,6 +73,7 @@ model Batch {
   exams               Exam[]
   overrides           ScheduleOverride[]
   notes               BatchNote[]
+  feePayments         FeePayment[]
 
   @@unique([classId, name])
   @@index([classId])
@@ -208,4 +211,40 @@ model BatchNote {
 
   @@index([batchId, createdAt])
   @@index([clerkOrganizationId])
+}
+
+enum FeePaymentStatus {
+  PENDING
+  PAID
+}
+
+enum FeePaymentMethod {
+  ONLINE
+  CASH
+  OFFLINE_UPI
+}
+
+model FeePayment {
+  id                  String           @id @default(cuid())
+  clerkOrganizationId String
+  batchId             String
+  studentId           String
+  periodYear          Int
+  periodMonth         Int // 1-12
+  amountPaise         Int // snapshot at order/record time
+  status              FeePaymentStatus @default(PENDING)
+  method              FeePaymentMethod
+  razorpayOrderId     String?          @unique
+  razorpayPaymentId   String?          @unique
+  note                String?
+  paidAt              DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  batch               Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  student             Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, studentId, periodYear, periodMonth])
+  @@index([clerkOrganizationId])
+  @@index([studentId, status])
+  @@index([batchId, periodYear, periodMonth])
 }

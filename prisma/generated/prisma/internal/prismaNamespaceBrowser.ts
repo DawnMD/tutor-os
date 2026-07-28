@@ -62,7 +62,8 @@ export const ModelName = {
   AttendanceRecord: 'AttendanceRecord',
   Exam: 'Exam',
   ExamResult: 'ExamResult',
-  BatchNote: 'BatchNote'
+  BatchNote: 'BatchNote',
+  FeePayment: 'FeePayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -117,6 +118,7 @@ export const BatchScalarFieldEnum = {
   classId: 'classId',
   name: 'name',
   color: 'color',
+  monthlyFeePaise: 'monthlyFeePaise',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -234,6 +236,27 @@ export const BatchNoteScalarFieldEnum = {
 } as const
 
 export type BatchNoteScalarFieldEnum = (typeof BatchNoteScalarFieldEnum)[keyof typeof BatchNoteScalarFieldEnum]
+
+
+export const FeePaymentScalarFieldEnum = {
+  id: 'id',
+  clerkOrganizationId: 'clerkOrganizationId',
+  batchId: 'batchId',
+  studentId: 'studentId',
+  periodYear: 'periodYear',
+  periodMonth: 'periodMonth',
+  amountPaise: 'amountPaise',
+  status: 'status',
+  method: 'method',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
+  note: 'note',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
 
 
 export const SortOrder = {

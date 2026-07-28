@@ -508,14 +508,6 @@ export type EnumOverrideTypeFieldUpdateOperationsInput = {
   set?: $Enums.OverrideType
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ScheduleOverrideCreateWithoutBatchInput = {
   id?: string
   type: $Enums.OverrideType

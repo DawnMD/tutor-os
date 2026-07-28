@@ -101,3 +101,8 @@ export type ExamResult = Prisma.ExamResultModel
  * 
  */
 export type BatchNote = Prisma.BatchNoteModel
+/**
+ * Model FeePayment
+ * 
+ */
+export type FeePayment = Prisma.FeePaymentModel
