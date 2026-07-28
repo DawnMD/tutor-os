@@ -9,12 +9,14 @@ import { ownerAttendanceRouter } from "./owner/attendance";
 import { ownerDashboardRouter } from "./owner/dashboard";
 import { ownerHolidayRouter } from "./owner/holiday";
 import { ownerScheduleOverrideRouter } from "./owner/scheduleOverride";
+import { ownerNoteRouter } from "./owner/note";
 import { studentMeRouter } from "./student/me";
 import { studentBatchRouter } from "./student/batch";
 import { studentDashboardRouter } from "./student/dashboard";
 import { studentAttendanceRouter } from "./student/attendance";
 import { studentExamRouter } from "./student/exam";
 import { studentCalendarRouter } from "./student/calendar";
+import { studentNoteRouter } from "./student/note";
 
 export const router = {
   owner: {
@@ -28,6 +30,7 @@ export const router = {
     dashboard: ownerDashboardRouter,
     holiday: ownerHolidayRouter,
     scheduleOverride: ownerScheduleOverrideRouter,
+    note: ownerNoteRouter,
   },
   student: {
     me: studentMeRouter,
@@ -36,6 +39,7 @@ export const router = {
     attendance: studentAttendanceRouter,
     exam: studentExamRouter,
     calendar: studentCalendarRouter,
+    note: studentNoteRouter,
   },
 };
 
