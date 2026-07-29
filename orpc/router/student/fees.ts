@@ -22,6 +22,17 @@ const periodInput = {
   month: z.number().int().min(1).max(12),
 };
 
+/** Prisma's unique-constraint failure, matched structurally to avoid importing
+ * the generated runtime just for an error class. */
+function isUniqueViolation(err: unknown): boolean {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "code" in err &&
+    (err as { code?: unknown }).code === "P2002"
+  );
+}
+
 export const studentFeesRouter = {
   /**
    * The current student's outstanding dues across every enrolled, active batch
@@ -91,6 +102,10 @@ export const studentFeesRouter = {
    * amount taken from the server-side batch fee (never the client), then upserts
    * the FeePayment as PENDING/ONLINE with the order id. Retrying an abandoned
    * month overwrites the stale order id and refreshes the amount snapshot.
+   *
+   * The row therefore only ever remembers the *latest* order, so the `notes`
+   * below are load-bearing: they are how the webhook finds this row when a
+   * superseded order is the one that ends up capturing. Don't drop them.
    */
   createOrder: studentProcedure
     .input(z.object({ batchId: z.string(), ...periodInput }))
@@ -245,9 +260,13 @@ export const studentFeesRouter = {
             paidAt: new Date(),
           },
         });
-      } catch {
-        // The webhook may have landed and set the same razorpayPaymentId
-        // between our read and write — the row is PAID either way.
+      } catch (err) {
+        // P2002 on razorpayPaymentId: the webhook landed between our read and
+        // write and recorded the same payment — the row is PAID either way, so
+        // reporting success is honest. Anything else (a dropped connection,
+        // say) left the row PENDING; rethrow rather than tell the student it
+        // succeeded on the strength of a write that didn't happen.
+        if (!isUniqueViolation(err)) throw err;
       }
 
       return { status: "PAID" as const };
