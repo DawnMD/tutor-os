@@ -22,7 +22,7 @@ import {
 import { orpc } from "@/orpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -47,7 +47,14 @@ export const AddStudentToBatchAction = ({
 
   const queryClient = useQueryClient();
 
-  const batches = student.batches.map((item) => item.batch.id);
+  // Memoized because it's a useEffect dependency below: a fresh array every
+  // render would re-run form.reset() on every render and fight the user's
+  // checkbox selections. The React Compiler almost certainly hides this today —
+  // this makes it not depend on that.
+  const batches = useMemo(
+    () => student.batches.map((item) => item.batch.id),
+    [student.batches],
+  );
 
   const { mutateAsync: addStudentToBatches } = useMutation(
     orpc.owner.student.addStudentToBatches.mutationOptions({
