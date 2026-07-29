@@ -105,6 +105,27 @@ export const ownerAttendanceRouter = {
         });
       }
 
+      // Every marked student must be an active member of this batch.
+      // AttendanceRecord has no org column and the FK only requires the student
+      // row to exist, so without this an owner could mark attendance for a
+      // student in another organization.
+      const studentIds = input.records.map((r) => r.studentId);
+      const members = await context.db.batchStudent.findMany({
+        where: {
+          batchId: session.batchId,
+          studentId: { in: studentIds },
+          student: { archivedAt: null },
+        },
+        select: { studentId: true },
+      });
+      const memberIds = new Set(members.map((m) => m.studentId));
+      const stranger = studentIds.find((id) => !memberIds.has(id));
+      if (stranger) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "One or more students are not in this batch",
+        });
+      }
+
       await context.db.$transaction(async (tx) => {
         for (const record of input.records) {
           await tx.attendanceRecord.upsert({
@@ -148,6 +169,15 @@ export const ownerAttendanceRouter = {
     )
     .handler(async ({ context, input }) => {
       const session = await assertActiveSession(context, input.sessionId);
+
+      // A completed session is locked here too — otherwise the lock enforced by
+      // markAttendanceBulk is bypassable from the student-detail dialog.
+      if (session.completedAt) {
+        throw new ORPCError("CONFLICT", {
+          message:
+            "This session is completed. Reopen it before changing attendance.",
+        });
+      }
 
       // The student must be an active member of the session's batch.
       const member = await context.db.batchStudent.findFirst({

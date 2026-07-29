@@ -202,8 +202,11 @@ export const ownerFeesRouter = {
         },
         // Upgrade an abandoned online attempt (PENDING) to an offline PAID.
         // Refresh the amount snapshot to the current fee; keep any
-        // `razorpayOrderId` so a late webhook still finds this row (already
-        // PAID) and no-ops.
+        // `razorpayOrderId` so a late webhook still finds this row. If that
+        // online attempt *does* capture afterwards, the webhook detects the
+        // collision (PAID but non-ONLINE with no razorpayPaymentId), logs it
+        // and flags the row's note for reconciliation — it must never be
+        // swallowed, since the money really is in Razorpay.
         update: {
           amountPaise: batch.monthlyFeePaise,
           status: "PAID",

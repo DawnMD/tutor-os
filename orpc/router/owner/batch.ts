@@ -14,7 +14,7 @@ export const ownerBatchRouter = {
   createBatch: ownerProcedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().trim().min(1),
         classId: z.string(),
         color: z.enum(BATCH_COLOR_IDS),
         schdeules: z.array(
@@ -30,7 +30,23 @@ export const ownerBatchRouter = {
       // Validates classId ownership (was missing) and blocks archived classes.
       await assertActiveClass(context, input.classId);
 
-      await context.db.$transaction(async (tx) => {
+      // Pre-check the @@unique([classId, name]) like every other create path,
+      // so a duplicate name is a readable message rather than a raw P2002
+      // surfacing as INTERNAL_SERVER_ERROR. Archived batches still hold their
+      // name, hence the explicit mention.
+      const duplicate = await context.db.batch.findUnique({
+        where: { classId_name: { classId: input.classId, name: input.name } },
+        select: { id: true, archivedAt: true },
+      });
+      if (duplicate) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: duplicate.archivedAt
+            ? "An archived batch in this class already uses that name. Restore it or pick another name."
+            : "A batch with that name already exists in this class.",
+        });
+      }
+
+      return await context.db.$transaction(async (tx) => {
         const batch = await tx.batch.create({
           data: {
             clerkOrganizationId: context.organizationId,
@@ -285,22 +301,38 @@ export const ownerBatchRouter = {
         throw new ORPCError("BAD_REQUEST");
       }
 
+      // Diff rather than delete-all-then-recreate: `joinedAt` defaults to now(),
+      // and dues are computed from it, so recreating an unchanged membership
+      // would silently wipe every outstanding month that student still owes.
       await context.db.$transaction(async (tx) => {
-        // Remove all current students from the batch
-        await tx.batchStudent.deleteMany({
-          where: {
-            batchId: input.batchId,
-          },
+        const current = await tx.batchStudent.findMany({
+          where: { batchId: input.batchId },
+          select: { studentId: true, student: { select: { archivedAt: true } } },
         });
 
-        // Add the selected students
-        if (input.studentIds.length > 0) {
+        const currentIds = new Set(current.map((row) => row.studentId));
+        const selectedIds = new Set(input.studentIds);
+
+        const toAdd = input.studentIds.filter((id) => !currentIds.has(id));
+        // Only active students are offered in the picker, so an archived
+        // student's absence from the selection isn't a request to unenrol them.
+        const toRemove = current
+          .filter((row) => !row.student.archivedAt && !selectedIds.has(row.studentId))
+          .map((row) => row.studentId);
+
+        if (toAdd.length > 0) {
           await tx.batchStudent.createMany({
-            data: input.studentIds.map((studentId) => ({
+            data: toAdd.map((studentId) => ({
               batchId: input.batchId,
               studentId,
             })),
             skipDuplicates: true,
+          });
+        }
+
+        if (toRemove.length > 0) {
+          await tx.batchStudent.deleteMany({
+            where: { batchId: input.batchId, studentId: { in: toRemove } },
           });
         }
       });

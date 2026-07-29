@@ -319,6 +319,14 @@ export const ownerExamRouter = {
     .handler(async ({ context, input }) => {
       const exam = await assertActiveExam(context, input.examId);
 
+      // A completed exam is locked here too — otherwise the lock enforced by
+      // saveExamResults is bypassable from the student-detail dialog.
+      if (exam.completedAt) {
+        throw new ORPCError("CONFLICT", {
+          message: "This exam is completed. Reopen it before changing marks.",
+        });
+      }
+
       if (input.marks < 0 || input.marks > exam.totalMarks) {
         throw new ORPCError("BAD_REQUEST", {
           message: `Marks must be between 0 and ${exam.totalMarks}`,

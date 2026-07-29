@@ -132,7 +132,10 @@ export const ownerStudentRouter = {
     .input(
       z.object({
         studentId: z.string(),
-        fullName: z.string().optional(),
+        // Trimmed + non-empty like every other name input: an empty string here
+        // overwrites the name and renders blank in the places that don't fall
+        // back to email.
+        fullName: z.string().trim().min(1).optional(),
         phone: z.string().optional(),
         guardianName: z.string().optional(),
         guardianPhone: z.string().optional(),
@@ -189,6 +192,19 @@ export const ownerStudentRouter = {
         throw new ORPCError("BAD_REQUEST");
       }
 
+      // A "move" the student isn't part of is really an add — and it would
+      // silently reset `joinedAt` (and with it, their outstanding dues) for a
+      // batch they were never in. Make the caller's assumption explicit.
+      const membership = await context.db.batchStudent.findFirst({
+        where: { batchId: fromBatchId, studentId },
+        select: { studentId: true },
+      });
+      if (!membership) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Student is not a member of the source batch",
+        });
+      }
+
       await context.db.$transaction(async (tx) => {
         await tx.batchStudent.deleteMany({
           where: {
@@ -237,22 +253,48 @@ export const ownerStudentRouter = {
         throw new ORPCError("BAD_REQUEST");
       }
 
+      // Diff rather than delete-all-then-recreate: `joinedAt` defaults to now()
+      // and dues are computed from it, so recreating an unchanged membership
+      // would silently wipe every outstanding month that student still owes.
       await context.db.$transaction(async (tx) => {
-        // Remove existing assignments
-        await tx.batchStudent.deleteMany({
+        // Scope the "current" set to exactly what the dialog can express:
+        // active batches in this org. Memberships in archived batches (or under
+        // archived classes) are invisible to the picker, so their absence from
+        // `batchIds` isn't a request to remove them — dropping them would empty
+        // a batch on restore, and reach across orgs while doing it.
+        const current = await tx.batchStudent.findMany({
           where: {
             studentId,
+            batch: {
+              clerkOrganizationId: context.organizationId,
+              archivedAt: null,
+              class: { archivedAt: null },
+            },
           },
+          select: { batchId: true },
         });
 
-        // Insert new assignments
-        if (batchIds.length > 0) {
+        const currentIds = new Set(current.map((row) => row.batchId));
+        const selectedIds = new Set(batchIds);
+
+        const toAdd = batchIds.filter((id) => !currentIds.has(id));
+        const toRemove = current
+          .map((row) => row.batchId)
+          .filter((id) => !selectedIds.has(id));
+
+        if (toAdd.length > 0) {
           await tx.batchStudent.createMany({
-            data: batchIds.map((batchId) => ({
+            data: toAdd.map((batchId) => ({
               batchId,
               studentId,
             })),
             skipDuplicates: true,
+          });
+        }
+
+        if (toRemove.length > 0) {
+          await tx.batchStudent.deleteMany({
+            where: { studentId, batchId: { in: toRemove } },
           });
         }
       });
