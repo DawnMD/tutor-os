@@ -8,6 +8,8 @@ async function onOrganizationMembershipCreated(
   event: OrganizationMembershipWebhookEvent,
 ) {
   if (event.data.role !== OrganizationRole.STUDENT) {
+    // Not a student (org:admin) — nothing to mirror. Note that the deleted
+    // handler must therefore tolerate a missing Student row.
     return;
   }
 
@@ -29,6 +31,10 @@ async function onOrganizationMembershipCreated(
         .join(" "),
 
       email: event.data.public_user_data.identifier,
+
+      // Re-adding a previously removed member restores them (removal archives
+      // rather than deletes, so their history is still here).
+      archivedAt: null,
     },
 
     create: {
@@ -48,17 +54,40 @@ async function onOrganizationMembershipCreated(
   });
 }
 
-async function onOrganizationMembershipDeleted(
+/**
+ * Archive rather than delete. `Student` cascades to FeePayment,
+ * AttendanceRecord and ExamResult, so a hard delete would destroy the tutor's
+ * entire payment and attendance history for that student the moment a
+ * membership is removed. `updateMany` is also idempotent: no row matches for an
+ * org:admin membership (we never create one) or a replayed delivery, and
+ * `delete` would throw P2025 there — a 400 that Clerk retries indefinitely.
+ */
+async function archiveStudentMembership(
   event: OrganizationMembershipWebhookEvent,
 ) {
-  await db.student.delete({
+  await db.student.updateMany({
     where: {
-      clerkOrganizationId_clerkUserId: {
-        clerkUserId: event.data.public_user_data.user_id,
-        clerkOrganizationId: event.data.organization.id,
-      },
+      clerkUserId: event.data.public_user_data.user_id,
+      clerkOrganizationId: event.data.organization.id,
+      archivedAt: null,
     },
+    data: { archivedAt: new Date() },
   });
+}
+
+/**
+ * A role change is either direction: promoted to org:admin (they stop being a
+ * student — archive) or demoted to student (mirror them in, restoring an
+ * archived row if one exists).
+ */
+async function onOrganizationMembershipUpdated(
+  event: OrganizationMembershipWebhookEvent,
+) {
+  if (event.data.role === OrganizationRole.STUDENT) {
+    return onOrganizationMembershipCreated(event);
+  }
+
+  return archiveStudentMembership(event);
 }
 
 async function handleClerkWebhook(event: WebhookEvent) {
@@ -66,8 +95,11 @@ async function handleClerkWebhook(event: WebhookEvent) {
     case "organizationMembership.created":
       return onOrganizationMembershipCreated(event);
 
+    case "organizationMembership.updated":
+      return onOrganizationMembershipUpdated(event);
+
     case "organizationMembership.deleted":
-      return onOrganizationMembershipDeleted(event);
+      return archiveStudentMembership(event);
 
     default:
       return;
