@@ -36,7 +36,7 @@ import { orpc } from "@/orpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -97,6 +97,10 @@ export function RecordPaymentDialog({
 
   if (!target) return null;
 
+  // An abandoned online attempt that could still capture after this cash record.
+  const pendingOnline =
+    target.payment?.status === "PENDING" && target.payment.method === "ONLINE";
+
   function onSubmit(data: FormValues) {
     if (!target) return;
     toast.promise(
@@ -135,6 +139,17 @@ export function RecordPaymentDialog({
             for {periodLabel(period)}.
           </DialogDescription>
         </DialogHeader>
+
+        {pendingOnline && (
+          <p className="flex items-start gap-1.5 text-xs text-muted-foreground">
+            <TriangleAlert className="mt-0.5 size-3.5 shrink-0 text-amber-500" />
+            This student has an unfinished online payment for this month. If they
+            complete it after you record cash here, the money still lands in
+            Razorpay and this month will be marked for reconciliation. Check with
+            them first.
+          </p>
+        )}
+
         <form id="record-payment-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller

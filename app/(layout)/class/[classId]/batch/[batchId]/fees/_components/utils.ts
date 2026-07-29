@@ -1,6 +1,7 @@
 import {
   comparePeriods,
   currentPeriod,
+  FEE_TIMEZONE,
   type FeePeriod,
   monthEnd,
   monthStart,
@@ -58,9 +59,12 @@ export function isOfflineMethod(method: PaymentMethod): boolean {
 
 /** Long month label, e.g. "July 2026". */
 export function periodLabel(period: FeePeriod): string {
+  // monthStart is an IST-midnight instant; formatting it in the viewer's local
+  // zone would render the *previous* month anywhere west of IST.
   return monthStart(period.year, period.month).toLocaleDateString("en-IN", {
     month: "long",
     year: "numeric",
+    timeZone: FEE_TIMEZONE,
   });
 }
 
