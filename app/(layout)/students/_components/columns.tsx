@@ -1,7 +1,8 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import { type DataTableFeatures } from "@/components/data-table/features";
 import { Outputs } from "@/orpc/router";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { TableActionsMenu } from "./table-actions-menu";
 
@@ -9,7 +10,7 @@ import { TableActionsMenu } from "./table-actions-menu";
 export type Student = Outputs["owner"]["student"]["getAllStudents"][number];
 
 // table columns
-export const columns: ColumnDef<Student>[] = [
+export const columns: ColumnDef<DataTableFeatures, Student>[] = [
   {
     accessorKey: "fullName",
     header: ({ column }) => (

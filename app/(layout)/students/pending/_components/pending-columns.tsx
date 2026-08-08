@@ -1,7 +1,8 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import { type DataTableFeatures } from "@/components/data-table/features";
 import { Outputs } from "@/orpc/router";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { PendingActionsMenu } from "./pending-actions-menu";
 
@@ -10,7 +11,10 @@ export type PendingInvitation =
   Outputs["owner"]["student"]["getPendingInvitations"][number];
 
 // table columns
-export const pendingColumns: ColumnDef<PendingInvitation>[] = [
+export const pendingColumns: ColumnDef<
+  DataTableFeatures,
+  PendingInvitation
+>[] = [
   {
     accessorKey: "emailAddress",
     header: ({ column }) => (
