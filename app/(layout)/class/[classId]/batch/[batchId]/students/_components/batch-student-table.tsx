@@ -1,5 +1,6 @@
 "use client";
 import { DataTable } from "@/components/data-table/data-table";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { getArchivedScope } from "@/lib/archived-error";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
@@ -24,7 +25,9 @@ export const BatchStudentsTable = ({ batchId }: { batchId: string }) => {
     return <BatchArchivedState scope={archivedScope} />;
   }
 
-  return (
-    <DataTable data={joinedStudents} columns={columns} loading={isLoading} />
-  );
+  if (isLoading) {
+    return <DataTableSkeleton columnCount={columns.length} />;
+  }
+
+  return <DataTable data={joinedStudents ?? []} columns={columns} />;
 };

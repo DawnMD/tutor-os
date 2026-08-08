@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -23,43 +22,19 @@ import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data?: TData[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  loading,
-}: DataTableProps<TData, TValue> & {
-  loading: boolean;
-}) {
-  const tableData = loading || !data ? Array(30).fill({}) : data;
-  const tableColumns =
-    loading || !data
-      ? columns.map((column) => {
-          if ("columns" in column) {
-            return {
-              ...column,
-              columns: column.columns?.map((nestedColumn) => ({
-                ...nestedColumn,
-                cell: () => <Skeleton className="h-[20px] w-[80%]" />,
-              })),
-            };
-          }
-
-          return {
-            ...column,
-            cell: () => <Skeleton className="h-[20px] w-[80%]" />,
-          };
-        })
-      : columns;
-
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: tableData,
-    columns: tableColumns,
+    data,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,

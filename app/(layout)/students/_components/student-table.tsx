@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { orpc } from "@/orpc/client";
@@ -16,7 +17,7 @@ export const StudentTable = () => {
   const [showArchived, setShowArchived] = useState(false);
 
   const students = useMemo(
-    () => (showArchived ? data : data?.filter((s) => !s.archivedAt)),
+    () => (data ?? []).filter((s) => showArchived || !s.archivedAt),
     [data, showArchived],
   );
 
@@ -30,7 +31,11 @@ export const StudentTable = () => {
         Show archived
       </Label>
       <div data-tour="joined-table">
-        <DataTable data={students} columns={columns} loading={isLoading} />
+        {isLoading ? (
+          <DataTableSkeleton columnCount={columns.length} />
+        ) : (
+          <DataTable data={students} columns={columns} />
+        )}
       </div>
     </div>
   );
