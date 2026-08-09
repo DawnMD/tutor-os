@@ -34,7 +34,7 @@ export function FeeRosterTable({
   return (
     <>
       <div data-tour="fees-roster">
-        <DataTable columns={columns} data={roster} loading={false} />
+        <DataTable columns={columns} data={roster} />
       </div>
 
       <RecordPaymentDialog

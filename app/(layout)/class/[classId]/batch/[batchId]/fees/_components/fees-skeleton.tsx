@@ -1,3 +1,4 @@
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -27,7 +28,7 @@ export function FeesSkeleton() {
       </div>
 
       {/* Roster */}
-      <Skeleton className="h-72" />
+      <DataTableSkeleton columnCount={6} />
     </div>
   );
 }

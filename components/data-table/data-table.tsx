@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -11,59 +10,31 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  ColumnDef,
   flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
+  useTable,
+  type ColumnDef,
+  type RowData,
+  type SortingState,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { features, type DataTableFeatures } from "./features";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data?: TData[];
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<DataTableFeatures, TData>[];
+  data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
-  loading,
-}: DataTableProps<TData, TValue> & {
-  loading: boolean;
-}) {
-  const tableData = loading || !data ? Array(30).fill({}) : data;
-  const tableColumns =
-    loading || !data
-      ? columns.map((column) => {
-          if ("columns" in column) {
-            return {
-              ...column,
-              columns: column.columns?.map((nestedColumn) => ({
-                ...nestedColumn,
-                cell: () => <Skeleton className="h-[20px] w-[80%]" />,
-              })),
-            };
-          }
-
-          return {
-            ...column,
-            cell: () => <Skeleton className="h-[20px] w-[80%]" />,
-          };
-        })
-      : columns;
-
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
-    data: tableData,
-    columns: tableColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+  const table = useTable({
+    features,
+    data,
+    columns,
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
     },
@@ -93,11 +64,11 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
+              <TableRow key={row.id}>
+                {/* getVisibleCells() comes from columnVisibilityFeature, which
+                    isn't registered; with no visibility state every cell is
+                    visible, so getAllCells() is equivalent. */}
+                {row.getAllCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

@@ -2,6 +2,7 @@
 
 import { AddNewStudentPopup } from "@/components/add-new-student-popup";
 import { DataTable } from "@/components/data-table/data-table";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { orpc } from "@/orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { pendingColumns } from "./pending-columns";
@@ -17,7 +18,11 @@ export const PendingInvitationsTable = () => {
         <AddNewStudentPopup />
       </div>
       <div data-tour="pending-table">
-        <DataTable data={data} columns={pendingColumns} loading={isLoading} />
+        {isLoading ? (
+          <DataTableSkeleton columnCount={pendingColumns.length} />
+        ) : (
+          <DataTable data={data ?? []} columns={pendingColumns} />
+        )}
       </div>
     </div>
   );

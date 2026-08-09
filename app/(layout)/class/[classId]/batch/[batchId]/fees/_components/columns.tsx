@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { type DataTableFeatures } from "@/components/data-table/features";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { formatPaise } from "@/lib/currency";
 import { cn } from "@/lib/utils";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import {
@@ -46,7 +47,7 @@ interface RosterColumnHandlers {
 export function getRosterColumns({
   onRecord,
   onUndo,
-}: RosterColumnHandlers): ColumnDef<RosterRow>[] {
+}: RosterColumnHandlers): ColumnDef<DataTableFeatures, RosterRow>[] {
   return [
     {
       accessorKey: "fullName",

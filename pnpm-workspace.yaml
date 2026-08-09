@@ -1,3 +1,16 @@
+allowBuilds:
+  '@prisma/engines': true
+  bufferutil: true
+  core-js: true
+  esbuild: true
+  msgpackr-extract: true
+  prisma: true
+  sharp: true
+  unrs-resolver: true
+  utf-8-validate: true
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+minimumReleaseAgeExclude:
+  - '@tanstack/react-table@9.1.0'
+  - '@tanstack/table-core@9.1.0'
