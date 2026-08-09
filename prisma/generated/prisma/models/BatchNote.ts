@@ -36,7 +36,7 @@ export type BatchNoteSumAggregateOutputType = {
 
 export type BatchNoteMinAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   batchId: string | null
   title: string | null
   description: string | null
@@ -45,14 +45,14 @@ export type BatchNoteMinAggregateOutputType = {
   fileName: string | null
   fileType: string | null
   fileSize: number | null
-  uploadedByClerkUserId: string | null
+  uploadedByUserId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type BatchNoteMaxAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   batchId: string | null
   title: string | null
   description: string | null
@@ -61,14 +61,14 @@ export type BatchNoteMaxAggregateOutputType = {
   fileName: string | null
   fileType: string | null
   fileSize: number | null
-  uploadedByClerkUserId: string | null
+  uploadedByUserId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type BatchNoteCountAggregateOutputType = {
   id: number
-  clerkOrganizationId: number
+  organizationId: number
   batchId: number
   title: number
   description: number
@@ -77,7 +77,7 @@ export type BatchNoteCountAggregateOutputType = {
   fileName: number
   fileType: number
   fileSize: number
-  uploadedByClerkUserId: number
+  uploadedByUserId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -94,7 +94,7 @@ export type BatchNoteSumAggregateInputType = {
 
 export type BatchNoteMinAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   title?: true
   description?: true
@@ -103,14 +103,14 @@ export type BatchNoteMinAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
-  uploadedByClerkUserId?: true
+  uploadedByUserId?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type BatchNoteMaxAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   title?: true
   description?: true
@@ -119,14 +119,14 @@ export type BatchNoteMaxAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
-  uploadedByClerkUserId?: true
+  uploadedByUserId?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type BatchNoteCountAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   title?: true
   description?: true
@@ -135,7 +135,7 @@ export type BatchNoteCountAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
-  uploadedByClerkUserId?: true
+  uploadedByUserId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -229,7 +229,7 @@ export type BatchNoteGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type BatchNoteGroupByOutputType = {
   id: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   title: string
   description: string | null
@@ -238,7 +238,7 @@ export type BatchNoteGroupByOutputType = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt: Date
   updatedAt: Date
   _count: BatchNoteCountAggregateOutputType | null
@@ -268,7 +268,7 @@ export type BatchNoteWhereInput = {
   OR?: Prisma.BatchNoteWhereInput[]
   NOT?: Prisma.BatchNoteWhereInput | Prisma.BatchNoteWhereInput[]
   id?: Prisma.StringFilter<"BatchNote"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"BatchNote"> | string
+  organizationId?: Prisma.StringFilter<"BatchNote"> | string
   batchId?: Prisma.StringFilter<"BatchNote"> | string
   title?: Prisma.StringFilter<"BatchNote"> | string
   description?: Prisma.StringNullableFilter<"BatchNote"> | string | null
@@ -277,7 +277,7 @@ export type BatchNoteWhereInput = {
   fileName?: Prisma.StringFilter<"BatchNote"> | string
   fileType?: Prisma.StringFilter<"BatchNote"> | string
   fileSize?: Prisma.IntFilter<"BatchNote"> | number
-  uploadedByClerkUserId?: Prisma.StringFilter<"BatchNote"> | string
+  uploadedByUserId?: Prisma.StringFilter<"BatchNote"> | string
   createdAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
@@ -285,7 +285,7 @@ export type BatchNoteWhereInput = {
 
 export type BatchNoteOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -294,7 +294,7 @@ export type BatchNoteOrderByWithRelationInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  uploadedByClerkUserId?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   batch?: Prisma.BatchOrderByWithRelationInput
@@ -306,7 +306,7 @@ export type BatchNoteWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BatchNoteWhereInput | Prisma.BatchNoteWhereInput[]
   OR?: Prisma.BatchNoteWhereInput[]
   NOT?: Prisma.BatchNoteWhereInput | Prisma.BatchNoteWhereInput[]
-  clerkOrganizationId?: Prisma.StringFilter<"BatchNote"> | string
+  organizationId?: Prisma.StringFilter<"BatchNote"> | string
   batchId?: Prisma.StringFilter<"BatchNote"> | string
   title?: Prisma.StringFilter<"BatchNote"> | string
   description?: Prisma.StringNullableFilter<"BatchNote"> | string | null
@@ -314,7 +314,7 @@ export type BatchNoteWhereUniqueInput = Prisma.AtLeast<{
   fileName?: Prisma.StringFilter<"BatchNote"> | string
   fileType?: Prisma.StringFilter<"BatchNote"> | string
   fileSize?: Prisma.IntFilter<"BatchNote"> | number
-  uploadedByClerkUserId?: Prisma.StringFilter<"BatchNote"> | string
+  uploadedByUserId?: Prisma.StringFilter<"BatchNote"> | string
   createdAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
@@ -322,7 +322,7 @@ export type BatchNoteWhereUniqueInput = Prisma.AtLeast<{
 
 export type BatchNoteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -331,7 +331,7 @@ export type BatchNoteOrderByWithAggregationInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  uploadedByClerkUserId?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BatchNoteCountOrderByAggregateInput
@@ -346,7 +346,7 @@ export type BatchNoteScalarWhereWithAggregatesInput = {
   OR?: Prisma.BatchNoteScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BatchNoteScalarWhereWithAggregatesInput | Prisma.BatchNoteScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
-  clerkOrganizationId?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   batchId?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   title?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"BatchNote"> | string | null
@@ -355,14 +355,14 @@ export type BatchNoteScalarWhereWithAggregatesInput = {
   fileName?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   fileType?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   fileSize?: Prisma.IntWithAggregatesFilter<"BatchNote"> | number
-  uploadedByClerkUserId?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
+  uploadedByUserId?: Prisma.StringWithAggregatesFilter<"BatchNote"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BatchNote"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BatchNote"> | Date | string
 }
 
 export type BatchNoteCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   title: string
   description?: string | null
   fileKey: string
@@ -370,7 +370,7 @@ export type BatchNoteCreateInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   batch: Prisma.BatchCreateNestedOneWithoutNotesInput
@@ -378,7 +378,7 @@ export type BatchNoteCreateInput = {
 
 export type BatchNoteUncheckedCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   title: string
   description?: string | null
@@ -387,14 +387,14 @@ export type BatchNoteUncheckedCreateInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BatchNoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -402,7 +402,7 @@ export type BatchNoteUpdateInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.BatchUpdateOneRequiredWithoutNotesNestedInput
@@ -410,7 +410,7 @@ export type BatchNoteUpdateInput = {
 
 export type BatchNoteUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -419,14 +419,14 @@ export type BatchNoteUncheckedUpdateInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BatchNoteCreateManyInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   title: string
   description?: string | null
@@ -435,14 +435,14 @@ export type BatchNoteCreateManyInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BatchNoteUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -450,14 +450,14 @@ export type BatchNoteUpdateManyMutationInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BatchNoteUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -466,7 +466,7 @@ export type BatchNoteUncheckedUpdateManyInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -483,7 +483,7 @@ export type BatchNoteOrderByRelationAggregateInput = {
 
 export type BatchNoteCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -492,7 +492,7 @@ export type BatchNoteCountOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  uploadedByClerkUserId?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,7 +503,7 @@ export type BatchNoteAvgOrderByAggregateInput = {
 
 export type BatchNoteMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -512,14 +512,14 @@ export type BatchNoteMaxOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  uploadedByClerkUserId?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type BatchNoteMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -528,7 +528,7 @@ export type BatchNoteMinOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  uploadedByClerkUserId?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -581,7 +581,7 @@ export type BatchNoteUncheckedUpdateManyWithoutBatchNestedInput = {
 
 export type BatchNoteCreateWithoutBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   title: string
   description?: string | null
   fileKey: string
@@ -589,14 +589,14 @@ export type BatchNoteCreateWithoutBatchInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BatchNoteUncheckedCreateWithoutBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   title: string
   description?: string | null
   fileKey: string
@@ -604,7 +604,7 @@ export type BatchNoteUncheckedCreateWithoutBatchInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -640,7 +640,7 @@ export type BatchNoteScalarWhereInput = {
   OR?: Prisma.BatchNoteScalarWhereInput[]
   NOT?: Prisma.BatchNoteScalarWhereInput | Prisma.BatchNoteScalarWhereInput[]
   id?: Prisma.StringFilter<"BatchNote"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"BatchNote"> | string
+  organizationId?: Prisma.StringFilter<"BatchNote"> | string
   batchId?: Prisma.StringFilter<"BatchNote"> | string
   title?: Prisma.StringFilter<"BatchNote"> | string
   description?: Prisma.StringNullableFilter<"BatchNote"> | string | null
@@ -649,14 +649,14 @@ export type BatchNoteScalarWhereInput = {
   fileName?: Prisma.StringFilter<"BatchNote"> | string
   fileType?: Prisma.StringFilter<"BatchNote"> | string
   fileSize?: Prisma.IntFilter<"BatchNote"> | number
-  uploadedByClerkUserId?: Prisma.StringFilter<"BatchNote"> | string
+  uploadedByUserId?: Prisma.StringFilter<"BatchNote"> | string
   createdAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BatchNote"> | Date | string
 }
 
 export type BatchNoteCreateManyBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   title: string
   description?: string | null
   fileKey: string
@@ -664,14 +664,14 @@ export type BatchNoteCreateManyBatchInput = {
   fileName: string
   fileType: string
   fileSize: number
-  uploadedByClerkUserId: string
+  uploadedByUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BatchNoteUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -679,14 +679,14 @@ export type BatchNoteUpdateWithoutBatchInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BatchNoteUncheckedUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -694,14 +694,14 @@ export type BatchNoteUncheckedUpdateWithoutBatchInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BatchNoteUncheckedUpdateManyWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -709,7 +709,7 @@ export type BatchNoteUncheckedUpdateManyWithoutBatchInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedByClerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -718,7 +718,7 @@ export type BatchNoteUncheckedUpdateManyWithoutBatchInput = {
 
 export type BatchNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   title?: boolean
   description?: boolean
@@ -727,7 +727,7 @@ export type BatchNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
-  uploadedByClerkUserId?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
@@ -735,7 +735,7 @@ export type BatchNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type BatchNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   title?: boolean
   description?: boolean
@@ -744,7 +744,7 @@ export type BatchNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
-  uploadedByClerkUserId?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
@@ -752,7 +752,7 @@ export type BatchNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 
 export type BatchNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   title?: boolean
   description?: boolean
@@ -761,7 +761,7 @@ export type BatchNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
-  uploadedByClerkUserId?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
@@ -769,7 +769,7 @@ export type BatchNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 
 export type BatchNoteSelectScalar = {
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   title?: boolean
   description?: boolean
@@ -778,12 +778,12 @@ export type BatchNoteSelectScalar = {
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
-  uploadedByClerkUserId?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BatchNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "batchId" | "title" | "description" | "fileKey" | "fileUrl" | "fileName" | "fileType" | "fileSize" | "uploadedByClerkUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["batchNote"]>
+export type BatchNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "batchId" | "title" | "description" | "fileKey" | "fileUrl" | "fileName" | "fileType" | "fileSize" | "uploadedByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["batchNote"]>
 export type BatchNoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
 }
@@ -801,7 +801,7 @@ export type $BatchNotePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    clerkOrganizationId: string
+    organizationId: string
     batchId: string
     title: string
     description: string | null
@@ -810,7 +810,7 @@ export type $BatchNotePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     fileName: string
     fileType: string
     fileSize: number
-    uploadedByClerkUserId: string
+    uploadedByUserId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["batchNote"]>
@@ -1238,7 +1238,7 @@ export interface Prisma__BatchNoteClient<T, Null = never, ExtArgs extends runtim
  */
 export interface BatchNoteFieldRefs {
   readonly id: Prisma.FieldRef<"BatchNote", 'String'>
-  readonly clerkOrganizationId: Prisma.FieldRef<"BatchNote", 'String'>
+  readonly organizationId: Prisma.FieldRef<"BatchNote", 'String'>
   readonly batchId: Prisma.FieldRef<"BatchNote", 'String'>
   readonly title: Prisma.FieldRef<"BatchNote", 'String'>
   readonly description: Prisma.FieldRef<"BatchNote", 'String'>
@@ -1247,7 +1247,7 @@ export interface BatchNoteFieldRefs {
   readonly fileName: Prisma.FieldRef<"BatchNote", 'String'>
   readonly fileType: Prisma.FieldRef<"BatchNote", 'String'>
   readonly fileSize: Prisma.FieldRef<"BatchNote", 'Int'>
-  readonly uploadedByClerkUserId: Prisma.FieldRef<"BatchNote", 'String'>
+  readonly uploadedByUserId: Prisma.FieldRef<"BatchNote", 'String'>
   readonly createdAt: Prisma.FieldRef<"BatchNote", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BatchNote", 'DateTime'>
 }

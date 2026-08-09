@@ -19,7 +19,7 @@ interface RazorpayOrderNotes {
   studentId?: string;
   periodYear?: string;
   periodMonth?: string;
-  clerkOrganizationId?: string;
+  organizationId?: string;
 }
 
 interface RazorpayPaymentEntity {

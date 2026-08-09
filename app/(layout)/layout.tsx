@@ -7,29 +7,26 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { requireOrganization } from "@/lib/roles";
 
 export default async function MainLayout({ children }: LayoutProps<"/">) {
-  await auth.protect();
-
-  const { orgId, orgRole } = await auth();
-
-  // The shell is shared by both roles, but every page assumes an active org.
-  if (!orgId) redirect("/select-organization");
+  // The shell is shared by both roles, but every page assumes an active org —
+  // this redirects to /sign-in with no session, /select-organization with no
+  // active workspace.
+  const { role } = await requireOrganization();
 
   return (
     <SidebarProvider>
-      <AppSidebar orgRole={orgRole ?? null} />
+      <AppSidebar orgRole={role} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 " />
-            <AppBreadcrumb />
+            <AppBreadcrumb orgRole={role} />
           </div>
           <div className="ml-auto px-4">
-            <TourReplayButton />
+            <TourReplayButton orgRole={role} />
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>

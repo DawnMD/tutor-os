@@ -22,7 +22,7 @@ export const ownerAttendanceRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: {
           id: true,

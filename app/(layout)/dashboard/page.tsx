@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs/server";
-import { isOwner } from "@/lib/roles";
+import { requireOrganization } from "@/lib/roles";
 import { DashboardContent } from "./_components/dashboard-content";
 import { StudentDashboard } from "./_components/student-dashboard";
 
@@ -9,9 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  await auth.protect();
+  const { isOwner } = await requireOrganization();
 
-  if (await isOwner()) return <DashboardContent />;
+  if (isOwner) return <DashboardContent />;
 
   return <StudentDashboard />;
 }

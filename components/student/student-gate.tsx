@@ -21,15 +21,19 @@ import type { ReactNode } from "react";
  * the shared layout). Resolves the current student's own profile via
  * `student.me.get`:
  *   - loading  → skeleton
- *   - `null`   → "account being set up" (webhook lag) with Retry, polling
+ *   - `null`   → "account being set up" with Retry
  *   - ARCHIVED → "archived by your tutor" read-only state
  *   - else     → children
+ *
+ * The `null` branch used to poll: membership arrived over a Clerk webhook, so
+ * the row could land seconds after the student first reached the dashboard.
+ * Membership is now written in-process while the student accepts, so that
+ * window is gone — the branch stays as a manual-retry fallback for a row that
+ * was never mirrored (created straight in the database, or a hook that threw).
  */
 export function StudentGate({ children }: { children: ReactNode }) {
   const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     ...orpc.student.me.get.queryOptions(),
-    // Poll while the row is still missing (webhook lag), then stop.
-    refetchInterval: (query) => (query.state.data === null ? 5000 : false),
     retry: false,
   });
 

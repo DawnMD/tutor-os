@@ -2,13 +2,12 @@ import { env } from "@/env";
 import type { Context } from "@/orpc/context";
 import { ORPCError, os } from "@orpc/server";
 
-export const OrganizationRole = {
-  OWNER: "org:admin",
-  STUDENT: "org:member",
-} as const;
-
-type OrganizationRole =
-  (typeof OrganizationRole)[keyof typeof OrganizationRole];
+// Re-exported so the existing import sites (client components included) keep
+// working. The const itself lives in a zero-import module because `lib/auth.ts`
+// needs it too, and importing it from here would cycle back through
+// `orpc/context.ts` into `lib/auth.ts`.
+import { OrganizationRole } from "@/lib/organization-role";
+export { OrganizationRole };
 
 const base = os.$context<Context>();
 

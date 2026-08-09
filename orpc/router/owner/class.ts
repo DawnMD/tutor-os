@@ -11,14 +11,14 @@ export const ownerClassRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      // Pre-check the @@unique([clerkOrganizationId, name]) like every other
+      // Pre-check the @@unique([organizationId, name]) like every other
       // create path, so a duplicate name is a readable message rather than a raw
       // P2002 surfacing as INTERNAL_SERVER_ERROR. Archived classes still hold
       // their name, hence the explicit mention.
       const duplicate = await context.db.class.findUnique({
         where: {
-          clerkOrganizationId_name: {
-            clerkOrganizationId: context.organizationId,
+          organizationId_name: {
+            organizationId: context.organizationId,
             name: input.name,
           },
         },
@@ -35,7 +35,7 @@ export const ownerClassRouter = {
       return await context.db.class.create({
         data: {
           name: input.name,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           description: input.description,
         },
       });
@@ -51,7 +51,7 @@ export const ownerClassRouter = {
       const result = await context.db.class.updateMany({
         where: {
           id: input.id,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         data: {
           archivedAt: new Date(),
@@ -74,7 +74,7 @@ export const ownerClassRouter = {
       const result = await context.db.class.updateMany({
         where: {
           id: input.id,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         data: {
           archivedAt: null,
@@ -90,7 +90,7 @@ export const ownerClassRouter = {
   getAllClass: ownerProcedure.handler(async ({ context }) => {
     const classes = await context.db.class.findMany({
       where: {
-        clerkOrganizationId: context.organizationId,
+        organizationId: context.organizationId,
       },
       include: {
         batches: {

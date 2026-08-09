@@ -1,6 +1,7 @@
-import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+import { getAuthSession } from "@/lib/roles";
 
 import { CtaBand } from "@/components/landing/cta-band";
 import { FeatureGrid } from "@/components/landing/feature-grid";
@@ -25,9 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { userId } = await auth();
-
-  if (userId) {
+  if (await getAuthSession()) {
     redirect("/dashboard");
   }
 

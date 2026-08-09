@@ -41,7 +41,7 @@ export const ownerExamRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: {
           id: true,
@@ -182,7 +182,7 @@ export const ownerExamRouter = {
       const exam = await context.db.exam.findFirst({
         where: {
           id: input.examId,
-          batch: { clerkOrganizationId: context.organizationId },
+          batch: { organizationId: context.organizationId },
         },
         select: {
           id: true,

@@ -53,7 +53,7 @@ export const studentBatchRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           students: { some: { studentId: student.id } },
         },
         select: {

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
 import { HelpCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -18,14 +17,11 @@ import { OrganizationRole } from "@/orpc/orpc";
  * Header affordance for replaying the current page's tour. Renders nothing on
  * routes that don't have one for the viewer's role.
  */
-export function TourReplayButton() {
+export function TourReplayButton({ orgRole }: { orgRole: string | null }) {
   const pathname = usePathname();
-  const { orgRole, isLoaded } = useAuth();
   const isOwner = orgRole === OrganizationRole.OWNER;
 
-  // Before Clerk hydrates, an owner reads as a student — wait rather than
-  // offering the wrong role's tour.
-  const tour = isLoaded ? getTourForRoute(pathname, isOwner) : null;
+  const tour = getTourForRoute(pathname, isOwner);
   const { startTour } = useTour(tour?.id ?? null);
 
   if (!tour) return null;

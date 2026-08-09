@@ -1,6 +1,6 @@
+import { auth } from "@/lib/auth";
 import { OrganizationRole } from "@/orpc/orpc";
 import { db } from "@/prisma/db";
-import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import * as z from "zod";
@@ -29,13 +29,24 @@ export const uploadRouter = {
         description: z.string().trim().max(1000).optional(),
       }),
     )
-    .middleware(async ({ input }) => {
-      const { userId, orgId, orgRole } = await auth();
+    .middleware(async ({ req, input }) => {
+      // Read from the request UploadThing hands us rather than `next/headers`:
+      // this is a route handler, not an RSC, so the cached helpers in
+      // `lib/roles.ts` don't apply here.
+      const session = await auth.api.getSession({ headers: req.headers });
+      const userId = session?.user.id;
+      const orgId = session?.session.activeOrganizationId;
 
       if (!userId || !orgId) {
         throw new UploadThingError("You must be signed in to upload notes.");
       }
-      if (orgRole !== OrganizationRole.OWNER) {
+
+      const membership = await db.member.findFirst({
+        where: { organizationId: orgId, userId },
+        select: { role: true },
+      });
+
+      if (membership?.role !== OrganizationRole.OWNER) {
         throw new UploadThingError("Only owners can upload notes.");
       }
 
@@ -44,7 +55,7 @@ export const uploadRouter = {
       const batch = await db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: orgId,
+          organizationId: orgId,
           archivedAt: null,
           class: { archivedAt: null },
         },
@@ -68,7 +79,7 @@ export const uploadRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       await db.batchNote.create({
         data: {
-          clerkOrganizationId: metadata.orgId,
+          organizationId: metadata.orgId,
           batchId: metadata.batchId,
           title: metadata.title || file.name,
           description: metadata.description,
@@ -77,7 +88,7 @@ export const uploadRouter = {
           fileName: file.name,
           fileType: file.type,
           fileSize: file.size,
-          uploadedByClerkUserId: metadata.userId,
+          uploadedByUserId: metadata.userId,
         },
       });
 

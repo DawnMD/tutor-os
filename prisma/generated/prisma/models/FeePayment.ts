@@ -40,7 +40,7 @@ export type FeePaymentSumAggregateOutputType = {
 
 export type FeePaymentMinAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   batchId: string | null
   studentId: string | null
   periodYear: number | null
@@ -58,7 +58,7 @@ export type FeePaymentMinAggregateOutputType = {
 
 export type FeePaymentMaxAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   batchId: string | null
   studentId: string | null
   periodYear: number | null
@@ -76,7 +76,7 @@ export type FeePaymentMaxAggregateOutputType = {
 
 export type FeePaymentCountAggregateOutputType = {
   id: number
-  clerkOrganizationId: number
+  organizationId: number
   batchId: number
   studentId: number
   periodYear: number
@@ -108,7 +108,7 @@ export type FeePaymentSumAggregateInputType = {
 
 export type FeePaymentMinAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   studentId?: true
   periodYear?: true
@@ -126,7 +126,7 @@ export type FeePaymentMinAggregateInputType = {
 
 export type FeePaymentMaxAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   studentId?: true
   periodYear?: true
@@ -144,7 +144,7 @@ export type FeePaymentMaxAggregateInputType = {
 
 export type FeePaymentCountAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   batchId?: true
   studentId?: true
   periodYear?: true
@@ -249,7 +249,7 @@ export type FeePaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type FeePaymentGroupByOutputType = {
   id: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   studentId: string
   periodYear: number
@@ -290,7 +290,7 @@ export type FeePaymentWhereInput = {
   OR?: Prisma.FeePaymentWhereInput[]
   NOT?: Prisma.FeePaymentWhereInput | Prisma.FeePaymentWhereInput[]
   id?: Prisma.StringFilter<"FeePayment"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"FeePayment"> | string
+  organizationId?: Prisma.StringFilter<"FeePayment"> | string
   batchId?: Prisma.StringFilter<"FeePayment"> | string
   studentId?: Prisma.StringFilter<"FeePayment"> | string
   periodYear?: Prisma.IntFilter<"FeePayment"> | number
@@ -310,7 +310,7 @@ export type FeePaymentWhereInput = {
 
 export type FeePaymentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
@@ -336,7 +336,7 @@ export type FeePaymentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FeePaymentWhereInput | Prisma.FeePaymentWhereInput[]
   OR?: Prisma.FeePaymentWhereInput[]
   NOT?: Prisma.FeePaymentWhereInput | Prisma.FeePaymentWhereInput[]
-  clerkOrganizationId?: Prisma.StringFilter<"FeePayment"> | string
+  organizationId?: Prisma.StringFilter<"FeePayment"> | string
   batchId?: Prisma.StringFilter<"FeePayment"> | string
   studentId?: Prisma.StringFilter<"FeePayment"> | string
   periodYear?: Prisma.IntFilter<"FeePayment"> | number
@@ -354,7 +354,7 @@ export type FeePaymentWhereUniqueInput = Prisma.AtLeast<{
 
 export type FeePaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
@@ -380,7 +380,7 @@ export type FeePaymentScalarWhereWithAggregatesInput = {
   OR?: Prisma.FeePaymentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FeePaymentScalarWhereWithAggregatesInput | Prisma.FeePaymentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"FeePayment"> | string
-  clerkOrganizationId?: Prisma.StringWithAggregatesFilter<"FeePayment"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"FeePayment"> | string
   batchId?: Prisma.StringWithAggregatesFilter<"FeePayment"> | string
   studentId?: Prisma.StringWithAggregatesFilter<"FeePayment"> | string
   periodYear?: Prisma.IntWithAggregatesFilter<"FeePayment"> | number
@@ -398,7 +398,7 @@ export type FeePaymentScalarWhereWithAggregatesInput = {
 
 export type FeePaymentCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   periodYear: number
   periodMonth: number
   amountPaise: number
@@ -416,7 +416,7 @@ export type FeePaymentCreateInput = {
 
 export type FeePaymentUncheckedCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   studentId: string
   periodYear: number
@@ -434,7 +434,7 @@ export type FeePaymentUncheckedCreateInput = {
 
 export type FeePaymentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaise?: Prisma.IntFieldUpdateOperationsInput | number
@@ -452,7 +452,7 @@ export type FeePaymentUpdateInput = {
 
 export type FeePaymentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
@@ -470,7 +470,7 @@ export type FeePaymentUncheckedUpdateInput = {
 
 export type FeePaymentCreateManyInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   studentId: string
   periodYear: number
@@ -488,7 +488,7 @@ export type FeePaymentCreateManyInput = {
 
 export type FeePaymentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaise?: Prisma.IntFieldUpdateOperationsInput | number
@@ -504,7 +504,7 @@ export type FeePaymentUpdateManyMutationInput = {
 
 export type FeePaymentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
@@ -539,7 +539,7 @@ export type FeePaymentBatchIdStudentIdPeriodYearPeriodMonthCompoundUniqueInput =
 
 export type FeePaymentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
@@ -563,7 +563,7 @@ export type FeePaymentAvgOrderByAggregateInput = {
 
 export type FeePaymentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
@@ -581,7 +581,7 @@ export type FeePaymentMaxOrderByAggregateInput = {
 
 export type FeePaymentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
@@ -697,7 +697,7 @@ export type EnumFeePaymentMethodFieldUpdateOperationsInput = {
 
 export type FeePaymentCreateWithoutStudentInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   periodYear: number
   periodMonth: number
   amountPaise: number
@@ -714,7 +714,7 @@ export type FeePaymentCreateWithoutStudentInput = {
 
 export type FeePaymentUncheckedCreateWithoutStudentInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   periodYear: number
   periodMonth: number
@@ -760,7 +760,7 @@ export type FeePaymentScalarWhereInput = {
   OR?: Prisma.FeePaymentScalarWhereInput[]
   NOT?: Prisma.FeePaymentScalarWhereInput | Prisma.FeePaymentScalarWhereInput[]
   id?: Prisma.StringFilter<"FeePayment"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"FeePayment"> | string
+  organizationId?: Prisma.StringFilter<"FeePayment"> | string
   batchId?: Prisma.StringFilter<"FeePayment"> | string
   studentId?: Prisma.StringFilter<"FeePayment"> | string
   periodYear?: Prisma.IntFilter<"FeePayment"> | number
@@ -778,7 +778,7 @@ export type FeePaymentScalarWhereInput = {
 
 export type FeePaymentCreateWithoutBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   periodYear: number
   periodMonth: number
   amountPaise: number
@@ -795,7 +795,7 @@ export type FeePaymentCreateWithoutBatchInput = {
 
 export type FeePaymentUncheckedCreateWithoutBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   studentId: string
   periodYear: number
   periodMonth: number
@@ -838,7 +838,7 @@ export type FeePaymentUpdateManyWithWhereWithoutBatchInput = {
 
 export type FeePaymentCreateManyStudentInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   batchId: string
   periodYear: number
   periodMonth: number
@@ -855,7 +855,7 @@ export type FeePaymentCreateManyStudentInput = {
 
 export type FeePaymentUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaise?: Prisma.IntFieldUpdateOperationsInput | number
@@ -872,7 +872,7 @@ export type FeePaymentUpdateWithoutStudentInput = {
 
 export type FeePaymentUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
@@ -889,7 +889,7 @@ export type FeePaymentUncheckedUpdateWithoutStudentInput = {
 
 export type FeePaymentUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
@@ -906,7 +906,7 @@ export type FeePaymentUncheckedUpdateManyWithoutStudentInput = {
 
 export type FeePaymentCreateManyBatchInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   studentId: string
   periodYear: number
   periodMonth: number
@@ -923,7 +923,7 @@ export type FeePaymentCreateManyBatchInput = {
 
 export type FeePaymentUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaise?: Prisma.IntFieldUpdateOperationsInput | number
@@ -940,7 +940,7 @@ export type FeePaymentUpdateWithoutBatchInput = {
 
 export type FeePaymentUncheckedUpdateWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
@@ -957,7 +957,7 @@ export type FeePaymentUncheckedUpdateWithoutBatchInput = {
 
 export type FeePaymentUncheckedUpdateManyWithoutBatchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
@@ -976,7 +976,7 @@ export type FeePaymentUncheckedUpdateManyWithoutBatchInput = {
 
 export type FeePaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   studentId?: boolean
   periodYear?: boolean
@@ -996,7 +996,7 @@ export type FeePaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type FeePaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   studentId?: boolean
   periodYear?: boolean
@@ -1016,7 +1016,7 @@ export type FeePaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type FeePaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   studentId?: boolean
   periodYear?: boolean
@@ -1036,7 +1036,7 @@ export type FeePaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type FeePaymentSelectScalar = {
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   batchId?: boolean
   studentId?: boolean
   periodYear?: boolean
@@ -1052,7 +1052,7 @@ export type FeePaymentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type FeePaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "batchId" | "studentId" | "periodYear" | "periodMonth" | "amountPaise" | "status" | "method" | "razorpayOrderId" | "razorpayPaymentId" | "note" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["feePayment"]>
+export type FeePaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "batchId" | "studentId" | "periodYear" | "periodMonth" | "amountPaise" | "status" | "method" | "razorpayOrderId" | "razorpayPaymentId" | "note" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["feePayment"]>
 export type FeePaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -1074,7 +1074,7 @@ export type $FeePaymentPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    clerkOrganizationId: string
+    organizationId: string
     batchId: string
     studentId: string
     periodYear: number
@@ -1514,7 +1514,7 @@ export interface Prisma__FeePaymentClient<T, Null = never, ExtArgs extends runti
  */
 export interface FeePaymentFieldRefs {
   readonly id: Prisma.FieldRef<"FeePayment", 'String'>
-  readonly clerkOrganizationId: Prisma.FieldRef<"FeePayment", 'String'>
+  readonly organizationId: Prisma.FieldRef<"FeePayment", 'String'>
   readonly batchId: Prisma.FieldRef<"FeePayment", 'String'>
   readonly studentId: Prisma.FieldRef<"FeePayment", 'String'>
   readonly periodYear: Prisma.FieldRef<"FeePayment", 'Int'>

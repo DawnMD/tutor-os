@@ -63,7 +63,14 @@ export const ModelName = {
   Exam: 'Exam',
   ExamResult: 'ExamResult',
   BatchNote: 'BatchNote',
-  FeePayment: 'FeePayment'
+  FeePayment: 'FeePayment',
+  User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification',
+  Organization: 'Organization',
+  Member: 'Member',
+  Invitation: 'Invitation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -84,7 +91,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const ClassScalarFieldEnum = {
   id: 'id',
-  clerkOrganizationId: 'clerkOrganizationId',
+  organizationId: 'organizationId',
   name: 'name',
   description: 'description',
   archivedAt: 'archivedAt',
@@ -97,8 +104,8 @@ export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof Cl
 
 export const StudentScalarFieldEnum = {
   id: 'id',
-  clerkUserId: 'clerkUserId',
-  clerkOrganizationId: 'clerkOrganizationId',
+  userId: 'userId',
+  organizationId: 'organizationId',
   fullName: 'fullName',
   email: 'email',
   phone: 'phone',
@@ -114,7 +121,7 @@ export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeo
 
 export const BatchScalarFieldEnum = {
   id: 'id',
-  clerkOrganizationId: 'clerkOrganizationId',
+  organizationId: 'organizationId',
   classId: 'classId',
   name: 'name',
   color: 'color',
@@ -129,7 +136,7 @@ export type BatchScalarFieldEnum = (typeof BatchScalarFieldEnum)[keyof typeof Ba
 
 export const HolidayScalarFieldEnum = {
   id: 'id',
-  clerkOrganizationId: 'clerkOrganizationId',
+  organizationId: 'organizationId',
   date: 'date',
   name: 'name',
   createdAt: 'createdAt'
@@ -221,7 +228,7 @@ export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof
 
 export const BatchNoteScalarFieldEnum = {
   id: 'id',
-  clerkOrganizationId: 'clerkOrganizationId',
+  organizationId: 'organizationId',
   batchId: 'batchId',
   title: 'title',
   description: 'description',
@@ -230,7 +237,7 @@ export const BatchNoteScalarFieldEnum = {
   fileName: 'fileName',
   fileType: 'fileType',
   fileSize: 'fileSize',
-  uploadedByClerkUserId: 'uploadedByClerkUserId',
+  uploadedByUserId: 'uploadedByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -240,7 +247,7 @@ export type BatchNoteScalarFieldEnum = (typeof BatchNoteScalarFieldEnum)[keyof t
 
 export const FeePaymentScalarFieldEnum = {
   id: 'id',
-  clerkOrganizationId: 'clerkOrganizationId',
+  organizationId: 'organizationId',
   batchId: 'batchId',
   studentId: 'studentId',
   periodYear: 'periodYear',
@@ -257,6 +264,102 @@ export const FeePaymentScalarFieldEnum = {
 } as const
 
 export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId',
+  activeOrganizationId: 'activeOrganizationId'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  providerId: 'providerId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  scope: 'scope',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  logo: 'logo',
+  createdAt: 'createdAt',
+  metadata: 'metadata'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const MemberScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  email: 'email',
+  role: 'role',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  inviterId: 'inviterId'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs/server";
 
 import { AddClassCard } from "@/components/add-class-card";
 import { ClassCards } from "@/components/class-cards";
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ClassPage() {
-  await auth.protect();
   await requireOwnerPage();
 
   return (

@@ -82,7 +82,7 @@ export async function getOwnedBatch(
   opts: { allowArchived?: boolean } = {},
 ) {
   const batch = await ctx.db.batch.findFirst({
-    where: { id: batchId, clerkOrganizationId: ctx.organizationId },
+    where: { id: batchId, organizationId: ctx.organizationId },
     select: batchGuardSelect,
   });
 
@@ -104,7 +104,7 @@ export async function assertActiveSession(ctx: GuardContext, sessionId: string) 
   const session = await ctx.db.batchSession.findFirst({
     where: {
       id: sessionId,
-      batch: { clerkOrganizationId: ctx.organizationId },
+      batch: { organizationId: ctx.organizationId },
     },
     select: {
       id: true,
@@ -129,7 +129,7 @@ export async function assertActiveExam(ctx: GuardContext, examId: string) {
   const exam = await ctx.db.exam.findFirst({
     where: {
       id: examId,
-      batch: { clerkOrganizationId: ctx.organizationId },
+      batch: { organizationId: ctx.organizationId },
     },
     select: {
       id: true,
@@ -159,7 +159,7 @@ export async function assertActiveOverride(
   const override = await ctx.db.scheduleOverride.findFirst({
     where: {
       id: overrideId,
-      batch: { clerkOrganizationId: ctx.organizationId },
+      batch: { organizationId: ctx.organizationId },
     },
     select: {
       id: true,
@@ -177,7 +177,7 @@ export async function assertActiveOverride(
 /** Assert an org-owned student that is not archived. */
 export async function assertActiveStudent(ctx: GuardContext, studentId: string) {
   const student = await ctx.db.student.findFirst({
-    where: { id: studentId, clerkOrganizationId: ctx.organizationId },
+    where: { id: studentId, organizationId: ctx.organizationId },
     select: { id: true, archivedAt: true },
   });
 
@@ -190,7 +190,7 @@ export async function assertActiveStudent(ctx: GuardContext, studentId: string) 
 /** Assert an org-owned class that is not archived. */
 export async function assertActiveClass(ctx: GuardContext, classId: string) {
   const cls = await ctx.db.class.findFirst({
-    where: { id: classId, clerkOrganizationId: ctx.organizationId },
+    where: { id: classId, organizationId: ctx.organizationId },
     select: { id: true, archivedAt: true },
   });
 
@@ -206,7 +206,7 @@ export async function assertActiveClass(ctx: GuardContext, classId: string) {
  */
 export const activeBatchWhere = (organizationId: string) =>
   ({
-    clerkOrganizationId: organizationId,
+    organizationId: organizationId,
     archivedAt: null,
     class: { archivedAt: null },
   }) as const;

@@ -94,19 +94,19 @@ export const ownerDashboardRouter = {
           }),
           context.db.student.count({
             where: {
-              clerkOrganizationId: context.organizationId,
+              organizationId: context.organizationId,
               archivedAt: null,
             },
           }),
           context.db.class.count({
             where: {
-              clerkOrganizationId: context.organizationId,
+              organizationId: context.organizationId,
               archivedAt: null,
             },
           }),
           context.db.student.findMany({
             where: {
-              clerkOrganizationId: context.organizationId,
+              organizationId: context.organizationId,
               archivedAt: null,
             },
             orderBy: { createdAt: "desc" },
@@ -120,7 +120,7 @@ export const ownerDashboardRouter = {
           }),
           context.db.holiday.findMany({
             where: {
-              clerkOrganizationId: context.organizationId,
+              organizationId: context.organizationId,
               date: { gte: input.rangeStart, lte: input.rangeEnd },
             },
             select: { id: true, date: true, name: true },

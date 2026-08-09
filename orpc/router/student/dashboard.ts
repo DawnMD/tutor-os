@@ -110,7 +110,7 @@ export const studentDashboardRouter = {
         // Holidays are org-wide, safe to expose to students.
         context.db.holiday.findMany({
           where: {
-            clerkOrganizationId: context.organizationId,
+            organizationId: context.organizationId,
             date: { gte: input.rangeStart, lte: input.rangeEnd },
           },
           select: { id: true, date: true, name: true },

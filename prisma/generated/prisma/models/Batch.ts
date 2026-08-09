@@ -36,7 +36,7 @@ export type BatchSumAggregateOutputType = {
 
 export type BatchMinAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   classId: string | null
   name: string | null
   color: string | null
@@ -48,7 +48,7 @@ export type BatchMinAggregateOutputType = {
 
 export type BatchMaxAggregateOutputType = {
   id: string | null
-  clerkOrganizationId: string | null
+  organizationId: string | null
   classId: string | null
   name: string | null
   color: string | null
@@ -60,7 +60,7 @@ export type BatchMaxAggregateOutputType = {
 
 export type BatchCountAggregateOutputType = {
   id: number
-  clerkOrganizationId: number
+  organizationId: number
   classId: number
   name: number
   color: number
@@ -82,7 +82,7 @@ export type BatchSumAggregateInputType = {
 
 export type BatchMinAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   classId?: true
   name?: true
   color?: true
@@ -94,7 +94,7 @@ export type BatchMinAggregateInputType = {
 
 export type BatchMaxAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   classId?: true
   name?: true
   color?: true
@@ -106,7 +106,7 @@ export type BatchMaxAggregateInputType = {
 
 export type BatchCountAggregateInputType = {
   id?: true
-  clerkOrganizationId?: true
+  organizationId?: true
   classId?: true
   name?: true
   color?: true
@@ -205,7 +205,7 @@ export type BatchGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type BatchGroupByOutputType = {
   id: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color: string | null
@@ -240,7 +240,7 @@ export type BatchWhereInput = {
   OR?: Prisma.BatchWhereInput[]
   NOT?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
   id?: Prisma.StringFilter<"Batch"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
+  organizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -260,7 +260,7 @@ export type BatchWhereInput = {
 
 export type BatchOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -284,7 +284,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
   OR?: Prisma.BatchWhereInput[]
   NOT?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
-  clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
+  organizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -304,7 +304,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
 
 export type BatchOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,7 +324,7 @@ export type BatchScalarWhereWithAggregatesInput = {
   OR?: Prisma.BatchScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BatchScalarWhereWithAggregatesInput | Prisma.BatchScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Batch"> | string
-  clerkOrganizationId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   classId?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   name?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   color?: Prisma.StringNullableWithAggregatesFilter<"Batch"> | string | null
@@ -336,7 +336,7 @@ export type BatchScalarWhereWithAggregatesInput = {
 
 export type BatchCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -355,7 +355,7 @@ export type BatchCreateInput = {
 
 export type BatchUncheckedCreateInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -374,7 +374,7 @@ export type BatchUncheckedCreateInput = {
 
 export type BatchUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -393,7 +393,7 @@ export type BatchUpdateInput = {
 
 export type BatchUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -412,7 +412,7 @@ export type BatchUncheckedUpdateInput = {
 
 export type BatchCreateManyInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -424,7 +424,7 @@ export type BatchCreateManyInput = {
 
 export type BatchUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -435,7 +435,7 @@ export type BatchUpdateManyMutationInput = {
 
 export type BatchUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -462,7 +462,7 @@ export type BatchClassIdNameCompoundUniqueInput = {
 
 export type BatchCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -478,7 +478,7 @@ export type BatchAvgOrderByAggregateInput = {
 
 export type BatchMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -490,7 +490,7 @@ export type BatchMaxOrderByAggregateInput = {
 
 export type BatchMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  clerkOrganizationId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -659,7 +659,7 @@ export type BatchUpdateOneRequiredWithoutFeePaymentsNestedInput = {
 
 export type BatchCreateWithoutClassInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -677,7 +677,7 @@ export type BatchCreateWithoutClassInput = {
 
 export type BatchUncheckedCreateWithoutClassInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -724,7 +724,7 @@ export type BatchScalarWhereInput = {
   OR?: Prisma.BatchScalarWhereInput[]
   NOT?: Prisma.BatchScalarWhereInput | Prisma.BatchScalarWhereInput[]
   id?: Prisma.StringFilter<"Batch"> | string
-  clerkOrganizationId?: Prisma.StringFilter<"Batch"> | string
+  organizationId?: Prisma.StringFilter<"Batch"> | string
   classId?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   color?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -736,7 +736,7 @@ export type BatchScalarWhereInput = {
 
 export type BatchCreateWithoutOverridesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -754,7 +754,7 @@ export type BatchCreateWithoutOverridesInput = {
 
 export type BatchUncheckedCreateWithoutOverridesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -788,7 +788,7 @@ export type BatchUpdateToOneWithWhereWithoutOverridesInput = {
 
 export type BatchUpdateWithoutOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -806,7 +806,7 @@ export type BatchUpdateWithoutOverridesInput = {
 
 export type BatchUncheckedUpdateWithoutOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -824,7 +824,7 @@ export type BatchUncheckedUpdateWithoutOverridesInput = {
 
 export type BatchCreateWithoutSchedulesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -842,7 +842,7 @@ export type BatchCreateWithoutSchedulesInput = {
 
 export type BatchUncheckedCreateWithoutSchedulesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -876,7 +876,7 @@ export type BatchUpdateToOneWithWhereWithoutSchedulesInput = {
 
 export type BatchUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -894,7 +894,7 @@ export type BatchUpdateWithoutSchedulesInput = {
 
 export type BatchUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -912,7 +912,7 @@ export type BatchUncheckedUpdateWithoutSchedulesInput = {
 
 export type BatchCreateWithoutStudentsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -930,7 +930,7 @@ export type BatchCreateWithoutStudentsInput = {
 
 export type BatchUncheckedCreateWithoutStudentsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -964,7 +964,7 @@ export type BatchUpdateToOneWithWhereWithoutStudentsInput = {
 
 export type BatchUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -982,7 +982,7 @@ export type BatchUpdateWithoutStudentsInput = {
 
 export type BatchUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1000,7 +1000,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
 
 export type BatchCreateWithoutSessionsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -1018,7 +1018,7 @@ export type BatchCreateWithoutSessionsInput = {
 
 export type BatchUncheckedCreateWithoutSessionsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -1052,7 +1052,7 @@ export type BatchUpdateToOneWithWhereWithoutSessionsInput = {
 
 export type BatchUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1070,7 +1070,7 @@ export type BatchUpdateWithoutSessionsInput = {
 
 export type BatchUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1088,7 +1088,7 @@ export type BatchUncheckedUpdateWithoutSessionsInput = {
 
 export type BatchCreateWithoutExamsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -1106,7 +1106,7 @@ export type BatchCreateWithoutExamsInput = {
 
 export type BatchUncheckedCreateWithoutExamsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -1140,7 +1140,7 @@ export type BatchUpdateToOneWithWhereWithoutExamsInput = {
 
 export type BatchUpdateWithoutExamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1158,7 +1158,7 @@ export type BatchUpdateWithoutExamsInput = {
 
 export type BatchUncheckedUpdateWithoutExamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1176,7 +1176,7 @@ export type BatchUncheckedUpdateWithoutExamsInput = {
 
 export type BatchCreateWithoutNotesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -1194,7 +1194,7 @@ export type BatchCreateWithoutNotesInput = {
 
 export type BatchUncheckedCreateWithoutNotesInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -1228,7 +1228,7 @@ export type BatchUpdateToOneWithWhereWithoutNotesInput = {
 
 export type BatchUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1246,7 +1246,7 @@ export type BatchUpdateWithoutNotesInput = {
 
 export type BatchUncheckedUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1264,7 +1264,7 @@ export type BatchUncheckedUpdateWithoutNotesInput = {
 
 export type BatchCreateWithoutFeePaymentsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -1282,7 +1282,7 @@ export type BatchCreateWithoutFeePaymentsInput = {
 
 export type BatchUncheckedCreateWithoutFeePaymentsInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   classId: string
   name: string
   color?: string | null
@@ -1316,7 +1316,7 @@ export type BatchUpdateToOneWithWhereWithoutFeePaymentsInput = {
 
 export type BatchUpdateWithoutFeePaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1334,7 +1334,7 @@ export type BatchUpdateWithoutFeePaymentsInput = {
 
 export type BatchUncheckedUpdateWithoutFeePaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1352,7 +1352,7 @@ export type BatchUncheckedUpdateWithoutFeePaymentsInput = {
 
 export type BatchCreateManyClassInput = {
   id?: string
-  clerkOrganizationId: string
+  organizationId: string
   name: string
   color?: string | null
   monthlyFeePaise?: number | null
@@ -1363,7 +1363,7 @@ export type BatchCreateManyClassInput = {
 
 export type BatchUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1381,7 +1381,7 @@ export type BatchUpdateWithoutClassInput = {
 
 export type BatchUncheckedUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1399,7 +1399,7 @@ export type BatchUncheckedUpdateWithoutClassInput = {
 
 export type BatchUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clerkOrganizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   monthlyFeePaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1495,7 +1495,7 @@ export type BatchCountOutputTypeCountFeePaymentsArgs<ExtArgs extends runtime.Typ
 
 export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   classId?: boolean
   name?: boolean
   color?: boolean
@@ -1516,7 +1516,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 
 export type BatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   classId?: boolean
   name?: boolean
   color?: boolean
@@ -1529,7 +1529,7 @@ export type BatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 
 export type BatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   classId?: boolean
   name?: boolean
   color?: boolean
@@ -1542,7 +1542,7 @@ export type BatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 
 export type BatchSelectScalar = {
   id?: boolean
-  clerkOrganizationId?: boolean
+  organizationId?: boolean
   classId?: boolean
   name?: boolean
   color?: boolean
@@ -1552,7 +1552,7 @@ export type BatchSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkOrganizationId" | "classId" | "name" | "color" | "monthlyFeePaise" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
+export type BatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "classId" | "name" | "color" | "monthlyFeePaise" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["batch"]>
 export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Batch$studentsArgs<ExtArgs>
@@ -1585,7 +1585,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    clerkOrganizationId: string
+    organizationId: string
     classId: string
     name: string
     color: string | null
@@ -2025,7 +2025,7 @@ export interface Prisma__BatchClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface BatchFieldRefs {
   readonly id: Prisma.FieldRef<"Batch", 'String'>
-  readonly clerkOrganizationId: Prisma.FieldRef<"Batch", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Batch", 'String'>
   readonly classId: Prisma.FieldRef<"Batch", 'String'>
   readonly name: Prisma.FieldRef<"Batch", 'String'>
   readonly color: Prisma.FieldRef<"Batch", 'String'>
