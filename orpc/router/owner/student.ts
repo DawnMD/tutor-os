@@ -1,4 +1,4 @@
-import { getBaseUrl } from "@/lib/get-base-url";
+import { auth } from "@/lib/auth";
 import { OrganizationRole, ownerProcedure } from "@/orpc/orpc";
 import { assertActiveStudent } from "@/orpc/router/owner/helpers";
 import { ORPCError } from "@orpc/client";
@@ -12,30 +12,37 @@ export const ownerStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      return await context.clerk.organizations.createOrganizationInvitation({
-        redirectUrl: `${getBaseUrl()}/accept-invitation`,
-        emailAddress: input.email,
-        organizationId: context.organizationId,
-        role: OrganizationRole.STUDENT,
+      return await auth.api.createInvitation({
+        body: {
+          email: input.email,
+          role: OrganizationRole.STUDENT,
+          organizationId: context.organizationId,
+        },
+        headers: context.headers,
       });
     }),
   getPendingInvitations: ownerProcedure.handler(async ({ context }) => {
-    const { data } =
-      await context.clerk.organizations.getOrganizationInvitationList({
-        organizationId: context.organizationId,
-        status: ["pending"], // list otherwise includes accepted/revoked
-        limit: 500, // Clerk default page size is 10; 500 is the max
-      });
+    const invitations = await auth.api.listInvitations({
+      query: { organizationId: context.organizationId },
+      headers: context.headers,
+    });
 
-    // Whitelist plain fields — raw OrganizationInvitation includes
-    // privateMetadata/url which must not leak over RPC.
-    return data.map((inv) => ({
-      id: inv.id,
-      emailAddress: inv.emailAddress,
-      status: inv.status,
-      createdAt: inv.createdAt, // unix ms number
-      expiresAt: inv.expiresAt, // unix ms number
-    }));
+    const now = new Date();
+
+    // Two filters Clerk's `status: ["pending"]` gave for free: the list
+    // otherwise includes accepted/rejected/canceled, and nothing ever sweeps
+    // expired rows, so they'd sit in the table as "pending" forever.
+    return invitations
+      .filter((inv) => inv.status === "pending" && inv.expiresAt > now)
+      .map((inv) => ({
+        id: inv.id,
+        // Kept as `emailAddress` (Better Auth calls it `email`) so the pending
+        // table and dashboard card don't have to change.
+        emailAddress: inv.email,
+        status: inv.status,
+        createdAt: inv.createdAt,
+        expiresAt: inv.expiresAt,
+      }));
   }),
   revokeInvitation: ownerProcedure
     .input(
@@ -44,10 +51,9 @@ export const ownerStudentRouter = {
       }),
     )
     .handler(async ({ context, input }) => {
-      await context.clerk.organizations.revokeOrganizationInvitation({
-        organizationId: context.organizationId,
-        invitationId: input.invitationId,
-        requestingUserId: context.userId,
+      await auth.api.cancelInvitation({
+        body: { invitationId: input.invitationId },
+        headers: context.headers,
       });
 
       return true;
@@ -61,23 +67,30 @@ export const ownerStudentRouter = {
     .handler(async ({ context, input }) => {
       // Single server procedure (not client-side revoke+create) so it can't
       // half-fail on the client and the email comes from the trusted record.
-      const existing =
-        await context.clerk.organizations.getOrganizationInvitation({
+      // Read the row directly — `auth.api.getInvitation` is shaped for the
+      // invitee, and this also scopes the lookup to the caller's organization.
+      const existing = await context.db.invitation.findFirst({
+        where: {
+          id: input.invitationId,
           organizationId: context.organizationId,
-          invitationId: input.invitationId,
-        });
-
-      await context.clerk.organizations.revokeOrganizationInvitation({
-        organizationId: context.organizationId,
-        invitationId: input.invitationId,
-        requestingUserId: context.userId,
+        },
+        select: { email: true },
       });
 
-      await context.clerk.organizations.createOrganizationInvitation({
-        redirectUrl: `${getBaseUrl()}/accept-invitation`,
-        emailAddress: existing.emailAddress,
-        organizationId: context.organizationId,
-        role: OrganizationRole.STUDENT,
+      if (!existing) {
+        throw new ORPCError("NOT_FOUND");
+      }
+
+      // `resend: true` plus `cancelPendingInvitationsOnReInvite` replaces the
+      // old revoke-then-recreate pair, so there's no window with no invitation.
+      await auth.api.createInvitation({
+        body: {
+          email: existing.email,
+          role: OrganizationRole.STUDENT,
+          organizationId: context.organizationId,
+          resend: true,
+        },
+        headers: context.headers,
       });
 
       return true;
@@ -92,7 +105,7 @@ export const ownerStudentRouter = {
       const result = await context.db.student.updateMany({
         where: {
           id: input.studentId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         data: {
           archivedAt: new Date(),
@@ -115,7 +128,7 @@ export const ownerStudentRouter = {
       const result = await context.db.student.updateMany({
         where: {
           id: input.studentId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         data: {
           archivedAt: null,
@@ -149,7 +162,7 @@ export const ownerStudentRouter = {
       const result = await context.db.student.updateMany({
         where: {
           id: studentId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         data,
       });
@@ -178,7 +191,7 @@ export const ownerStudentRouter = {
       const batches = await context.db.batch.findMany({
         where: {
           id: { in: [fromBatchId, toBatchId] },
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           archivedAt: null,
           class: { archivedAt: null },
         },
@@ -240,7 +253,7 @@ export const ownerStudentRouter = {
           id: {
             in: batchIds,
           },
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           archivedAt: null,
           class: { archivedAt: null },
         },
@@ -266,7 +279,7 @@ export const ownerStudentRouter = {
           where: {
             studentId,
             batch: {
-              clerkOrganizationId: context.organizationId,
+              organizationId: context.organizationId,
               archivedAt: null,
               class: { archivedAt: null },
             },
@@ -304,7 +317,7 @@ export const ownerStudentRouter = {
   getAllStudents: ownerProcedure.handler(async ({ context }) => {
     return await context.db.student.findMany({
       where: {
-        clerkOrganizationId: context.organizationId,
+        organizationId: context.organizationId,
       },
       include: {
         batches: {

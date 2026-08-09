@@ -5,27 +5,28 @@ import * as z from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    CLERK_SECRET_KEY: z.string(),
-    CLERK_WEBHOOK_SIGNING_SECRET: z.string(),
+    BETTER_AUTH_SECRET: z.string().min(32),
+    // Optional: only set this where the origin is stable and known (production,
+    // or a local tunnel). Leaving it unset on preview deployments is what lets
+    // each preview resolve its own URL — see lib/get-base-url.ts.
+    BETTER_AUTH_URL: z.url().optional(),
+    RESEND_API_KEY: z.string().startsWith("re_"),
+    // Not `z.email()` — Resend takes a full "Name <address>" sender.
+    EMAIL_FROM: z.string().min(3),
     UPLOADTHING_TOKEN: z.string(),
     RAZORPAY_KEY_ID: z.string(),
     RAZORPAY_KEY_SECRET: z.string(),
     RAZORPAY_WEBHOOK_SECRET: z.string(),
   },
   client: {
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string(),
-    NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string(),
     NEXT_PUBLIC_RAZORPAY_KEY_ID: z.string(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
-    NEXT_PUBLIC_CLERK_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
-    CLERK_WEBHOOK_SIGNING_SECRET: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
+    BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
+    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    EMAIL_FROM: process.env.EMAIL_FROM,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,

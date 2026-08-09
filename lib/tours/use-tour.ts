@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "@/lib/auth-client";
 import type { Driver } from "driver.js";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
@@ -35,9 +35,9 @@ export function useTour(
   tourId: string | null,
   { autoStart = false }: { autoStart?: boolean } = {},
 ) {
-  const { user, isLoaded } = useUser();
+  const { data: session, isPending } = useSession();
   const pathname = usePathname();
-  const userId = user?.id ?? null;
+  const userId = session?.user.id ?? null;
 
   // Registry entries are module-level constants, so this reference is stable.
   const tour = tourId ? getTourById(tourId) : null;
@@ -55,9 +55,9 @@ export function useTour(
   }, [tour, userId]);
 
   useEffect(() => {
-    // Wait for Clerk: before `isLoaded` the user id is unknown, and the
+    // Wait for the session: until it resolves the user id is unknown, and the
     // seen-state key is namespaced by it.
-    if (!autoStart || !tour || !isLoaded) return;
+    if (!autoStart || !tour || isPending) return;
     if (hasSeenTour(tour, userId) || isAutostartLocked()) return;
 
     let cancelled = false;
@@ -122,7 +122,7 @@ export function useTour(
       destroyTourDriver(driverRef.current);
       driverRef.current = null;
     };
-  }, [autoStart, tour, isLoaded, userId, pathname]);
+  }, [autoStart, tour, isPending, userId, pathname]);
 
   return { startTour, tour };
 }

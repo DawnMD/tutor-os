@@ -51,7 +51,7 @@ export const ownerFeesRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: {
           id: true,
@@ -123,7 +123,7 @@ export const ownerFeesRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: { monthlyFeePaise: true },
       });
@@ -189,7 +189,7 @@ export const ownerFeesRouter = {
           },
         },
         create: {
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           batchId: input.batchId,
           studentId: input.studentId,
           periodYear: period.year,
@@ -236,7 +236,7 @@ export const ownerFeesRouter = {
       const payment = await context.db.feePayment.findFirst({
         where: {
           id: input.feePaymentId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: { id: true, method: true },
       });
@@ -263,7 +263,7 @@ export const ownerFeesRouter = {
       return await context.db.feePayment.findMany({
         where: {
           batchId: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           status: "PAID",
         },
         orderBy: { paidAt: "desc" },

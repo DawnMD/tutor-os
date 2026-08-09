@@ -49,7 +49,7 @@ export const ownerBatchRouter = {
       return await context.db.$transaction(async (tx) => {
         const batch = await tx.batch.create({
           data: {
-            clerkOrganizationId: context.organizationId,
+            organizationId: context.organizationId,
             name: input.name,
             classId: input.classId,
             color: input.color,
@@ -127,7 +127,7 @@ export const ownerBatchRouter = {
         }),
         context.db.holiday.findMany({
           where: {
-            clerkOrganizationId: context.organizationId,
+            organizationId: context.organizationId,
             date: { gte: input.rangeStart, lte: input.rangeEnd },
           },
           select: { id: true, date: true, name: true },
@@ -139,7 +139,7 @@ export const ownerBatchRouter = {
   getBatchByOrg: ownerProcedure.handler(async ({ context }) => {
     return await context.db.batch.findMany({
       where: {
-        clerkOrganizationId: context.organizationId,
+        organizationId: context.organizationId,
       },
       include: {
         class: {
@@ -162,7 +162,7 @@ export const ownerBatchRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: {
           id: true,
@@ -291,7 +291,7 @@ export const ownerBatchRouter = {
       const students = await context.db.student.findMany({
         where: {
           id: { in: input.studentIds },
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           archivedAt: null,
         },
         select: { id: true },

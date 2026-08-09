@@ -1,4 +1,3 @@
-/* eslint-disable @clerk/next/require-auth-protection */
 import { createContext } from "@/orpc/context";
 import { router } from "@/orpc/router";
 import { onError } from "@orpc/server";
@@ -15,7 +14,7 @@ const handler = new RPCHandler(router, {
 async function handleRequest(request: Request) {
   const { response } = await handler.handle(request, {
     prefix: "/rpc",
-    context: await createContext(),
+    context: await createContext(request.headers),
   });
 
   return response ?? new Response("Not found", { status: 404 });

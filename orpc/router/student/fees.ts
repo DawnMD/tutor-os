@@ -47,7 +47,7 @@ export const studentFeesRouter = {
 
     const batches = await context.db.batch.findMany({
       where: {
-        clerkOrganizationId: context.organizationId,
+        organizationId: context.organizationId,
         archivedAt: null,
         class: { archivedAt: null },
         monthlyFeePaise: { not: null },
@@ -122,7 +122,7 @@ export const studentFeesRouter = {
       const batch = await context.db.batch.findFirst({
         where: {
           id: input.batchId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           students: { some: { studentId: student.id } },
         },
         select: {
@@ -182,14 +182,14 @@ export const studentFeesRouter = {
           studentId: student.id,
           periodYear: String(period.year),
           periodMonth: String(period.month),
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
       });
 
       await context.db.feePayment.upsert({
         where: compoundWhere,
         create: {
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           batchId: input.batchId,
           studentId: student.id,
           periodYear: period.year,

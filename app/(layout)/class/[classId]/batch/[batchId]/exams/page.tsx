@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs/server";
-import { isOwner } from "@/lib/roles";
+import { requireOrganization } from "@/lib/roles";
 import ExamsContent from "./_components/exams-content";
 import { StudentExams } from "./_components/student-exams";
 
@@ -12,10 +11,10 @@ export default async function BatchExamsPage({
   params,
   searchParams,
 }: PageProps<"/class/[classId]/batch/[batchId]/exams">) {
-  await auth.protect();
+  const { isOwner } = await requireOrganization();
   const { batchId } = await params;
 
-  if (await isOwner()) {
+  if (isOwner) {
     const { exam, create } = await searchParams;
     const initialExamId = typeof exam === "string" ? exam : undefined;
     const autoCreate = create === "1";

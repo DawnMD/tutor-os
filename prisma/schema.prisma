@@ -11,18 +11,18 @@ datasource db {
 }
 
 model Class {
-  id                  String    @id @default(cuid())
-  clerkOrganizationId String
-  name                String
-  description         String?
-  archivedAt          DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  batches             Batch[]
+  id             String    @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  archivedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  batches        Batch[]
 
-  @@unique([clerkOrganizationId, name])
-  @@index([clerkOrganizationId])
-  @@index([clerkOrganizationId, archivedAt])
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([organizationId, archivedAt])
 }
 
 enum AttendanceStatus {
@@ -33,51 +33,51 @@ enum AttendanceStatus {
 }
 
 model Student {
-  id                  String             @id @default(cuid())
-  clerkUserId         String
-  clerkOrganizationId String
-  fullName            String?
-  email               String
-  phone               String?
-  guardianName        String?
-  guardianPhone       String?
-  archivedAt          DateTime?
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
-  batches             BatchStudent[]
-  attendance          AttendanceRecord[]
-  examResults         ExamResult[]
-  feePayments         FeePayment[]
+  id             String             @id @default(cuid())
+  userId         String
+  organizationId String
+  fullName       String?
+  email          String
+  phone          String?
+  guardianName   String?
+  guardianPhone  String?
+  archivedAt     DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  batches        BatchStudent[]
+  attendance     AttendanceRecord[]
+  examResults    ExamResult[]
+  feePayments    FeePayment[]
 
-  @@unique([clerkOrganizationId, clerkUserId])
-  @@index([clerkOrganizationId, email])
-  @@index([clerkOrganizationId])
-  @@index([clerkOrganizationId, archivedAt])
-  @@index([clerkOrganizationId, fullName])
+  @@unique([organizationId, userId])
+  @@index([organizationId, email])
+  @@index([organizationId])
+  @@index([organizationId, archivedAt])
+  @@index([organizationId, fullName])
 }
 
 model Batch {
-  id                  String             @id @default(cuid())
-  clerkOrganizationId String
-  classId             String
-  name                String
-  color               String?
-  monthlyFeePaise     Int? // null = fees disabled for this batch
-  archivedAt          DateTime?
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
-  class               Class              @relation(fields: [classId], references: [id], onDelete: Restrict)
-  students            BatchStudent[]
-  schedules           BatchSchedule[]
-  sessions            BatchSession[]
-  exams               Exam[]
-  overrides           ScheduleOverride[]
-  notes               BatchNote[]
-  feePayments         FeePayment[]
+  id              String             @id @default(cuid())
+  organizationId  String
+  classId         String
+  name            String
+  color           String?
+  monthlyFeePaise Int? // null = fees disabled for this batch
+  archivedAt      DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  class           Class              @relation(fields: [classId], references: [id], onDelete: Restrict)
+  students        BatchStudent[]
+  schedules       BatchSchedule[]
+  sessions        BatchSession[]
+  exams           Exam[]
+  overrides       ScheduleOverride[]
+  notes           BatchNote[]
+  feePayments     FeePayment[]
 
   @@unique([classId, name])
   @@index([classId])
-  @@index([clerkOrganizationId])
+  @@index([organizationId])
 }
 
 enum OverrideType {
@@ -86,14 +86,14 @@ enum OverrideType {
 }
 
 model Holiday {
-  id                  String   @id @default(cuid())
-  clerkOrganizationId String
-  date                DateTime // date-only semantics, same as classDate
-  name                String
-  createdAt           DateTime @default(now())
+  id             String   @id @default(cuid())
+  organizationId String
+  date           DateTime // date-only semantics, same as classDate
+  name           String
+  createdAt      DateTime @default(now())
 
-  @@unique([clerkOrganizationId, date])
-  @@index([clerkOrganizationId, date])
+  @@unique([organizationId, date])
+  @@index([organizationId, date])
 }
 
 model ScheduleOverride {
@@ -194,23 +194,23 @@ model ExamResult {
 }
 
 model BatchNote {
-  id                    String   @id @default(cuid())
-  clerkOrganizationId   String
-  batchId               String
-  title                 String
-  description           String?
-  fileKey               String   @unique
-  fileUrl               String
-  fileName              String
-  fileType              String
-  fileSize              Int
-  uploadedByClerkUserId String
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  batch                 Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  id               String   @id @default(cuid())
+  organizationId   String
+  batchId          String
+  title            String
+  description      String?
+  fileKey          String   @unique
+  fileUrl          String
+  fileName         String
+  fileType         String
+  fileSize         Int
+  uploadedByUserId String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  batch            Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
 
   @@index([batchId, createdAt])
-  @@index([clerkOrganizationId])
+  @@index([organizationId])
 }
 
 enum FeePaymentStatus {
@@ -225,26 +225,137 @@ enum FeePaymentMethod {
 }
 
 model FeePayment {
-  id                  String           @id @default(cuid())
-  clerkOrganizationId String
-  batchId             String
-  studentId           String
-  periodYear          Int
-  periodMonth         Int // 1-12
-  amountPaise         Int // snapshot at order/record time
-  status              FeePaymentStatus @default(PENDING)
-  method              FeePaymentMethod
-  razorpayOrderId     String?          @unique
-  razorpayPaymentId   String?          @unique
-  note                String?
-  paidAt              DateTime?
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  batch               Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  student             Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  id                String           @id @default(cuid())
+  organizationId    String
+  batchId           String
+  studentId         String
+  periodYear        Int
+  periodMonth       Int // 1-12
+  amountPaise       Int // snapshot at order/record time
+  status            FeePaymentStatus @default(PENDING)
+  method            FeePaymentMethod
+  razorpayOrderId   String?          @unique
+  razorpayPaymentId String?          @unique
+  note              String?
+  paidAt            DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  batch             Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  student           Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([batchId, studentId, periodYear, periodMonth])
-  @@index([clerkOrganizationId])
+  @@index([organizationId])
   @@index([studentId, status])
   @@index([batchId, periodYear, periodMonth])
+}
+
+model User {
+  id            String       @id
+  name          String
+  email         String
+  emailVerified Boolean      @default(false)
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  members       Member[]
+  invitations   Invitation[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id                   String   @id
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Organization {
+  id          String       @id
+  name        String
+  slug        String
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
 }

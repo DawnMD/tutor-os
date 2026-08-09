@@ -22,9 +22,9 @@ type GuardContext = {
 export async function getCurrentStudent(ctx: GuardContext) {
   const student = await ctx.db.student.findUnique({
     where: {
-      clerkOrganizationId_clerkUserId: {
-        clerkOrganizationId: ctx.organizationId,
-        clerkUserId: ctx.userId,
+      organizationId_userId: {
+        organizationId: ctx.organizationId,
+        userId: ctx.userId,
       },
     },
     select: { id: true, archivedAt: true },
@@ -47,7 +47,7 @@ export const enrolledActiveBatchWhere = (
   studentId: string,
 ) =>
   ({
-    clerkOrganizationId: organizationId,
+    organizationId: organizationId,
     archivedAt: null,
     class: { archivedAt: null },
     students: { some: { studentId } },
@@ -67,7 +67,7 @@ export async function getEnrolledBatch(
   const batch = await ctx.db.batch.findFirst({
     where: {
       id: batchId,
-      clerkOrganizationId: ctx.organizationId,
+      organizationId: ctx.organizationId,
       students: { some: { studentId } },
     },
     select: {

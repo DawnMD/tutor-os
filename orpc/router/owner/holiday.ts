@@ -22,8 +22,8 @@ export const ownerHolidayRouter = {
 
       const existing = await context.db.holiday.findUnique({
         where: {
-          clerkOrganizationId_date: {
-            clerkOrganizationId: context.organizationId,
+          organizationId_date: {
+            organizationId: context.organizationId,
             date: input.date,
           },
         },
@@ -38,7 +38,7 @@ export const ownerHolidayRouter = {
 
       return await context.db.holiday.create({
         data: {
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
           date: input.date,
           name: input.name,
         },
@@ -50,7 +50,7 @@ export const ownerHolidayRouter = {
       const { count } = await context.db.holiday.deleteMany({
         where: {
           id: input.holidayId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
       });
 

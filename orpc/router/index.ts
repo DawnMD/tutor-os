@@ -1,4 +1,5 @@
 import { InferRouterInputs, InferRouterOutputs } from "@orpc/server";
+import { orgRouter } from "./org";
 import { ownerBatchRouter } from "./owner/batch";
 import { ownerStudentRouter } from "./owner/student";
 import { ownerClassRouter } from "./owner/class";
@@ -21,6 +22,7 @@ import { studentNoteRouter } from "./student/note";
 import { studentFeesRouter } from "./student/fees";
 
 export const router = {
+  org: orgRouter,
   owner: {
     batch: ownerBatchRouter,
     student: ownerStudentRouter,

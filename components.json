@@ -20,8 +20,5 @@
     "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
-  },
-  "registries": {
-    "@clerk": "https://clerk.com/r/{name}.json"
   }
 }

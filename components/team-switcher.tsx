@@ -1,15 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { CreateOrganizationDialog } from "@/components/create-organization-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,32 +12,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useOrganization, useOrganizationList } from "@clerk/nextjs";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@/lib/auth-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
-
-const formSchema = z.object({
-  workspace: z.string(),
-});
 
 export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
   const queryClient = useQueryClient();
@@ -64,53 +41,15 @@ export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
 
   const [openDialog, setOpenDialog] = useState(false);
 
-  const { userMemberships, isLoaded, setActive, createOrganization } =
-    useOrganizationList({
-      userMemberships: {
-        infinite: true,
-      },
-    });
+  const { data: organizations, isPending } = authClient.useListOrganizations();
+  const { data: organization, isPending: isOrganizationPending } =
+    authClient.useActiveOrganization();
 
-  const { organization, isLoaded: isOrganizationLoaded } = useOrganization();
-
-  const memberships = userMemberships.data ?? [];
-
-  const ownedOrganizations = memberships.map((item) => item);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      workspace: "",
-    },
-  });
-
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!canCreate || !createOrganization) return;
-    toast.promise(
-      createOrganization({
-        name: data.workspace,
-      })
-        .then((data) =>
-          setActive({
-            organization: data.id,
-          }),
-        )
-        .then(() => {
-          setOpenDialog(false);
-          setOpenMobile(false);
-          afterSetActive();
-        }),
-      {
-        loading: "Creating workspace",
-        success: "Workspace created and switched",
-        error: "Failed to create workspace",
-      },
-    );
-  }
-
-  if (!isLoaded || !isOrganizationLoaded || !organization) {
+  if (isPending || isOrganizationPending || !organization) {
     return <Skeleton className="h-14" />;
   }
+
+  const ownedOrganizations = organizations ?? [];
 
   return (
     <>
@@ -144,12 +83,15 @@ export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
                 </DropdownMenuLabel>
                 {ownedOrganizations.map((team, index) => (
                   <DropdownMenuItem
-                    key={team.organization.id}
+                    key={team.id}
                     onClick={() =>
                       toast.promise(
-                        setActive({
-                          organization: team.organization.id,
-                        }).then(afterSetActive),
+                        authClient.organization
+                          .setActive({ organizationId: team.id })
+                          .then(({ error }) => {
+                            if (error) throw new Error(error.message);
+                            afterSetActive();
+                          }),
                         {
                           loading: "Switching workspace",
                           success: "Workspace switched",
@@ -157,10 +99,10 @@ export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
                         },
                       )
                     }
-                    disabled={team.organization.id === organization.id}
+                    disabled={team.id === organization.id}
                     className="gap-2 p-2"
                   >
-                    {team.organization.name}
+                    {team.name}
                     <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 ))}
@@ -187,53 +129,14 @@ export function TeamSwitcher({ canCreate = false }: { canCreate?: boolean }) {
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-      <Dialog
-        disablePointerDismissal
+      <CreateOrganizationDialog
         open={canCreate && openDialog}
         onOpenChange={setOpenDialog}
-      >
-        <form id="create-workspace" onSubmit={form.handleSubmit(onSubmit)}>
-          <DialogContent className="sm:max-w-sm">
-            <DialogHeader>
-              <DialogTitle>Create workspace</DialogTitle>
-              <DialogDescription>
-                Create new workspace here. Click create when you&apos;ve chosen.
-              </DialogDescription>
-            </DialogHeader>
-            <FieldGroup>
-              <Controller
-                name="workspace"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="workspace">Workspace Title</FieldLabel>
-                    <Input
-                      {...field}
-                      id="workspace"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Salt Lake Batch"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-            <DialogFooter>
-              <DialogClose render={<Button variant="outline">Cancel</Button>} />
-              <Button
-                type="submit"
-                disabled={form.formState.isSubmitting}
-                form="create-workspace"
-              >
-                Create
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </form>
-      </Dialog>
+        onCreated={() => {
+          setOpenMobile(false);
+          afterSetActive();
+        }}
+      />
     </>
   );
 }

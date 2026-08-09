@@ -47,7 +47,7 @@ export const ownerNoteRouter = {
       const note = await context.db.batchNote.findFirst({
         where: {
           id: input.noteId,
-          clerkOrganizationId: context.organizationId,
+          organizationId: context.organizationId,
         },
         select: { id: true, batchId: true, fileKey: true },
       });

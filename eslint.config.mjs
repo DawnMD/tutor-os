@@ -1,7 +1,6 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
-import clerkNext from "@clerk/eslint-plugin/next";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -13,20 +12,24 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Prisma's generated client is checked in but not ours to lint.
+    "prisma/generated/**",
   ]),
   [
     {
-      plugins: { "@clerk/next": clerkNext },
       rules: {
-        "@clerk/next/require-auth-protection": [
+        // Tripwire for the Clerk migration. `next.config.ts` sets
+        // `typescript.ignoreBuildErrors`, so a stray Clerk import would
+        // otherwise build green and fail at runtime.
+        "no-restricted-imports": [
           "error",
           {
-            protected: ["**"],
-            public: [
-              "app/sign-in/**",
-              "app/sign-up/**",
-              "app/accept-invitation/**",
-              "app/api/webhooks/clerk/**"
+            patterns: [
+              {
+                group: ["@clerk/*"],
+                message:
+                  "Clerk has been replaced by Better Auth — use @/lib/auth (server) or @/lib/auth-client (client).",
+              },
             ],
           },
         ],
